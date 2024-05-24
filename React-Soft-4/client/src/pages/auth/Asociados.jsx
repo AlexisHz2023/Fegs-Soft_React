@@ -132,12 +132,10 @@ const Asociados = () => {
     ];
 
     function Loader() {
-        return (
-            <div>
-                <h1>Cargando...</h1>
-                <h3>Fondo de empleados</h3>
+        return <div>
+            <h1><img className='flex items-center justify-center w-full h-full bg-cover bg-center' src="./Imagenes/cargando2.gif" alt="" /></h1>
+            <h3></h3>
             </div>
-        );
     }
 
     return (
