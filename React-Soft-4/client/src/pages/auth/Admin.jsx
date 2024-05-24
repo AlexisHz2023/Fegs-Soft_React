@@ -344,13 +344,13 @@ const Admin = () => {
                   <img className="relative left-[85%] -top-20 w-48 h-auto" src="./imagenes/Logo.PNG" alt="" />
                 <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[20%] -top-14">
  <p>
-    Bienvenido a la interfaz <a className="underline decoration-Third">Usuarios</a>, Donde dendras como opcion ver a los usuarios a tra vez de una tabla a y Registrar nuevos Asociadas. Te explicaremos como funciona la interfaz:<br /><br /> <span className="text-Third">1.</span> El Circulo en la <a className="underline decoration-Third">posicion Derecha</a> indica que esta mostrando el Registro de usuarios. <div className="flex justify-center py-8"> 
+    Bienvenido a la interfaz <a className="underline decoration-Third">Usuarios</a>, Donde tendras como opcion ver a los usuarios a tra vez de una tabla y Registrar nuevas Asociadas. Te explicaremos como funciona la interfaz:<br /><br /> <span className="text-Third">1.</span> El Circulo en la <a className="underline decoration-Third">posicion Derecha</a> indica que esta mostrando el Registro para las asociadas. <div className="flex justify-center py-8"> 
     <AiOutlineDoubleRight  className="text-primary animate-pulse duration-0 " />
 <img src="./imagenes/RegistroUsu.PNG" /> 
 <AiOutlineDoubleRight  className="relative top-5 text-Third animate-pulse duration-0" />
       </div> 
     
-   <span className="text-primary">2.</span> Cuando le das click al Circulo y cambia a la <a className="underline decoration-primary">posicion Isquierda</a> esta indicando que esta mostrando la tabla de todas las <a className="underline decoration-primary">asesoras Registradas.</a>
+   <span className="text-primary">2.</span> Cuando le das click al Circulo y cambia a la <a className="underline decoration-primary">posicion Izquierda</a> esta indicando que esta mostrando la tabla de todas las <a className="underline decoration-primary">asesoras Registradas.</a>
     <div className="flex justify-center py-8">
     <AiOutlineDoubleLeft  className="text-primary animate-pulse duration-0" />
      <img src="./imagenes/UsuariosTabla.PNG" /> 

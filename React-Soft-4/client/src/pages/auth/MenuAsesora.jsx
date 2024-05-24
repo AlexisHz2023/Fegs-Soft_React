@@ -4,7 +4,7 @@ const MenuAsesora = () => {
   return (
     <div className="absolute">
       
-      <nav className="fixed top-10 z-50 w-[90%] right-[7%] rounded-lg bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+      <nav className="fixed top-14 z-50 w-[75%] right-[7%] border-primary rounded-lg bg-white border-b  dark:bg-gray-800 dark:border-gray-700">
   <div className="px-3 py-3 lg:px-5 lg:pl-3">
     <div className="flex items-center justify-between">
       <div className="flex items-center justify-start rtl:justify-end">
@@ -22,7 +22,7 @@ const MenuAsesora = () => {
     </div>
   </div>
 </nav>
-   <aside id="logo-sidebar" className="fixed top-20 left-[2%] z-40 w-64 h-[84%] pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 rounded-lg" aria-label="Sidebar">
+   <aside id="logo-sidebar" className="fixed top-12 border-primary rounded-2xl left-[2%] z-40 w-64 h-[84%] pt-20 transition-transform -translate-x-full bg-white border-r sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
    <div className="h-full px-3 pb-4 relative overflow-y-auto bg-white dark:bg-gray-800">
       <ul className="space-y-2 font-medium">
          <li>

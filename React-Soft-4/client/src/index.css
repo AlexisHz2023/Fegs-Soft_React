@@ -41,6 +41,7 @@ display: none;
   margin: 10px auto;
   cursor: pointer;
   background-color: #F49825;
+  background-color: rgb(238, 238, 240);
   top: 130px;
   z-index: 1;
 }
