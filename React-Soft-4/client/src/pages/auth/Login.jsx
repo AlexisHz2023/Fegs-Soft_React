@@ -48,6 +48,8 @@ const Login = () => {
           navigate("/Home");
         } else if (rol === 2) {
           navigate("/Eleccion");
+        }else if (rol === 3) {
+          navigate("/VerSaldo");
         } else {
           // Si el rol no es ninguno de los esperados, manejarlo de acuerdo a tus necesidades
           toast.error("Rol de usuario desconocido", {

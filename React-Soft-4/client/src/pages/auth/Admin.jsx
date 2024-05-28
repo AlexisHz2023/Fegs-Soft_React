@@ -48,7 +48,7 @@ const Admin = () => {
 
   const [Nombre, setNombre] = useState("");
   const [Correo, setCorreo] = useState("");
-  const [Usuario, setUsuario] = useState("");
+  const [Documento, setDocumento] = useState("");
   const [Clave, setClave] = useState("");
   const [rol, setRol] = useState("");
   const [id, setId] = useState("0");
@@ -63,7 +63,7 @@ const Admin = () => {
     Axios.post("http://localhost:3001/create", {
       Nombre: Nombre,
       Correo: Correo,
-      Usuario: Usuario,
+      Documento: Documento,
       Clave: Clave,
       rol: rol,
     })
@@ -94,7 +94,7 @@ const Admin = () => {
       id: id,
       Nombre: Nombre,
       Correo: Correo,
-      Usuario: Usuario,
+      Documento: Documento,
       rol: rol,
     })
       .then(() => {
@@ -160,7 +160,7 @@ const Admin = () => {
   const LimpiarCampos = () => {
     setNombre("");
     setCorreo("");
-    setUsuario("");
+    setDocumento("");
     setClave("");
     setRol("");
     setEditar(false);
@@ -170,7 +170,7 @@ const Admin = () => {
     setEditar(true);
     setNombre(val.Nombre);
     setCorreo(val.Correo);
-    setUsuario(val.Usuario);
+    setDocumento(val.Documento);
     setRol(val.rol);
     setId(val.id);
   };
@@ -252,15 +252,15 @@ const Admin = () => {
                     id="username"
                   />
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Usuario
+                    Documento
                   </label>
                   <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                     placeholder="Ingrese Una contraseña"
-                    value={Usuario}
+                    value={Documento}
                     type="text"
                     onChange={(event) => {
-                      setUsuario(event.target.value);
+                      setDocumento(event.target.value);
                     }}
                   />
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -275,33 +275,8 @@ const Admin = () => {
                       setCorreo(event.target.value);
                     }}
                   />
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Contraseña
-                  </label>
-                  <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                    placeholder="*********"
-                    value={Clave}
-                    type="text"
-                    onChange={(event) => {
-                      setClave(event.target.value);
-                    }}
-                  />
-                  <Select
-                    isRequired
-                    label="Seleccione un rol"
-                    placeholder="roles"
-                    defaultSelectedKeys={[""]}
-                    className="pt-5 w-[100%]"
-                    value={rol}
-                    onChange={(event) => setRol(event.target.value)}
-                  >
-                    {roles.map((rolItem) => (
-                      <SelectItem key={rolItem.value} value={rolItem.value}>
-                        {rolItem.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                 
+                 
                 </ModalBody>
                 <ModalFooter>
                   <Button
@@ -374,7 +349,7 @@ const Admin = () => {
                         <div className="center-wrap ">
                           <div className="relative -top-64 bg-white h-20 rounded-lg  ">
                             <h4 className="-left-[7%] top-5 rounded-lg w-[50%] text-3xl relative text-Third h-12   z-0">
-                              Usuarios Registrados 
+                              Asesoras Registradas 
                             </h4>
                             <FaUsersRays className="text-primary text-5xl relative left-[36%] -top-8" />
                             <div>
@@ -385,8 +360,7 @@ const Admin = () => {
    
                                       <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-2 text-white">Nombre</th>
                                       <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-4 text-white">Correo</th>
-                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-6 text-white">Usuario</th>
-                                      <th className="px-16 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-8 text-white">Rol</th>
+                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-6 text-white">Documento</th>
                                       <th className="px-20 py-5 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">Acciones</th>
                                     </tr>
                                   </thead>
@@ -401,14 +375,9 @@ const Admin = () => {
                                           {val.Correo}
                                         </td>
                                         <td className="px-9 py-3">
-                                          {val.Usuario}
+                                          {val.Documento}
                                         </td>
-                                        <td className="px-2 py-3 text-sm left-8 relative whitespace-nowrap font-bold text-blue-500 hover:underline">
-                                          <h1 className="bg-primary rounded text-white text-center">
-                                            {val.rol}
-                                            {val.rolItem}
-                                          </h1>
-                                        </td>
+                                       
                                         <td className="">
                                           <div
                                             className="flex px-10 py-5 relative -left-[5%]"
@@ -531,16 +500,16 @@ const Admin = () => {
                                 <div>
                                   <div className="flex items-center justify-between">
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
-                                      Usuario
+                                      Documento
                                     </label>
                                   </div>
                                   <div className="mt-2">
                                     <input
                                       type="text"
-                                      value={Usuario}
+                                      value={Documento}
                                       required
                                       onChange={(event) => {
-                                        setUsuario(event.target.value);
+                                        setDocumento(event.target.value);
                                       }}
                                       placeholder="Ingrese Un Usuario"
                                       className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

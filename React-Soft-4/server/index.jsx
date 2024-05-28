@@ -16,13 +16,13 @@ const db = mysql.createConnection({
 app.post("/create", (req, res) => {
     const Nombre = req.body.Nombre;
     const Correo = req.body.Correo;
-    const Usuario = req.body.Usuario;
+    const Documento = req.body.Documento;
     const Clave = req.body.Clave;
     const rol = req.body.rol;
 
     db.query(
-        'INSERT INTO usuarios(Nombre, Correo, Usuario, Clave, rol) VALUES (?, ?, ?, ?, ?)',
-        [Nombre, Correo, Usuario, Clave, rol],
+        'INSERT INTO usuarios(Nombre, Correo, Documento, Clave, rol) VALUES (?, ?, ?, ?, ?)',
+        [Nombre, Correo, Documento, Clave, rol],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -33,6 +33,9 @@ app.post("/create", (req, res) => {
         }
     );
 });
+
+
+
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
@@ -46,12 +49,12 @@ app.post("/login", (req, res) => {
                 res.status(500).send("Error en el servidor");
             } else {
                 if (result.length > 0) {
-                    const { id, Nombre, Correo, Usuario, rol } = result[0];
+                    const { id, Nombre, Correo, Documento, rol } = result[0];
                     res.status(200).json({
                         id,
                         Nombre,
                         Correo,
-                        Usuario,
+                        Documento,
                         rol 
                     });
                 } else {
@@ -63,11 +66,11 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/usuarios", (req, res) => {
-    db.query('SELECT u.id, u.Nombre, u.Correo, u.Usuario, r.rol FROM usuarios u INNER JOIN rol r ON u.rol = r.idrol',
+    db.query('SELECT id, Nombre, Correo, Documento, rol FROM usuarios WHERE rol = 2',
         (err, result) => {
             if (err) {
                 console.log(err);
-                res.status(500).send('Error al obtener usuarios');
+                res.status(500).send('Error al obtener asesoras');
             } else {
                 res.send(result);
             }
@@ -78,12 +81,12 @@ app.put("/update", (req, res) => {
     const id = req.body.id;
     const Nombre = req.body.Nombre;
     const Correo = req.body.Correo;
-    const Usuario = req.body.Usuario;
+    const Documento = req.body.Documento;
     const rol = req.body.rol;
 
     db.query(
-        'UPDATE usuarios SET Nombre=?, Correo=?, Usuario=?, rol=? WHERE id=?',
-        [Nombre, Correo, Usuario, rol, id],
+        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=?, rol=? WHERE id=?',
+        [Nombre, Correo, Documento, rol, id],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -110,6 +113,42 @@ app.delete("/delete/:id", (req, res) => {
     );
 });
 
+app.get("/beneficios", (req, res) => {
+    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener beneficios');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/creditos", (req, res) => {
+    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener beneficios');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+
+app.get("/asociados", (req, res) => {
+    db.query('SELECT Nombre, Correo, Documento FROM usuarios WHERE rol = 3',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener usuarios');
+            } else {
+                res.send(result);
+            }
+        });
+});
 
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001")

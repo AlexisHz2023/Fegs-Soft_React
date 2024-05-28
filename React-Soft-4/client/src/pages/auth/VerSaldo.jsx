@@ -123,7 +123,7 @@ class ComponenteAImprimir extends React.Component{
         <div className="relative -top-[89%] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 w-0 left-[86%] print:hidden">
         <Link
         className="relative py-3 px-6 bg-blue-400 hover:bg-orange-300 text-white  rounded-md border-blue-400 left-[70%] "
-        to="/actualizar"
+        to="/"
         >Volver</Link>
         </div>
       </div>

@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Asesora from './MenuAsesora';
 import DataTable from "react-data-table-component";
+import Axios from "axios";
+import Swal from "sweetalert2";
+import styled from 'styled-components';
 import { CiSearch } from "react-icons/ci";
+import { animals } from "./dataAsociado"
+
 
 // Componente del Modal
 const Modal = ({ isOpen, onClose, children }) => {
@@ -16,60 +21,90 @@ const Modal = ({ isOpen, onClose, children }) => {
     );
 };
 
+
+
+// Estilos para el campo de texto y el botón de limpiar
+const TextField = styled.input`
+    height: 32px;
+    width: 200px;
+    border-radius: 3px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid #e5e5e5;
+    padding: 0 32px 0 16px;
+`;
+
+const ClearButton = styled.button`
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 34px;
+    width: 32px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e5e5;
+    border: 1px solid #e5e5e5;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #ccc;
+    }
+`;
+
+// Componente de filtrado
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <>
+        <TextField
+            id="search"
+            type="text"
+            placeholder="Ingresa el Dato"
+            aria-label="Search Input"
+            value={filterText}
+            onChange={onFilter}
+        />
+        <ClearButton type="button" onClick={onClear}>
+            X
+        </ClearButton>
+    </>
+);
+
 const Asociados = () => {
     const [records, setRecords] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const [originalRecords, setOriginalRecords] = useState([]); // Nuevo estado para guardar los registros originales
 
-    const data = [
-        {
-            nombre: "German",
-            apellido: "Perez",
-            edad: 25,
-        },
-        {
-            nombre: "Alexis ",
-            apellido: "Perez",
-            edad: 25
-        },
-        {
-            nombre: "Samuel",
-            apellido: "Perez",
-            edad: 25,
-        },
-        {
-            nombre: "Carlos",
-            apellido: "Perez",
-            edad: 25,
-        },
-        {
-            nombre: "Manuela",
-            apellido: "Perez",
-            edad: 25,
-        },
-        {
-            nombre: "Ximena",
-            apellido: "Perez",
-            edad: 25,
+    const fetchData = async () => {
+        try {
+            const response = await Axios.get("http://localhost:3001/asociados");
+            setRecords(response.data);
+            setOriginalRecords(response.data); // Guardar los registros originales
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-    ];
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setRecords(data);
+            setRecords(fetchData);
             setLoading(false);
         }, 2000);
-
+    
         return () => clearTimeout(timeout);
     }, []);
-
-    const handleChange = (e) => {
-        const filteredRecords = data.filter(record => {
-            return record.nombre.toLowerCase().includes(e.target.value.toLowerCase());
-        });
-        setRecords(filteredRecords);
-    };
 
     const handleEdit = (row) => {
         setSelectedUser(row);
@@ -81,55 +116,79 @@ const Asociados = () => {
         setSelectedUser(null);
     };
 
+    const updateRecord = async () => {
+        try {
+            await Axios.put(`http://localhost:3001/update/${selectedUser.id}`, selectedUser);
+            Swal.fire({
+                title: "Actualizado Correctamente",
+                text: `El usuario ${selectedUser.Nombre} fue actualizado con éxito`,
+                icon: "success",
+                timer: 3000,
+            });
+            fetchData();
+            closeModal();
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.message === "Network Error" ? "Intente más tarde" : error.message,
+            });
+        }
+    };
+
     const columns = [
         {
+            name: "id",
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
             name: "Nombre",
-            selector: row => row.nombre,
+            selector: row => row.Nombre,
             sortable: true,
-            style: {
-                backgroundColor: 'rgb(238, 238, 240)',
-                color: 'black',
-                '&:hover': {
-                    cursor: 'pointer',
-                },
-            }
         },
         {
-            name: "Apellido",
-            selector: row => row.apellido,
+            name: "Correo",
+            selector: row => row.Correo,
             sortable: true,
-            style: {
-                backgroundColor: 'rgb(238, 238, 240)',
-                color: 'black',
-                '&:hover': {
-                    cursor: 'pointer',
-                },
-            }
         },
         {
-            name: "Edad",
-            selector: row => row.edad,
+            name: "Documento",
+            selector: row => row.Documento,
             sortable: true,
-            style: {
-                backgroundColor: 'rgb(238, 238, 240)',
-                color: 'black',
-                '&:hover': {
-                    cursor: 'pointer',
-                },
-            }
         },
         {
             name: "Acciones",
             cell: row => <button onClick={() => handleEdit(row)} className="bg-blue-500 text-white px-2 py-1 rounded">Editar</button>,
-            style: {
-                backgroundColor: 'rgb(238, 238, 240)',
-                color: 'black',
-                '&:hover': {
-                    cursor: 'pointer',
-                },
-            }
         }
     ];
+
+    const subHeaderComponentMemo = useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+                setRecords(originalRecords); // Reiniciar los registros filtrados a los originales
+            }
+        };
+
+        const handleFilter = (e) => {
+            const value = e.target.value;
+            setFilterText(value);
+            if (value === '') {
+                setRecords(originalRecords); // Reiniciar los registros filtrados a los originales
+            } else {
+                const filteredRecords = originalRecords.filter(record =>
+                    record.Nombre.toLowerCase().includes(value.toLowerCase())
+                );
+                setRecords(filteredRecords);
+            }
+        };
+
+        return (
+            <FilterComponent onFilter={handleFilter} onClear={handleClear} filterText={filterText} />
+        );
+    }, [filterText, resetPaginationToggle, originalRecords]);
 
     function Loader() {
         return <div>
@@ -156,9 +215,12 @@ const Asociados = () => {
                         </div>
                     </div>
 
+                   
+                   <h1>Hola</h1>
+                    
+
                     <div className='pt-6'>
-                        <input className='w-[25%] border-2 border-blue-500 outline-none py-2 px-9 rounded-lg' type="text"
-                            onChange={handleChange} /> <CiSearch className='relative w-10 h-10 -top-9 pb-3 pl-0 text-Third' />
+                        {subHeaderComponentMemo}
                     </div>
 
                     <DataTable
@@ -171,9 +233,12 @@ const Asociados = () => {
                         fixedHeader
                         progressPending={loading}
                         progressComponent={<Loader />}
+                        theme='black'
                     />
+                    
                 </div>
             </div>
+
 
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <>
@@ -185,36 +250,24 @@ const Asociados = () => {
                             Nombre
                         </label>
                         <input
-                            value={selectedUser ? selectedUser.nombre : ''}
+                            value={selectedUser ? selectedUser.Nombre : ''}
                             type="text"
                             onChange={(event) => {
-                                setSelectedUser({ ...selectedUser, nombre: event.target.value });
+                                setSelectedUser({ ...selectedUser, Nombre: event.target.value });
                             }}
                             placeholder="Ingrese su nombre"
                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                         />
                         <label className="block mb-2 text-sm font-medium text-gray-900">
-                            Apellido
+                            Correo
                         </label>
                         <input
-                            value={selectedUser ? selectedUser.apellido : ''}
+                            value={selectedUser ? selectedUser.Correo : ''}
                             type="text"
                             onChange={(event) => {
-                                setSelectedUser({ ...selectedUser, apellido: event.target.value });
+                                setSelectedUser({ ...selectedUser, Correo: event.target.value });
                             }}
-                            placeholder="Ingrese su apellido"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                        />
-                        <label className="block mb-2 text-sm font-medium text-gray-900">
-                            Edad
-                        </label>
-                        <input
-                            value={selectedUser ? selectedUser.edad : ''}
-                            type="number"
-                            onChange={(event) => {
-                                setSelectedUser({ ...selectedUser, edad: event.target.value });
-                            }}
-                            placeholder="Ingrese su edad"
+                            placeholder="Ingrese su correo"
                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
                         />
                     </div>
@@ -225,19 +278,18 @@ const Asociados = () => {
                         >
                             Cancelar
                         </button>
-                        <button
-                            onClick={() => {
-                                // Aquí puedes agregar la lógica para actualizar el registro
-                                console.log('Actualizando:', selectedUser);
-                                closeModal();
-                            }}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                            Actualizar
-                        </button>
-                    </div>
+                           <button
+                               onClick={updateRecord}
+                               className="bg-blue-500 text-white px-4 py-2 rounded"
+                           >
+                               Actualizar
+                           </button>
+                       </div>
                 </>
             </Modal>
+
+        
+            
         </div>
     );
 }

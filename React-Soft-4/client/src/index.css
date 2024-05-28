@@ -177,4 +177,16 @@ display: none;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
 
+.rdt_TableCol {
+  background-color: #5b93d8;
+  color: white;
+}
 
+
+.rdt_TableCell{
+  background-color: #eceae8;
+}
+
+.rdt_TableFooter {
+  background-color: #ffeba7;
+}
