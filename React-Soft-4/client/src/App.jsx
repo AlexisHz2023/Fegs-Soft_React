@@ -3,7 +3,6 @@ import { Routes, Route} from 'react-router-dom'
 
 
 import AuthLayout from "./layouts/auth/AuthLayout";
-import { PrimeReactProvider } from 'primereact/api';
 
 // pages
 import Login from './pages/auth/Login';
@@ -17,10 +16,11 @@ import Admin from './pages/auth/Admin';
 import Home from './pages/auth/Home';
 import Ajustes from './pages/auth/Ajustes';
 import Registro from './pages/auth/Registro';
-import Tabla from './pages/auth/Tabla';
 import Asociados from './pages/auth/Asociados';
 import MenuAsesora from './pages/auth/MenuAsesora';
 import Asesora from './pages/auth/Asesora';
+import Beneficios from './pages/auth/Beneficios'
+import Ejemplo from './pages/auth/Ejemplo'
 
 
 
@@ -48,6 +48,8 @@ function App() {
         <Route path='menuasesora' element={<MenuAsesora />} />
         <Route path='asociado' element={<Asociados />} />
         <Route path='asesora' element={<Asesora />} />
+        <Route path='beneficios' element={<Beneficios />} />
+        <Route path='ejemplo' element={<Ejemplo />} />
     
         
 
