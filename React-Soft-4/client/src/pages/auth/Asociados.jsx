@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 
+//Este es un comentario
+
 // Componente del Modal
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
