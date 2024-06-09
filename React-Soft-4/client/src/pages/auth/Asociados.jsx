@@ -8,6 +8,7 @@ import { CiSearch } from "react-icons/ci";
 
 //Este es un comentario
 
+// Este es una Rama de German
 // Componente del Modal
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
