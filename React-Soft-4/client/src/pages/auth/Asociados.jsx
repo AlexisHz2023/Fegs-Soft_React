@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import  { useState, useEffect, useMemo } from "react";
 import Asesora from "./MenuAsesora";
 import DataTable from "react-data-table-component";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
-
-
-
-
-
 
 // Componente del Modal
 const Modal = ({ isOpen, onClose, children }) => {
@@ -91,7 +86,8 @@ const Asociados = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [originalRecords, setOriginalRecords] = useState([]); // Nuevo estado para guardar los registros originales
+  const [originalRecords, setOriginalRecords] = useState([]); 
+
 
   const fetchData = async () => {
     try {
@@ -240,8 +236,8 @@ const Asociados = () => {
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="flex items-center justify-center h-24 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-2xl text-gray-400 dark:text-gray-500">
-                  <span className="text-primary">Hola!,</span> Bienvenido a la
-                  interfaz de <span className="text-Third">Asesora</span>
+                  <span className="text-primary">Hola!,</span> Bienvenido, Aqui puedes Regitsar a los asociados
+                   <span className="text-Third">Asesora</span>
                   <span className="text-primary">.</span>
                 </p>
               </div>
