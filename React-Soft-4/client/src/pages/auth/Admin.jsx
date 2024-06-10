@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from "sweetalert2";
@@ -8,25 +7,9 @@ import { FaUsersRays } from "react-icons/fa6";
 import { GiNextButton } from "react-icons/gi";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { AiOutlineDoubleRight } from "react-icons/ai";
-
-
-
-
 import { GiPreviousButton } from "react-icons/gi";
-
-import {
-  Select,
-  SelectItem,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Select, SelectItem,Modal,ModalContent,ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import { roles } from "./data";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const Alerta = withReactContent(Swal);
 
@@ -197,9 +180,12 @@ const Admin = () => {
 
   return (
     <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-auto overflow-x-hidden ">
-       <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
+      />
       <Menu />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 top-20 relative ">
         <div className="w-full bg-white rounded-lg md:mt-0 sm:max-w-md xl:p-0"></div>
@@ -275,8 +261,6 @@ const Admin = () => {
                       setCorreo(event.target.value);
                     }}
                   />
-                 
-                 
                 </ModalBody>
                 <ModalFooter>
                   <Button
@@ -316,24 +300,46 @@ const Admin = () => {
             <div className="">
               <div className="">
                 <div className="section pb-5 pt-5 pt-sm-2 text-center top-5 hyphens-manual flex justify-center">
-                  <img className="relative left-[85%] -top-20 w-48 h-auto" src="./imagenes/Logo.PNG" alt="" />
-                <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[20%] -top-14">
- <p>
-    Bienvenido a la interfaz <a className="underline decoration-Third">Usuarios</a>, Donde tendras como opcion ver a los usuarios a tra vez de una tabla y Registrar nuevas Asociadas. Te explicaremos como funciona la interfaz:<br /><br /> <span className="text-Third">1.</span> El Circulo en la <a className="underline decoration-Third">posicion Derecha</a> indica que esta mostrando el Registro para las asociadas. <div className="flex justify-center py-8"> 
-    <AiOutlineDoubleRight  className="text-primary animate-pulse duration-0 " />
-<img src="./imagenes/RegistroUsu.PNG" /> 
-<AiOutlineDoubleRight  className="relative top-5 text-Third animate-pulse duration-0" />
-      </div> 
-    
-   <span className="text-primary">2.</span> Cuando le das click al Circulo y cambia a la <a className="underline decoration-primary">posicion Izquierda</a> esta indicando que esta mostrando la tabla de todas las <a className="underline decoration-primary">asesoras Registradas.</a>
-    <div className="flex justify-center py-8">
-    <AiOutlineDoubleLeft  className="text-primary animate-pulse duration-0" />
-     <img src="./imagenes/UsuariosTabla.PNG" /> 
-     <AiOutlineDoubleLeft  className="relative top-5 text-Third animate-pulse duration-0" />
-    </div>
-  </p>
-
-</div>
+                  <img
+                    className="relative left-[85%] -top-20 w-48 h-auto"
+                    src="./imagenes/Logo.PNG"
+                    alt=""
+                  />
+                  <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[20%] -top-14">
+                    <p>
+                      Bienvenido a la interfaz{" "}
+                      <a className="underline decoration-Third">Usuarios</a>,
+                      Donde tendras como opcion ver a los usuarios a tra vez de
+                      una tabla y Registrar nuevas Asociadas. Te explicaremos
+                      como funciona la interfaz:
+                      <br />
+                      <br /> <span className="text-Third">1.</span> El Circulo
+                      en la{" "}
+                      <a className="underline decoration-Third">
+                        posicion Derecha
+                      </a>{" "}
+                      indica que esta mostrando el Registro para las asociadas.{" "}
+                      <div className="flex justify-center py-8">
+                        <AiOutlineDoubleRight className="text-primary animate-pulse duration-0 " />
+                        <img src="./imagenes/RegistroUsu.PNG" />
+                        <AiOutlineDoubleRight className="relative top-5 text-Third animate-pulse duration-0" />
+                      </div>
+                      <span className="text-primary">2.</span> Cuando le das
+                      click al Circulo y cambia a la{" "}
+                      <a className="underline decoration-primary">
+                        posicion Izquierda
+                      </a>{" "}
+                      esta indicando que esta mostrando la tabla de todas las{" "}
+                      <a className="underline decoration-primary">
+                        asesoras Registradas.
+                      </a>
+                      <div className="flex justify-center py-8">
+                        <AiOutlineDoubleLeft className="text-primary animate-pulse duration-0" />
+                        <img src="./imagenes/UsuariosTabla.PNG" />
+                        <AiOutlineDoubleLeft className="relative top-5 text-Third animate-pulse duration-0" />
+                      </div>
+                    </p>
+                  </div>
 
                   <input
                     className="checkbox"
@@ -349,7 +355,7 @@ const Admin = () => {
                         <div className="center-wrap ">
                           <div className="relative -top-64 bg-white h-20 rounded-lg  ">
                             <h4 className="-left-[7%] top-5 rounded-lg w-[50%] text-3xl relative text-Third h-12   z-0">
-                              Asesoras Registradas 
+                              Asesoras Registradas
                             </h4>
                             <FaUsersRays className="text-primary text-5xl relative left-[36%] -top-8" />
                             <div>
@@ -357,17 +363,23 @@ const Admin = () => {
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-40 ">
                                   <thead>
                                     <tr>
-   
-                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-2 text-white">Nombre</th>
-                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-4 text-white">Correo</th>
-                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-6 text-white">Documento</th>
-                                      <th className="px-20 py-5 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">Acciones</th>
+                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-2 text-white">
+                                        Nombre
+                                      </th>
+                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-4 text-white">
+                                        Correo
+                                      </th>
+                                      <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-6 text-white">
+                                        Documento
+                                      </th>
+                                      <th className="px-20 py-5 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">
+                                        Acciones
+                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     {usuariosList.map((val, key) => (
                                       <tr key={val.id}>
-
                                         <td className="px-8 py-3">
                                           {val.Nombre}
                                         </td>
@@ -377,7 +389,7 @@ const Admin = () => {
                                         <td className="px-9 py-3">
                                           {val.Documento}
                                         </td>
-                                       
+
                                         <td className="">
                                           <div
                                             className="flex px-10 py-5 relative -left-[5%]"
@@ -411,28 +423,24 @@ const Admin = () => {
                                   </tbody>
                                 </table>
                                 <div className="flex justify-center mt-4 pb-8">
-                                <div className="h-10 w-11 relative bg-primary -right-[6px] rounded-lg">
-                                  <GiPreviousButton className="relative w-7 h-7 left-2 top-1.5 rounded-none bg-primary text-white " />
+                                  <div className="h-10 w-11 relative bg-primary -right-[6px] rounded-lg">
+                                    <GiPreviousButton className="relative w-7 h-7 left-2 top-1.5 rounded-none bg-primary text-white " />
                                   </div>
                                   <button
-                                  className="cursor-pointer bg-gray-300 text-primary w-24 h-10 -right-[1%] relative rounded-lg hover:bg-Third hover:text-white"
-                                   onClick={prevPage}
+                                    className="cursor-pointer bg-gray-300 text-primary w-24 h-10 -right-[1%] relative rounded-lg hover:bg-Third hover:text-white"
+                                    onClick={prevPage}
                                   >
-                                   Anterior
+                                    Anterior
                                   </button>
                                   <div className="h-10 w-11 relative bg-primary left-[117px] rounded-lg">
-                                  <GiNextButton className="relative w-7 h-7 left-2 top-1.5 bg-primary text-white"/>
-
+                                    <GiNextButton className="relative w-7 h-7 left-2 top-1.5 bg-primary text-white" />
                                   </div>
                                   <button
-                                  className="cursor-pointer bg-gray-300 text-primary w-24 h-10  right-7 relative rounded-lg hover:bg-Third hover:text-white"
-                                   onClick={nextPage}
+                                    className="cursor-pointer bg-gray-300 text-primary w-24 h-10  right-7 relative rounded-lg hover:bg-Third hover:text-white"
+                                    onClick={nextPage}
                                   >
-                                   Siguiente
+                                    Siguiente
                                   </button>
-                                
-                                
-                                  
                                 </div>
                               </div>
                             </div>
@@ -460,13 +468,17 @@ const Admin = () => {
                                 <img
                                   className="mx-auto h-7 w-auto"
                                   src="./imagenes/Logo3.png"
-                                 
                                 />
-                                <div className="relative mx-auto left-[230%]"> 
-                                <h1 className="relative right-10 text-Third">Fondo De Empleados</h1>
-                                <img src="./imagenes/FondoSgn.svg" className="relative w-auto h-[80%] top-[10rem] right-44" alt="" />
+                                <div className="relative mx-auto left-[230%]">
+                                  <h1 className="relative right-10 text-Third">
+                                    Fondo De Empleados
+                                  </h1>
+                                  <img
+                                    src="./imagenes/FondoSgn.svg"
+                                    className="relative w-auto h-[80%] top-[10rem] right-44"
+                                    alt=""
+                                  />
                                 </div>
-                               
                               </div>
                               <h2 className="mt-10 text-center text-primary text-3xl font-bold leading-9 -top-10 relative tracking-tight">
                                 Registra Usuarios Aqui
@@ -475,7 +487,11 @@ const Admin = () => {
                             </div>
 
                             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm relative -top-12">
-                              <form className="space-y-0" action="#" method="POST">
+                              <form
+                                className="space-y-0"
+                                action="#"
+                                method="POST"
+                              >
                                 <div>
                                   <div className="flex items-center justify-between">
                                     <label className="block text-sm font-medium leading-6  text-gray-900">
