@@ -11,7 +11,7 @@ const MenuAsesora = () => {
 
   return (
    <div className="relative">
-   <nav className="fixed top-10 z-50 w-[90%] right-[5%]  border-primary rounded-lg bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+   <nav className="fixed top-10 z-50 w-[90%] right-[5%] shadow-md rounded-lg bg-white border-b dark:bg-gray-800 dark:border-gray-700">
      <div className="px-3 py-3 lg:px-5 lg:pl-3">
        <div className="flex items-center justify-between">
          <div className="flex items-center justify-start rtl:justify-end">

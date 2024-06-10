@@ -10,7 +10,6 @@ import Error404 from "./pages/404"
 import Eleccion from './pages/auth/Eleccion';
 import Problemas from './pages/auth/Problemas';
 import  Actualizar from './pages/auth/actualizar'
-import Saldo from './pages/auth/saldo';
 import VerSaldo from './pages/auth/VerSaldo';
 import Admin from './pages/auth/Admin';
 import Home from './pages/auth/Home';
@@ -42,7 +41,6 @@ function App() {
         <Route path="problemas" element={<Problemas />} />
         <Route path="eleccion" element={<Eleccion />} />
         <Route path='actualizar' element={<Actualizar />} />
-        <Route path='saldo' element={<Saldo />} />
         <Route path='verSaldo' element={<VerSaldo />} />
         <Route path='registro' element={<Registro />} />
         <Route path='menuasesora' element={<MenuAsesora />} />
