@@ -62,7 +62,7 @@ const Menu = () => {
             ><p className='relative -top-4'>Usuarios</p></Link></div>
             <div className='text-center text-white text-xl hover:bg-blue-400 cursor-pointer py-0.5 -top-14 relative  mb-2'><IoSettingsOutline className='relative w-10 h-10 left-12 top-4'/><Link
             to="/Ajustes"
-            ><p className='relative -top-4'>Ajustes</p>
+            ><p className='relative -top-4'>Perfil</p>
             </Link></div>
            
             <div className='text-center text-white text-xl hover:bg-blue-400 cursor-pointer py-0.5 mb-2 -top-14 relative'><ImExit className='relative w-10 h-10 left-12 top-4'/><Link 

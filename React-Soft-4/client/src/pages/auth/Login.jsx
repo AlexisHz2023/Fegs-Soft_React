@@ -5,12 +5,19 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {Input} from "@nextui-org/react";
+
+//Esta es la rama de German
+
+
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const variants = [ "underlined"];
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -47,7 +54,7 @@ const Login = () => {
         if (rol === 1) {
           navigate("/Home");
         } else if (rol === 2) {
-          navigate("/Eleccion");
+          navigate("/Asesora");
         }else if (rol === 3) {
           navigate("/VerSaldo");
         } else {
@@ -85,37 +92,55 @@ const Login = () => {
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-6">
           <div className="relative top-5">
-            <MdOutlineEmail className="absolute left-1 z-10 -translate-y-3/4 w-6 h-6 text-gray-500 -top-52" />
-            <input
-              type="email"
-              className="w-full border bg-gray-200 outline-none py-3 px-8 rounded-lg -top-60 relative caret-blue-500"
-              placeholder="Correo Electronico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <MdOutlineEmail className="absolute -left-0 z-10 -translate-y-3/4 w-7 h-7 text-gray-500 -top-[320%]" />
+            <div className="flex flex-col gap-4 -top-56 relative">
+            {variants.map((variant) => (
+        <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative"> 
+          <Input 
+          type="email" 
+          variant={variant} 
+          label="Email" 
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+      ))}  
+              
+            </div>
+            
           </div>
 
           <div className="relative top-5">
-            <MdLockOutline className="absolute left-0.5 -top-[180px] z-10 -translate-y-3/4 w-7 h-7 text-gray-500" />
-            <input
-              type={showPassword ? "text" : "password"}
-              className="w-full border bg-gray-200 outline-none py-3 px-8 rounded-lg relative -top-52 caret-blue-500"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {showPassword ? (
+            <MdLockOutline className="absolute -left-0 z-10 -translate-y-3/4 w-7 h-7 text-gray-500 -top-[320%]" />
+            <div className="flex flex-col gap-4 -top-56 relative">
+            {variants.map((variant) => (
+        <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative"> 
+          <Input 
+          type={showPassword ? "text" : "password"} 
+          variant={variant} 
+          label="Contraseña" 
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          />
+          {showPassword ? (
               <RiEyeLine
                 onClick={handleShowPassword}
-                className="absolute right-2 -translate-y-3/4 text-gray-500 w-7 h-7 hover:text-Third hover:cursor-pointer -top-44 "
+                className="absolute right-2 -translate-y-3/4 text-gray-500 w-7 h-7 hover:text-Third hover:cursor-pointer top-10 "
               />
             ) : (
               <RiEyeOffFill
                 onClick={handleShowPassword}
-                className="absolute right-2 w-7 h-7 -translate-y-3/4 text-gray-500 hover:cursor-pointer hover:text-Third -top-44"
+                className="absolute right-2 w-7 h-7 -translate-y-3/4 text-gray-500 hover:cursor-pointer hover:text-Third top-10"
               />
             )}
+        </div>
+      ))}  
+              
+            </div>
+            
           </div>
+
+          
           <div>
             <button
               onClick={handleSubmit}

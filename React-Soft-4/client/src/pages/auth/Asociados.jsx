@@ -1,14 +1,14 @@
-import  { useState, useEffect, useMemo } from "react";
+import React from "react";
+import { useState, useEffect, useMemo } from "react";
 import Asesora from "./MenuAsesora";
 import DataTable from "react-data-table-component";
 import Axios from "axios";
 import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 
 //Este es un comentario
-
-//Este es un comentario de la rama Emanuel
 
 // Componente del Modal
 const Modal = ({ isOpen, onClose, children }) => {
@@ -39,7 +39,7 @@ const TextField = styled.input`
 `;
 
 const ClearButton = styled.button`
-border-radius: 0.5rem;
+  border-radius: 0.5rem;
   height: 44px;
   width: 85px;
   text-align: center;
@@ -62,11 +62,10 @@ border-radius: 0.5rem;
 // Componente de filtrado
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
-
-<ClearButton type="button"  onClick={onClear}>
+    <ClearButton type="button" onClick={onClear}>
       Cancelar
     </ClearButton>
-  
+
     <TextField
       id="search"
       type="text"
@@ -74,12 +73,9 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
       aria-label="Search Input"
       value={filterText}
       onChange={onFilter}
-      
     />
 
-<CiSearch className="w-9 h-9 text-gray-500 -top-[40px] ps-1 relative" />
-
-    
+    <CiSearch className="w-9 h-9 text-gray-500 -top-[40px] ps-1 relative" />
   </>
 );
 
@@ -90,7 +86,53 @@ const Asociados = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [originalRecords, setOriginalRecords] = useState([]); 
+  const [originalRecords, setOriginalRecords] = useState([]);
+
+  const [Nombre, setNombre] = useState("");
+  const [Correo, setCorreo] = useState("");
+  const [Documento, setDocumento] = useState("");
+  const [Clave, setClave] = useState("");
+  const [rol, setRol] = useState("");
+  const [id, setId] = useState("0");
+
+
+  const add = () => {
+    Axios.post("http://localhost:3001/create", {
+      Nombre: Nombre,
+      Correo: Correo,
+      Documento: Documento,
+      Clave: Clave,
+      rol: rol,
+    })
+    .then(() => {
+      fetchData();
+      LimpiarCampos();
+      Alerta.fire({
+        title: <strong>Creado Correctamente</strong>,
+        html: <i>El usuario {Nombre} fue registrado con éxito</i>,
+        icon: "success",
+        timer: 3000,
+      });
+    })
+    .catch(function (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        footer:
+          JSON.parse(JSON.stringify(error)).message === "Network Error"
+            ? "intente mas tarde"
+            : JSON.parse(JSON.stringify(error)).message,
+      });
+    });
+  }
+
+  const LimpiarCampos = () => {
+    setNombre("");
+    setCorreo("");
+    setDocumento("");
+    setClave("");
+    setRol("");
+  };
 
 
   const fetchData = async () => {
@@ -153,8 +195,6 @@ const Asociados = () => {
     }
   };
 
-  
-
   const columns = [
     {
       name: "Nombre",
@@ -182,7 +222,6 @@ const Asociados = () => {
         </button>
       ),
     },
-    
   ];
 
   const subHeaderComponentMemo = useMemo(() => {
@@ -240,95 +279,223 @@ const Asociados = () => {
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="flex items-center justify-center h-24 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-2xl text-gray-400 dark:text-gray-500">
-                  <span className="text-primary">Hola!,</span> Bienvenido, Aqui puedes Regitsar a los asociados
-                   <span className="text-Third">Asesora</span>
+                  <span className="text-primary">Hola!,</span> Bienvenido, Aqui
+                  puedes Registrar a los
+                  <span className="text-Third"> asociados</span>
                   <span className="text-primary">.</span>
                 </p>
               </div>
-              <div className="py-0 left-24 relative ">
-                <img
-                  className="w-[100%] h-auto"
-                  src="./imagenes/AsesoraInicio.svg"
-                  alt=""
+            </div>
+            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <HiMiniUsers 
+                  className="mx-auto h-20 w-auto text-Third "
                 />
+              
+              </div>
+
+              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form className="space-y-6" action="#" method="POST">
+                  <div>
+                    <label
+                      for="email"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Nombre
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        value={Nombre}
+                        id="username"
+                        name="email"
+                        type="text"
+                        autocomplete="email"
+                        required
+                        onChange={(event) => {
+                          setNombre(event.target.value)
+                        }}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label
+                        for="password"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Numero De Documento
+                      </label>
+                    </div>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        value={Documento}
+                        autocomplete="current-password"
+                        required
+                        onChange={(event) => {
+                          setDocumento(event.target.value)
+                        }}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label
+                        for="Correo"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Correo
+                      </label>
+                    </div>
+                    <div className="mt-2">
+                      <input
+                        value={Correo}
+                        type="email"
+                        autocomplete="current-password"
+                        required
+                        onChange={(event) => {
+                          setCorreo(event.target.value)
+                        }}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label
+                        for="password"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Contraseña
+                      </label>
+                    </div>
+                    <div className="mt-2">
+                      <input
+                      value={Clave}
+                        type="password"
+                        autocomplete="current-password"
+                        required
+                        onChange={(event) => {
+                          setClave(event.target.value)
+                        }}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="px-8 pt-3 ">
+                                  <Select
+                                    isRequired
+                                    label="Seleccione un rol"
+                                    placeholder="roles"
+                                    defaultSelectedKeys={[""]}
+                                    className="max-w-xs pt-6 pb-8 z-10 "
+                                    value={rol}
+                                    onChange={(event) =>
+                                      setRol(event.target.value)
+                                    } // Cambiado a event.target.value
+                                  >
+                                    {roles.map(
+                                      (
+                                        rolItem // Cambiado a rolItem para evitar confusión de nombres
+                                      ) => (
+                                        <SelectItem
+                                          key={rolItem.value}
+                                          value={rolItem.value}
+                                        >
+                                          {rolItem.label}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </Select>
+                                </div>
+
+                  <div>
+                  <Button
+                                    onClick={add}
+                                    className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   text-white"
+                                  >
+                                    Registrar
+                                  </Button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
 
-         
+          <div className="pt-6">{subHeaderComponentMemo}</div>
 
-<div className="pt-6">{subHeaderComponentMemo}</div>
+          <DataTable
+            columns={columns}
+            data={Array.isArray(records) ? records : []}
+            pagination
+            paginationPerPage={4}
+            selectableRows
+            fixedHeader
+            progressPending={loading}
+            progressComponent={<Loader />}
+            theme="black"
+          />
+        </div>
+      </div>
 
-<DataTable
-  columns={columns}
-  data={Array.isArray(records) ? records : []}
-  pagination
-  paginationPerPage={4}
-  selectableRows
-  fixedHeader
-  progressPending={loading}
-  progressComponent={<Loader />}
-  theme="black"
-/>
-</div>
-</div>
-
-<Modal isOpen={isModalOpen} onClose={closeModal}>
-<>
-<div className="flex flex-col gap-1 text-center mb-4">
-  <h2 className="text-xl font-bold">Actualización de información</h2>
-</div>
-<div>
-  <label className="block mb-2 text-sm font-medium text-gray-900">
-    Nombre
-  </label>
-  <input
-    value={selectedUser ? selectedUser.Nombre : ""}
-    type="text"
-    onChange={(event) => {
-      setSelectedUser({
-        ...selectedUser,
-        Nombre: event.target.value,
-      });
-    }}
-    placeholder="Ingrese su nombre"
-    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-  />
-  <label className="block mb-2 text-sm font-medium text-gray-900">
-    Correo
-  </label>
-  <input
-    value={selectedUser ? selectedUser.Correo : ""}
-    type="text"
-    onChange={(event) => {
-      setSelectedUser({
-        ...selectedUser,
-        Correo: event.target.value,
-      });
-    }}
-    placeholder="Ingrese su correo"
-    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-  />
-</div>
-<div className="flex justify-end gap-2 mt-4">
-  <button
-    onClick={closeModal}
-    className="bg-gray-300 text-black px-4 py-2 rounded"
-  >
-    Cancelar
-  </button>
-  <button
-    onClick={updateRecord}
-    className="bg-blue-500 text-white px-4 py-2 rounded"
-  >
-    Actualizar
-  </button>
-</div>
-</>
-</Modal>
-        
-
-         
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <>
+          <div className="flex flex-col gap-1 text-center mb-4">
+            <h2 className="text-xl font-bold">Actualización de información</h2>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Nombre
+            </label>
+            <input
+              value={selectedUser ? selectedUser.Nombre : ""}
+              type="text"
+              onChange={(event) => {
+                setSelectedUser({
+                  ...selectedUser,
+                  Nombre: event.target.value,
+                });
+              }}
+              placeholder="Ingrese su nombre"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+            />
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Correo
+            </label>
+            <input
+              value={selectedUser ? selectedUser.Correo : ""}
+              type="text"
+              onChange={(event) => {
+                setSelectedUser({
+                  ...selectedUser,
+                  Correo: event.target.value,
+                });
+              }}
+              placeholder="Ingrese su correo"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={closeModal}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={updateRecord}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Actualizar
+            </button>
+          </div>
+        </>
+      </Modal>
     </div>
   );
 };
