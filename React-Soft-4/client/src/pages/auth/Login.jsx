@@ -6,16 +6,22 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {Input} from "@nextui-org/react";
+import Home from "./Home";
 
 //Esta es la rama de German
 
 
 
 const Login = () => {
+
+ 
+
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [loginSuccessful, setloginSuccessful] = useState(false)
 
   const variants = [ "underlined"];
 
@@ -26,61 +32,87 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validación
     if ([email, password].includes("")) {
-      toast.error("Todos los campos son obligatorios", {
-        position: "top-center",
-        theme: "light",
-      });
-      return;
+        toast.error("Todos los campos son obligatorios", {
+            position: "top-center",
+            theme: "light",
+        });
+        return;
     }
+
     if (password.length < 6) {
-      toast.error("La contraseña debe tener al menos 6 caracteres", {
-        theme: "light",
-        position: "top-center",
-      });
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:3001/login", {
-        email,
-        password
-      });
-
-      console.log(response.data)
-      
-      const rol = response.data.rol
-      if (10>1) { // Suponiendo que el rol viene en la respuesta del backend
-        if (rol === 1) {
-          navigate("/Home");
-        } else if (rol === 2) {
-          navigate("/Asesora");
-        }else if (rol === 3) {
-          navigate("/VerSaldo");
-        } else {
-          // Si el rol no es ninguno de los esperados, manejarlo de acuerdo a tus necesidades
-          toast.error("Rol de usuario desconocido", {
+        toast.error("La contraseña debe tener al menos 6 caracteres", {
             theme: "light",
             position: "top-center",
-          });
-        }
-      } else {
-        toast.error("Credenciales incorrectas", {
-          theme: "light",
-          position: "top-center",
         });
-      }
-    } catch (error) {
-      console.log("Error al iniciar sesión:", error);
-      toast.error("Error al iniciar sesión", {
-        theme: "light",
-        position: "top-center",
-      });
+        return;
     }
-  };
 
+    const data = {
+        email: email,
+        password: password
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+
+        const result = await response.json();
+
+
+       
+        
+if (result.token) {
+    localStorage.setItem('token', result.token);
+    console.log("Token guardado en localStorage:", result.token);
+    setloginSuccessful(true)
+
+} else {
+  setloginSuccessful(false)
+}
+
+
+
+        // Suponiendo que el rol viene en la respuesta del backend
+        const { rol } = result;
+        if (rol) {
+            if (rol === 1) {
+                navigate("/Home");
+            } else if (rol === 2) {
+                navigate("/Asesora");
+            } else if (rol === 3) {
+                navigate("/VerSaldo");
+            } else {
+                toast.error("Rol de usuario desconocido", {
+                    theme: "light",
+                    position: "top-center",
+                });
+            }
+        } else {
+            toast.error("Credenciales incorrectas", {
+                theme: "light",
+                position: "top-center",
+            });
+        }
+    } catch (error) {
+        console.log("Error al iniciar sesión:", error);
+        toast.error("Error al iniciar sesión", {
+            theme: "light",
+            position: "top-center",
+        });
+    }
+};
   return (
-    <div>
+    <>{loginSuccessful ? <Home />: <div>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
@@ -178,7 +210,8 @@ const Login = () => {
           <div className="absolute -top-[160px] -left-[100px] w-[50%] h-[450px] bg-dark2-blue rounded-full"></div>
         </div>
       </div>
-    </div>
+    </div>}</>
+    
   );
 };
 

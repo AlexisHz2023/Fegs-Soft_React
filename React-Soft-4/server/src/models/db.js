@@ -153,3 +153,5 @@ app.get("/asociados", (req, res) => {
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001")
 });
+
+module.exports = db;

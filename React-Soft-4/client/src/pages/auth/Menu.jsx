@@ -6,21 +6,22 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosInformationCircle } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import Registro from './Registro';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
 const Menu = () => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-      // Limpiar la sesión o token de autenticación (ejemplo: eliminar una cookie)
-      // Aquí puedes agregar la lógica para limpiar la sesión
-      // Por ejemplo, eliminando un token de autenticación almacenado en el almacenamiento local
-      // localStorage.removeItem('token');
-      
-      // Redireccionar a la página de inicio de sesión
-      history.push('/login');
+  const handleLogout = () => {
+      localStorage.removeItem('token'); // Eliminar el token del localStorage
+      // Aquí podrías añadir más lógica para limpiar otros estados o contextos de tu aplicación
+      navigate('/'); // Redirigir a la página de inicio de sesión u otra página pública
   };
+
+
 
     return (
         <div className='bg-white py-5 fixed rounded-lg left-20 right-0 w-[90%] border-blue-400 top-7 shadow-md z-20 border-2 ' >
@@ -65,9 +66,10 @@ const Menu = () => {
             ><p className='relative -top-4'>Perfil</p>
             </Link></div>
            
-            <div className='text-center text-white text-xl hover:bg-blue-400 cursor-pointer py-0.5 mb-2 -top-14 relative'><ImExit className='relative w-10 h-10 left-12 top-4'/><Link 
-            to="/"
-            ><p onClick={handleLogout} className='relative -top-4'>Salir</p></Link></div>
+            <div className='text-center text-white text-xl hover:bg-blue-400 cursor-pointer py-0.5 mb-2 -top-14 relative'>
+                        <ImExit className='relative w-10 h-10 left-12 top-4'/>
+                        <button className='relative -top-4' onClick={handleLogout}>Salir</button>
+                    </div>
 
   
             

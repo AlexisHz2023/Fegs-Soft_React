@@ -7,7 +7,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { PiSealWarningFill } from "react-icons/pi";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { link } from "@nextui-org/theme";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,6 +15,8 @@ import { link } from "@nextui-org/theme";
 
 
 const Home = () => {
+
+
   return (
     <div>
      <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -20,6 +20,7 @@ import MenuAsesora from './pages/auth/MenuAsesora';
 import Asesora from './pages/auth/Asesora';
 import Beneficios from './pages/auth/Beneficios'
 import Ejemplo from './pages/auth/Ejemplo'
+import LoginAut from './pages/auth/LoginAut';
 
 
 
@@ -48,6 +49,7 @@ function App() {
         <Route path='asesora' element={<Asesora />} />
         <Route path='beneficios' element={<Beneficios />} />
         <Route path='ejemplo' element={<Ejemplo />} />
+        <Route path='loginAut' element={<LoginAut />} />
     
         
 
