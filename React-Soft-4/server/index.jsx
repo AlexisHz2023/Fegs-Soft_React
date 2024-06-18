@@ -105,20 +105,22 @@ app.put("/updateaso", (req, res) => {
     const Nombre = req.body.Nombre;
     const Correo = req.body.Correo;
     const Documento = req.body.Documento;
-
+  
+  
     db.query(
-        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
-        [Nombre, Correo, Documento, id],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error al actualizar el usuario");
-            } else {
-                res.send(result);
-            }
+      'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
+      [Nombre, Correo, Documento, id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send("Error al actualizar el usuario");
+        } else {
+          res.send(result);
         }
+      }
     );
-});
+  });
+  
 
 app.delete("/delete/:id", (req, res) => {
     const id = req.params.id;

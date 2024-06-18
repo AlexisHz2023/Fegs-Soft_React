@@ -182,8 +182,9 @@ const Asociados = () => {
 
   const updateRecord = () => {
     console.log(selectedUser.Nombre);
+    console.log(selectedUser.id)
     Axios.put("http://localhost:3001/updateaso", {
-      Nombre: selectedUser.id,
+      id: selectedUser.id,
       Nombre: selectedUser.Nombre,
       Correo: selectedUser.Correo,
       Documento: selectedUser.Documento,
@@ -208,6 +209,45 @@ const Asociados = () => {
               : error.message,
         });
       });
+  };
+
+  const deleteUsuario = (selectedUser) => {
+    Swal.fire({
+      title: "Confirmar eliminacion?",
+      html: `<i>Esta Seguro de eliminar a <strong>${selectedUser.Nombre}</strong></i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Eliminarlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Holaaa")
+        Axios.delete(`http://localhost:3001/delete/${selectedUser.id}`)
+          .then(() => {
+            fetchData();
+            LimpiarCampos();
+            Alerta.fire({
+              icon: "success",
+              title: `${selectedUser.Nombre} Fue Eliminado.`,
+              showConfirmButton: false,
+              timer: 2000,
+              
+            });
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No se pudo Eliminar!",
+              footer:
+                JSON.parse(JSON.stringify(error)).message === "Network Error"
+                  ? "intente mas tarde"
+                  : JSON.parse(JSON.stringify(error)).message,
+            });
+          });
+      }
+    });
   };
 
   const columns = [
@@ -240,6 +280,21 @@ const Asociados = () => {
         >
           Editar
         </button>
+      ),
+    }
+    ,
+    {
+      name: "Acciones",
+      cell: (row) => (
+              <button
+        type="button"
+        onClick={() => {
+          deleteUsuario(row);
+        }}
+        className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 left-12 relative rounded"
+      >
+        Eliminar
+      </button>
       ),
     },
   ];
@@ -506,6 +561,8 @@ const Asociados = () => {
       >
         Actualizar
       </button>
+
+    
     </div>
   </>
 </Modal>
