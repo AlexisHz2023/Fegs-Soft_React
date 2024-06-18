@@ -170,7 +170,7 @@ const Asociados = () => {
     const timeout = setTimeout(() => {
       setRecords(fetchData);
       setLoading(false);
-    }, 2000);
+    }, 7000);
 
     return () => clearTimeout(timeout);
   }, []);

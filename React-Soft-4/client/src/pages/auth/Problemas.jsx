@@ -70,10 +70,12 @@ const Problemas = () => {
               <br />
         <textarea placeholder="Explique aqui el problema que presenta" class="Opinion"      
          name="Problema" className='resize-none  w-[100%] h-[15rem] top-10 shadow-lg left-0 border-2 shadow-blue-500/40 rounded-lg relative text-center ' rows="10" cols="20"></textarea>
-
+          
 
          <input className='bg-blue-500 z-30 relative text-white w-[25%] left-40 h-[3rem] rounded-lg hover:bg-blue-700 top-12 ' type="submit" value="Enviar" onPress={onClose}  required  />
-       
+          <input type="hidden" name='_next' value="http://localhost:3000/" />
+          <input type="hidden" name='_captcha' value="false" />
+
             </form>
           </ModalBody>
           <br />

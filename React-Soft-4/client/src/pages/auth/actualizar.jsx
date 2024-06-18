@@ -88,7 +88,7 @@ const Actualizar = () => {
 
       <button
         onClick={handleSubmit}
-        className="bg-primary text-white w-[15%] h-14 left-[50%] relative top-[5%] py-4  rounded-lg hover:scale-105 transition-all hover:bg-orange-400"
+        className="bg-primary text-white w-[12%] h-14 left-[50%] relative top-[4%] py-4  rounded-lg hover:scale-105 transition-all hover:bg-orange-400"
       >
         Ingresar
       </button>
