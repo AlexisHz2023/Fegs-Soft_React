@@ -11,7 +11,7 @@ const MenuAsesora = () => {
 
   return (
    <div className="relative">
-   <nav className="fixed top-10 z-50 w-[90%] right-[5%] shadow-md rounded-lg bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+   <nav className="fixed top-10 z-40 w-[90%] right-[5%] shadow-md rounded-lg bg-white border-b dark:bg-gray-800 dark:border-gray-700">
      <div className="px-3 py-3 lg:px-5 lg:pl-3">
        <div className="flex items-center justify-between">
          <div className="flex items-center justify-start rtl:justify-end">
@@ -36,7 +36,7 @@ const MenuAsesora = () => {
    </nav>
    <aside 
      id="logo-sidebar" 
-     className={`fixed top-12 border-primary rounded-2xl left-[2%] z-40 w-64 h-[84%] pt-20 transition-transform ${
+     className={`fixed top-12 border-primary rounded-2xl left-[2%] z-30 w-64 h-[84%] pt-20 transition-transform ${
        isOpen ? 'translate-x-0' : '-translate-x-full'
      } bg-white border-r sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`} 
      aria-label="Sidebar"

@@ -1,84 +1,76 @@
-import React from "react";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-import {Input} from "@nextui-org/react";
+import React, { useState } from 'react';
 
 
 const Ejemplo = () => {
 
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  const [backdrop, setBackdrop] = React.useState('opaque')
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen3, setIsOpen3] = useState(false);
 
-  const variants = [ "underlined"];
+  // Funciones para abrir y cerrar los modales
+  const openModal1 = () => setIsOpen1(true);
+  const closeModal1 = () => setIsOpen1(false);
 
-  const backdrops = ["opaque", "blur", "transparent"];
+  const openModal2 = () => setIsOpen2(true);
+  const closeModal2 = () => setIsOpen2(false);
 
-  const handleOpen = (backdrop) => {
-    setBackdrop(backdrop)
-    onOpen();
-  }
+  const openModal3 = () => setIsOpen3(true);
+  const closeModal3 = () => setIsOpen3(false);
 
   
   return (
-    <div>
-      <div className="flex flex-wrap gap-3">
-        {backdrops.map((b) => (
-          <Button  
-            key={b}
-            variant="flat" 
-            color="warning" 
-            onPress={() => handleOpen(b)}
-            className="capitalize"
-          >
-           {b}
-          </Button>
-        ))}  
-      </div>
-      <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-              <ModalBody>
-                <p> 
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
-                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
-                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
-                  Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur 
-                  proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+    <div className='absolute'>
+      <div className="flex flex-col items-center space-y-4 p-6">
+      {/* Botones para abrir modales */}
+      <button onClick={openModal1} className="px-4 py-2 bg-blue-600 text-white rounded">
+        Abrir Modal 1
+      </button>
+      <button onClick={openModal2} className="px-4 py-2 bg-green-600 text-white rounded">
+        Abrir Modal 2
+      </button>
+      <button onClick={openModal3} className="px-4 py-2 bg-red-600 text-white rounded">
+        Abrir Modal 3
+      </button>
 
-      <div className="w-full flex flex-col gap-4">
-      {variants.map((variant) => (
-        <div key={variant} className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-          <Input type="email" 
-          variant={variant} 
-          label="Email" />
+      {/* Modal 1 */}
+      {isOpen1 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 h-[105%] -top-5 z-10">
+          <div className="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Modal 1</h2>
+            <p>Contenido del Modal 1</p>
+            <button onClick={closeModal1} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">
+              Cerrar
+            </button>
+          </div>
         </div>
-      ))}  
-    </div>  
+      )}
+
+      {/* Modal 2 */}
+      {isOpen2 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Modal 2</h2>
+            <p>Contenido del Modal 2</p>
+            <button onClick={closeModal2} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal 3 */}
+      {isOpen3 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Modal 3</h2>
+            <p>Contenido del Modal 3</p>
+            <button onClick={closeModal3} className="mt-4 px-4 py-2 bg-gray-600 text-white rounded">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
      
 
 

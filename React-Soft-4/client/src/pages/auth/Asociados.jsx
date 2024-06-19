@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
-import { roles } from "./data";
 import { HiMiniUsers } from "react-icons/hi2";
 
 
@@ -106,7 +105,6 @@ const Asociados = () => {
   const [Correo, setCorreo] = useState("");
   const [Documento, setDocumento] = useState("");
   const [Clave, setClave] = useState("");
-  const [rol, setRol] = useState("");
   const [id, setId] = useState("0");
 
 
@@ -116,7 +114,7 @@ const Asociados = () => {
       Correo: Correo,
       Documento: Documento,
       Clave: Clave,
-      rol: rol,
+      rol:"3",
     })
     .then(() => {
       fetchData();
@@ -145,7 +143,6 @@ const Asociados = () => {
     setCorreo("");
     setDocumento("");
     setClave("");
-    setRol("");
   };
 
 
@@ -166,10 +163,10 @@ const Asociados = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setRecords(fetchData);
+      fetchData(); 
       setLoading(false);
     }, 2000);
-
+  
     return () => clearTimeout(timeout);
   }, []);
 
@@ -183,33 +180,82 @@ const Asociados = () => {
     setSelectedUser(null);
   };
 
-  const updateRecord = async () => {
-    try {
-      await Axios.put(
-        `http://localhost:3001/update/${selectedUser.id}`,
-        selectedUser
-      );
-      Swal.fire({
-        title: "Actualizado Correctamente",
-        text: `El usuario ${selectedUser.Nombre} fue actualizado con éxito`,
-        icon: "success",
-        timer: 3000,
+  const updateRecord = () => {
+    console.log(selectedUser.Nombre);
+    console.log(selectedUser.id)
+    Axios.put("http://localhost:3001/updateaso", {
+      id: selectedUser.id,
+      Nombre: selectedUser.Nombre,
+      Correo: selectedUser.Correo,
+      Documento: selectedUser.Documento,
+    })
+      .then(() => {
+        Swal.fire({
+          title: "Actualizado Correctamente",
+          text: `El usuario ${selectedUser.Nombre} fue actualizado con éxito`,
+          icon: "success",
+          timer: 3000,
+        });
+        fetchData();
+        closeModal();
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text:
+            error.message === "Network Error"
+              ? "Intente más tarde"
+              : error.message,
+        });
       });
-      fetchData();
-      closeModal();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text:
-          error.message === "Network Error"
-            ? "Intente más tarde"
-            : error.message,
-      });
-    }
+  };
+
+  const deleteUsuario = (selectedUser) => {
+    Swal.fire({
+      title: "Confirmar eliminacion?",
+      html: `<i>Esta Seguro de eliminar a <strong>${selectedUser.Nombre}</strong></i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Eliminarlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Holaaa")
+        Axios.delete(`http://localhost:3001/delete/${selectedUser.id}`)
+          .then(() => {
+            fetchData();
+            LimpiarCampos();
+            Alerta.fire({
+              icon: "success",
+              title: `${selectedUser.Nombre} Fue Eliminado.`,
+              showConfirmButton: false,
+              timer: 2000,
+              
+            });
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No se pudo Eliminar!",
+              footer:
+                JSON.parse(JSON.stringify(error)).message === "Network Error"
+                  ? "intente mas tarde"
+                  : JSON.parse(JSON.stringify(error)).message,
+            });
+          });
+      }
+    });
   };
 
   const columns = [
+    {
+      name: "id",
+      selector: (row) => row.id,
+      sortable: true,
+    },
     {
       name: "Nombre",
       selector: (row) => row.Nombre,
@@ -235,9 +281,26 @@ const Asociados = () => {
           Editar
         </button>
       ),
+    }
+    ,
+    {
+      name: "Acciones",
+      cell: (row) => (
+              <button
+        type="button"
+        onClick={() => {
+          deleteUsuario(row);
+        }}
+        className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 left-12 relative rounded"
+      >
+        Eliminar
+      </button>
+      ),
     },
   ];
 
+
+  
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -310,6 +373,7 @@ const Asociados = () => {
 
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" action="#" method="POST">
+                
                   <div>
                     <label
                       for="email"
@@ -401,32 +465,7 @@ const Asociados = () => {
                     </div>
                   </div>
 
-                  <div className="px-8 pt-3 ">
-                                  <Select
-                                    isRequired
-                                    label="Seleccione un rol"
-                                    placeholder="roles"
-                                    defaultSelectedKeys={[""]}
-                                    className="max-w-xs pt-6 pb-8 z-10 "
-                                    value={rol}
-                                    onChange={(event) =>
-                                      setRol(event.target.value)
-                                    } // Cambiado a event.target.value
-                                  >
-                                    {roles.map(
-                                      (
-                                        rolItem // Cambiado a rolItem para evitar confusión de nombres
-                                      ) => (
-                                        <SelectItem
-                                          key={rolItem.value}
-                                          value={rolItem.value}
-                                        >
-                                          {rolItem.label}
-                                        </SelectItem>
-                                      )
-                                    )}
-                                  </Select>
-                                </div>
+                
 
                   <div>
                   <Button
@@ -458,58 +497,75 @@ const Asociados = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <>
-          <div className="flex flex-col gap-1 text-center mb-4">
-            <h2 className="text-xl font-bold">Actualización de información</h2>
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              Nombre
-            </label>
-            <input
-              value={selectedUser ? selectedUser.Nombre : ""}
-              type="text"
-              onChange={(event) => {
-                setSelectedUser({
-                  ...selectedUser,
-                  Nombre: event.target.value,
-                });
-              }}
-              placeholder="Ingrese su nombre"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-            />
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              Correo
-            </label>
-            <input
-              value={selectedUser ? selectedUser.Correo : ""}
-              type="text"
-              onChange={(event) => {
-                setSelectedUser({
-                  ...selectedUser,
-                  Correo: event.target.value,
-                });
-              }}
-              placeholder="Ingrese su correo"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-            />
-          </div>
-          <div className="flex justify-end gap-2 mt-4">
-            <button
-              onClick={closeModal}
-              className="bg-gray-300 text-black px-4 py-2 rounded"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={updateRecord}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Actualizar
-            </button>
-          </div>
-        </>
-      </Modal>
+  <>
+    <div className="flex flex-col gap-1 text-center mb-4">
+      <h2 className="text-xl font-bold">Actualización de información</h2>
+    </div>
+    <div>
+      <label className="block mb-2 text-sm font-medium text-gray-900">
+        Nombre
+      </label>
+      <input
+        value={selectedUser ? selectedUser.Nombre : ""}
+        type="text"
+        onChange={(event) => {
+          setSelectedUser({
+            ...selectedUser,
+            Nombre: event.target.value,
+          });
+        }}
+        placeholder="Ingrese su nombre"
+        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+      />
+      <label className="block mb-2 text-sm font-medium text-gray-900">
+        Correo
+      </label>
+      <input
+        value={selectedUser ? selectedUser.Correo : ""}
+        type="text"
+        onChange={(event) => {
+          setSelectedUser({
+            ...selectedUser,
+            Correo: event.target.value,
+          });
+        }}
+        placeholder="Ingrese su correo"
+        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+      />
+      <label className="block mb-2 text-sm font-medium text-gray-900">
+        Documento
+      </label>
+      <input
+        value={selectedUser ? selectedUser.Documento : ""}
+        type="text"
+        onChange={(event) => {
+          setSelectedUser({
+            ...selectedUser,
+            Documento: event.target.value,
+          });
+        }}
+        placeholder="Ingrese su documento"
+        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+      />
+    </div>
+    <div className="flex justify-end gap-2 mt-4">
+      <button
+        onClick={closeModal}
+        className="bg-gray-300 text-black px-4 py-2 rounded"
+      >
+        Cancelar
+      </button>
+      <button
+        onClick={updateRecord}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Actualizar
+      </button>
+
+    
+    </div>
+  </>
+</Modal>
     </div>
   );
 };
