@@ -51,16 +51,18 @@ app.post("/login", (req, res) => {
                 res.status(500).send("Error en el servidor");
             } else {
                 if (result.length > 0) {
-                    const { id, Nombre, Correo, Documento, rol } = result[0];
-                    res.status(200).json({
-                        id,
-                        Nombre,
-                        Correo,
-                        Documento,
-                        rol 
-                    });
+
+                        const user = {
+                            id: result[0].id,
+                            Nombre: result[0].Nombre,
+                            Correo: result[0].Correo,
+                            Documento: result[0].Documento,
+                            rol: result[0].rol
+                        };
+                        return res.status(200).json({ message: 'Inicio de sesión exitoso', user });
+
                 } else {
-                    res.status(401).send("Credenciales inválidas");
+                    return res.status(401).send("Credenciales inválidas");
                 }
             }
         }
@@ -105,22 +107,22 @@ app.put("/updateaso", (req, res) => {
     const Nombre = req.body.Nombre;
     const Correo = req.body.Correo;
     const Documento = req.body.Documento;
-  
-  
+
+
     db.query(
-      'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
-      [Nombre, Correo, Documento, id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send("Error al actualizar el usuario");
-        } else {
-          res.send(result);
+        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
+        [Nombre, Correo, Documento, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al actualizar el usuario");
+            } else {
+                res.send(result);
+            }
         }
-      }
     );
-  });
-  
+});
+
 
 app.delete("/delete/:id", (req, res) => {
     const id = req.params.id;

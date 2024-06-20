@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineEmail, MdLockOutline } from "react-icons/md";
 import { RiEyeLine, RiEyeOffFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {Input} from "@nextui-org/react";
-
+import { Input, user } from "@nextui-org/react";
+import { useAuth } from "./authcontext";
 //Esta es la rama de German
 
 
@@ -15,9 +15,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
+  const { login: authLogin, isLoggedIn, rol  } = useAuth(); // Asegúrate de desestructurar correctamente
+
   const navigate = useNavigate();
 
-  const variants = [ "underlined"];
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/Home")
+    }
+  }, [isLoggedIn, navigate]);  
+
+  const variants = ["underlined"];
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -37,7 +47,7 @@ const Login = () => {
       toast.error("La contraseña debe tener al menos 6 caracteres", {
         theme: "light",
         position: "top-center",
-      });
+      })
       return;
     }
 
@@ -47,15 +57,19 @@ const Login = () => {
         password
       });
 
-      console.log(response.data)
-      
-      const rol = response.data.rol
-      if (10>1) { // Suponiendo que el rol viene en la respuesta del backend
+      authLogin({
+        user: response.data.user,
+      });
+
+      console.log(response.data.user)
+
+      const rol = response.data.user.rol
+      if (10 > 1) { // Suponiendo que el rol viene en la respuesta del backend
         if (rol === 1) {
           navigate("/Home");
         } else if (rol === 2) {
           navigate("/Asesora");
-        }else if (rol === 3) {
+        } else if (rol === 3) {
           navigate("/VerSaldo");
         } else {
           // Si el rol no es ninguno de los esperados, manejarlo de acuerdo a tus necesidades
@@ -79,11 +93,13 @@ const Login = () => {
     }
   };
 
+
+
   return (
     <div>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       <div className="absolute items-center justify-center bg-white p-10 top-[5%] rounded-l-lg w-full h-[85%] right-[60%] md:w-[500px] shadow-2xl z-10">
         <div className="mb-[310px]">
           <h1 className="text-3xl uppercase font-bold text-center top-10 text-primary relative">
@@ -94,53 +110,53 @@ const Login = () => {
           <div className="relative top-5">
             <MdOutlineEmail className="absolute -left-0 z-10 -translate-y-3/4 w-7 h-7 text-gray-500 -top-[320%]" />
             <div className="flex flex-col gap-4 -top-56 relative">
-            {variants.map((variant) => (
-        <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative"> 
-          <Input 
-          type="email" 
-          variant={variant} 
-          label="Email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-      ))}  
-              
+              {variants.map((variant) => (
+                <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative">
+                  <Input
+                    type="email"
+                    variant={variant}
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              ))}
+
             </div>
-            
+
           </div>
 
           <div className="relative top-5">
             <MdLockOutline className="absolute -left-0 z-10 -translate-y-3/4 w-7 h-7 text-gray-500 -top-[320%]" />
             <div className="flex flex-col gap-4 -top-56 relative">
-            {variants.map((variant) => (
-        <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative"> 
-          <Input 
-          type={showPassword ? "text" : "password"} 
-          variant={variant} 
-          label="Contraseña" 
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-          {showPassword ? (
-              <RiEyeLine
-                onClick={handleShowPassword}
-                className="absolute right-2 -translate-y-3/4 text-gray-500 w-7 h-7 hover:text-Third hover:cursor-pointer top-10 "
-              />
-            ) : (
-              <RiEyeOffFill
-                onClick={handleShowPassword}
-                className="absolute right-2 w-7 h-7 -translate-y-3/4 text-gray-500 hover:cursor-pointer hover:text-Third top-10"
-              />
-            )}
-        </div>
-      ))}  
-              
+              {variants.map((variant) => (
+                <div key={variant} className="flex w-[90%] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 left-10 relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    variant={variant}
+                    label="Contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  {showPassword ? (
+                    <RiEyeLine
+                      onClick={handleShowPassword}
+                      className="absolute right-2 -translate-y-3/4 text-gray-500 w-7 h-7 hover:text-Third hover:cursor-pointer top-10 "
+                    />
+                  ) : (
+                    <RiEyeOffFill
+                      onClick={handleShowPassword}
+                      className="absolute right-2 w-7 h-7 -translate-y-3/4 text-gray-500 hover:cursor-pointer hover:text-Third top-10"
+                    />
+                  )}
+                </div>
+              ))}
+
             </div>
-            
+
           </div>
 
-          
+
           <div>
             <button
               onClick={handleSubmit}
