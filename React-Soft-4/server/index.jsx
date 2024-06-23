@@ -139,29 +139,29 @@ app.delete("/delete/:id", (req, res) => {
     );
 });
 
-app.get("/beneficios", (req, res) => {
-    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error al obtener beneficios');
-            } else {
-                res.send(result);
-            }
-        });
-});
+// app.get("/beneficios", (req, res) => {
+//     db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//                 res.status(500).send('Error al obtener beneficios');
+//             } else {
+//                 res.send(result);
+//             }
+//         });
+// });
 
-app.get("/creditos", (req, res) => {
-    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error al obtener beneficios');
-            } else {
-                res.send(result);
-            }
-        });
-});
+// app.get("/creditos", (req, res) => {
+//     db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//                 res.status(500).send('Error al obtener beneficios');
+//             } else {
+//                 res.send(result);
+//             }
+//         });
+// });
 
 
 app.get("/asociados", (req, res) => {
@@ -170,6 +170,42 @@ app.get("/asociados", (req, res) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('Error al obtener asociados');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblcreditos", (req, res) => {
+    db.query('SELECT idcreditos, rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha FROM creditos',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos de creditos');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblobligatorios", (req, res) => {
+    db.query('SELECT idobligatorio, ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha FROM ahorros_obligatorios ',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro obligatorio');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblvoluntarios", (req, res) => {
+    db.query('SELECT idahorros, vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha FROM ahorros_voluntarios',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro voluntario');
             } else {
                 res.send(result);
             }
