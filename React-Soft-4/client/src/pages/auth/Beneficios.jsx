@@ -206,6 +206,8 @@ const Beneficios = () => {
                 <button onClick={() => { fetchData(); setIsOpen1(!isOpen1); setIsOpen2(false); setIsOpen3(false); }} className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-blue-600 rounded-lg">
                   Ver más
                 </button>
+                  
+              
               </div>
               <div className="flex-none m-4 bg-gray-700 max-w-[300px] rounded-xl hover:bg-gray-900 hover:scale-110 duration-700 p-5">
                 <figure className="w-10 h-10 p-2 bg-blue-800 rounded-md">
@@ -237,6 +239,7 @@ const Beneficios = () => {
               <Loader />
             ) : (
               <div>
+                
                 {isOpen1 && (
                   <DataTable
                     columns={columnsVoluntarios}

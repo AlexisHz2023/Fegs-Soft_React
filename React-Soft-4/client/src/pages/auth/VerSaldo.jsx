@@ -1,53 +1,73 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import { IoPrint } from "react-icons/io5";
+import Axios from "axios";
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
-// import { useNavigate } from 'react-router-dom';
+ import { useAuth } from "./authcontext";
+  import { useNavigate } from 'react-router-dom';
+import { GiConsoleController } from 'react-icons/gi';
+
+const VerSaldo = () => {
 
 
-const getUsuarios = () => {
+  const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  Axios.get("http://localhost:3001/usuarios")
-    .then((response) => {
-      const usuarios = response.data.map((usuario) => {
-        const nombreRol = usuario.rol;
-        return {
-          ...usuario,
-          rol: nombreRol ? nombreRol : "Rol desconocido",
-        };
+  const [valoresList, setValores] = useState([]);
+
+  console.log(user.id)
+  console.log(user.Nombre)
+
+  useEffect(() => {
+    if (user && user.id) {
+      getObligatorios(user.id);
+    }
+  }, [user]);
+
+  const getObligatorios = () => {
+    console.log("aqui")
+    Axios.get(`http://localhost:3001/obligatorios/${user.id}`)
+      .then((response) => {
+        const valor = response.data.map((valores) => {
+          console.log("paso aqui")
+          return {
+            ...valores,
+          };
+        });
+        setValores(valor);
+      })
+      .catch((error) => {
+        console.error("Error al obtener valores:", error);
       });
-      setUsuarios(usuarios.slice(startIndex, endIndex));
-    })
-    .catch((error) => {
-      console.error("Error al obtener usuarios:", error);
-    });
-};
-
-export const Cosa = () => {
-
-
-  console.log("putas");
-
-
-
-  return(
-    <>
-      <div>
-        esto no sirve para nada pero es un ejemplo de como deben hacer los componentes
-      </div>
-    </>
-  )
-}
-
-class ComponenteAImprimir extends React.Component{
+  };
 
   
 
-   render() {     
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  }
+
+  const componentRef = React.useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+
+
+
+  const handleGeneratePDF = () => {
+    const doc = new jsPDF();
+    doc.text("Contenido del PDF", 10, 10 ,10); 
+    doc.autoTable({ html: '#tabla' }); 
+    doc.save("archivo.pdf");
+  };
+
+
+ {     
   return (
     <div className="absolted">
       <div className="bg-white w-[95%] z-20 h-[95%] border-2 border-blue-400 right-[2%] top-5 rounded-lg absolute overflow-hidden overflow-x-hidden print:hidden-scroll">
@@ -137,30 +157,34 @@ class ComponenteAImprimir extends React.Component{
           <thead>
             <tr>
               <th class="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Fecha</th>
-              <th class="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Ahorros Voluntarios</th>
+              <th class="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Ahorros Voluntario</th>
               <th class="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Saldo</th>
             </tr>
           </thead>
           <tbody>
+          {valoresList.map((val, key) => (
+            <tr key={val.idobligatorio}>
+              <tr>
+              <td className="border border-none text-center border-slate-700 ...">10/08/2023</td>
+              <td className="border border-none text-center border-slate-700 ...">Ahorros ordinarios</td>
+              <td className="border border-none text-center border-slate-700 ...">{(val.ahorro_ordinario)}</td>
+              </tr>
             <tr>
-              <td class="border border-none text-center border-slate-700 ...">10/08/2023</td>
-              <td class="border border-none text-center border-slate-700 ...">Ahorros ordinarios</td>
-              <td class="border border-none text-center border-slate-700 ...">$000</td>
+              <td className="border border-none text-center border-slate-700 ...">11/08/2023</td>
+              <td className="border border-none text-center border-slate-700 ...">Ahorro permanente</td>
+              <td className="border border-none text-center border-slate-700 ...">{val.ahorro_permanente}</td>
             </tr>
             <tr>
-              <td class="border border-none text-center border-slate-700 ...">11/08/2023</td>
-              <td class="border border-none text-center border-slate-700 ...">Ahorro permanente</td>
-              <td class="border border-none text-center border-slate-700 ...">000</td>
+              <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">12/08/2023</td>
+              <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">Total ahorros obligatorios</td>
+              <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">{val.ahorro_ordinario+val.ahorro_permanente}</td>
             </tr>
-            <tr>
-              <td class="border-none text-center rounded border-slate-700 bg-blue-300 text-black">12/08/2023</td>
-              <td class="border-none text-center rounded border-slate-700 bg-blue-300 text-black">Total ahorros obligatorios</td>
-              <td class="border-none text-center rounded border-slate-700 bg-blue-300 text-black">$000</td>
             </tr>
+            ))}
           </tbody>
         </table>
         <div className="relative -top-[89%] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 w-0 left-[86%] print:hidden">
-        <Link
+        <Link onClick={handleLogout}
         className="relative py-3 px-6 bg-blue-400 hover:bg-orange-300 text-white  rounded-md border-blue-400 left-[70%] "
         to="/"
         >Volver</Link>
@@ -171,37 +195,5 @@ class ComponenteAImprimir extends React.Component{
 };
 };
 
-const VerSaldo = () => {
-  const componentRef = React.useRef();
-
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
-
-  // const { logout } = useAuth();
-
-  // const navigate  = useNavigate();
-
-
-  // const handlelogout = () => {
-  //   logout();
-  //   navigate("/");
-  // }
-
-  const handleGeneratePDF = () => {
-    const doc = new jsPDF();
-    doc.text("Contenido del PDF", 10, 10 ,10); 
-    doc.autoTable({ html: '#tabla' }); 
-    doc.save("archivo.pdf");
-  };
-
-  return (
-    <div>
-      <ComponenteAImprimir ref={componentRef} />
-
-      <button  onClick={handlePrint}><IoPrint className="text-blue-500 z-20  w-14 h-14 relative left-[50rem] -top-60 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-white hover:text-orange-300 duration-300"  /> </button>
-    </div>
-  );
-};
 
 export default VerSaldo;

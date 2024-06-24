@@ -212,6 +212,50 @@ app.get("/tblvoluntarios", (req, res) => {
         });
 });
 
+
+app.get("/creditos", (req, res) => {
+    const id = req.body.id;
+    db.query('SELECT idcreditos, rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha FROM creditos WHERE usuariocredi = ?;',
+        [id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos de creditos');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/obligatorios/:id", (req, res) => {
+    const id = req.params.id; // Obtener el id de los parámetros de ruta
+    db.query('SELECT idobligatorio, ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha FROM ahorros_obligatorios WHERE usuariobli = ?;',
+        [id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro obligatorio');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/voluntarios", (req, res) => {
+    const id = req.body.id;
+    db.query('SELECT idahorros, vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha FROM ahorros_voluntarios WHERE usuariovolu = ?;',
+        [id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro voluntario');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001")
 });
