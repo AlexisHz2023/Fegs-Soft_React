@@ -51,16 +51,18 @@ app.post("/login", (req, res) => {
                 res.status(500).send("Error en el servidor");
             } else {
                 if (result.length > 0) {
-                    const { id, Nombre, Correo, Documento, rol } = result[0];
-                    res.status(200).json({
-                        id,
-                        Nombre,
-                        Correo,
-                        Documento,
-                        rol 
-                    });
+
+                        const user = {
+                            id: result[0].id,
+                            Nombre: result[0].Nombre,
+                            Correo: result[0].Correo,
+                            Documento: result[0].Documento,
+                            rol: result[0].rol
+                        };
+                        return res.status(200).json({ message: 'Inicio de sesión exitoso', user });
+
                 } else {
-                    res.status(401).send("Credenciales inválidas");
+                    return res.status(401).send("Credenciales inválidas");
                 }
             }
         }
@@ -105,22 +107,22 @@ app.put("/updateaso", (req, res) => {
     const Nombre = req.body.Nombre;
     const Correo = req.body.Correo;
     const Documento = req.body.Documento;
-  
-  
+
+
     db.query(
-      'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
-      [Nombre, Correo, Documento, id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send("Error al actualizar el usuario");
-        } else {
-          res.send(result);
+        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
+        [Nombre, Correo, Documento, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al actualizar el usuario");
+            } else {
+                res.send(result);
+            }
         }
-      }
     );
-  });
-  
+});
+
 
 app.delete("/delete/:id", (req, res) => {
     const id = req.params.id;
@@ -137,29 +139,29 @@ app.delete("/delete/:id", (req, res) => {
     );
 });
 
-app.get("/beneficios", (req, res) => {
-    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error al obtener beneficios');
-            } else {
-                res.send(result);
-            }
-        });
-});
+// app.get("/beneficios", (req, res) => {
+//     db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//                 res.status(500).send('Error al obtener beneficios');
+//             } else {
+//                 res.send(result);
+//             }
+//         });
+// });
 
-app.get("/creditos", (req, res) => {
-    db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error al obtener beneficios');
-            } else {
-                res.send(result);
-            }
-        });
-});
+// app.get("/creditos", (req, res) => {
+//     db.query('SELECT idbeneficios, tipos_beneficios FROM usuarios',
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//                 res.status(500).send('Error al obtener beneficios');
+//             } else {
+//                 res.send(result);
+//             }
+//         });
+// });
 
 
 app.get("/asociados", (req, res) => {
@@ -168,6 +170,42 @@ app.get("/asociados", (req, res) => {
             if (err) {
                 console.log(err);
                 res.status(500).send('Error al obtener asociados');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblcreditos", (req, res) => {
+    db.query('SELECT idcreditos, rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha FROM creditos',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos de creditos');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblobligatorios", (req, res) => {
+    db.query('SELECT idobligatorio, ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha FROM ahorros_obligatorios ',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro obligatorio');
+            } else {
+                res.send(result);
+            }
+        });
+});
+
+app.get("/tblvoluntarios", (req, res) => {
+    db.query('SELECT idahorros, vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha FROM ahorros_voluntarios',
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Error al obtener los datos del ahorro voluntario');
             } else {
                 res.send(result);
             }
