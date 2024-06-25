@@ -29,6 +29,7 @@ import Ejemplo from './pages/auth/Ejemplo'
 
 
 
+
 function App() {
   return (
     
@@ -47,7 +48,7 @@ function App() {
         <Route path='asociado' element={<Asociados />} />
         <Route path='asesora' element={<Asesora />} />
         <Route path='beneficios' element={<Beneficios />} />
-        <Route path='ejemplo' element={<Ejemplo />} />
+        <Route path='ejemplo' element={<Ejemplo />}/>
     
         
 
