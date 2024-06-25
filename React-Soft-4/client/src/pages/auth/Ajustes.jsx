@@ -6,12 +6,15 @@ import { GrUserAdmin } from "react-icons/gr";
 import { MdEmail } from "react-icons/md";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAuth } from "./authcontext";
 
 
 
 
 
 const Ajustes = () => {
+
+  const { user } = useAuth();
 
   const [userData, setUserData] = useState({
     Nombre: '',
@@ -83,8 +86,8 @@ useEffect(() => {
     </div>
   </div>
   <div className="headings *:text-center *:leading-4">
-    <p className="text-xl font-serif font-semibold text-Third">German Alexis</p>
-    <p className="text-sm font-semibold text-primary">Administrador</p>
+    <p className="text-xl font-serif font-semibold text-Third">{user.Nombre}</p>
+    <p className="text-sm font-semibold text-primary">{user.Correo}</p>
   </div>
   <div className="w-full items-center justify-center flex">
     <ul
@@ -102,7 +105,7 @@ useEffect(() => {
       id="name"
       name="name"
       label="Nombre"
-      value={userData.Nombre} readOnly
+      value={user.Nombre} readOnly
       variant="bordered"
       className="max-w-xs w-64"
     />
@@ -117,11 +120,10 @@ useEffect(() => {
         id="email"
         name="email"
       isReadOnly
-      value={userData.Correo}
+      value={user.Correo}
       type="email"
       label="Email"
       variant="bordered"
-      defaultValue="alexisdurango721@gmail.com"
       className="max-w-xs w-64"
     />
       </li>
@@ -137,7 +139,7 @@ useEffect(() => {
         name="Documento"
       isReadOnly
       type="text"
-      value={userData.Documento}
+      value={user.Documento}
       label="Documento"
       variant="bordered"
       defaultValue="1045491338"
@@ -154,7 +156,7 @@ useEffect(() => {
       isReadOnly
       id="Rol"
       name="Rol"
-      value={userData.rol}
+      value={user.rol}
       type="text"
       label="Rol"
       variant="bordered"

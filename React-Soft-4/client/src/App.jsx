@@ -48,7 +48,7 @@ function App() {
         <Route path='asesora' element={<Asesora />} />
         <Route path='beneficios' element={<Beneficios />} />
         <Route path='ejemplo' element={<Ejemplo/>}/>
-        <Route path="admin" element={<RutaPrivadaAdmin element={<Admin />} />} />
+        <Route path="admin" element={<Admin />} />
 
 
 
