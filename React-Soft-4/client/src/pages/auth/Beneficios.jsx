@@ -5,6 +5,9 @@ import Axios from "axios";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 import { useDisclosure } from "@nextui-org/react";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+
 
 const TextField = styled.input`
   height: 44px;
@@ -13,6 +16,8 @@ const TextField = styled.input`
   border: 1px solid #e5e5e5;
   padding: 0 32px 0 40px;
 `;
+
+const Alerta = withReactContent(Swal);
 
 const FilterComponent = ({ filterText, onFilter }) => (
   <div style={{ display: "flex", alignItems: "center" }}>
@@ -30,7 +35,7 @@ const FilterComponent = ({ filterText, onFilter }) => (
 );
 
 const Beneficios = () => {
-  const [Vista, setVista] = useState("")
+  const [Vista, setVista] = useState("");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [isOpen1, setIsOpen1] = useState(false);
@@ -43,6 +48,26 @@ const Beneficios = () => {
   const [isOpen8, setIsOpen8] = useState(false);
   const [isOpen9, setIsOpen9] = useState(false);
   const [records, setRecords] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({
+    idahorros: null,  
+  vista: '',
+  programado: '',
+  vacacional: '',
+  previo_vivienda: ''
+  });
+  const [selectedUser2, setSelectedUser2] = useState({
+    idobligatorio: null,  
+    ahorro_ordinario: '',
+    ahorro_permanente: '',
+  });
+  const [selectedUser3, setSelectedUser3] = useState({
+    idcreditos: null,  
+    rotativo: '',
+    SEC: '',
+    novedades_varias: '',
+    compra_cartera: '',
+
+  });
   const [filterText, setFilterText] = useState("");
   const [originalRecords, setOriginalRecords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,9 +102,6 @@ const Beneficios = () => {
       setLoading(false);
     }
   };
-
-  
-
   const fetchObligatorios = async () => {
     setLoading(true);
     try {
@@ -114,7 +136,7 @@ const Beneficios = () => {
     { name: "ID", selector: (row) => row.idahorros, sortable: true },
     { name: "Vista", selector: (row) => row.vista, sortable: true },
     { name: "Programado", selector: (row) => row.programado, sortable: true },
-    { name: "Documento", selector: (row) => row.vacacional, sortable: true },
+    { name: "vacacional", selector: (row) => row.vacacional, sortable: true },
     {
       name: "Previo vivienda",
       selector: (row) => row.previo_vivienda,
@@ -130,7 +152,7 @@ const Beneficios = () => {
       name: "Acciones",
       cell: (row) => (
         <button
-          onClick={() => openModal4(row)}
+          onClick={() => handleEdit(row)}
           className="bg-blue-500 text-white px-2 py-1 rounded"
         >
           Editar
@@ -152,23 +174,29 @@ const Beneficios = () => {
 
   const columnsObligatorios = [
     { name: "ID", selector: (row) => row.idobligatorio, sortable: true },
-    { name: "Usuario", selector: (row) => row.usuariobli, sortable: true },
+    { name: "ahorro_ordinario", selector: (row) => row.ahorro_ordinario, sortable: true },
     {
       name: "Ahorro Ordinario",
-      selector: (row) => row.ahorro_ordinario,
+      selector: (row) => row.ahorro_permanente,
       sortable: true,
     },
     {
-      name: "Ahorro Obligatorio",
+      name: "ahorro_permanente",
+      selector: (row) => row.usuariobli,
+      sortable: true,
+    },
+    {
+      name: "seg_ahorro_obligatorio",
       selector: (row) => row.seg_ahorro_obligatorio,
       sortable: true,
     },
+
     { name: "Fecha", selector: (row) => row.fecha, sortable: true },
     {
       name: "Acciones",
       cell: (row) => (
         <button
-          onClick={() => openModal6(row)}
+          onClick={() => handleEdit2(row)}
           className="bg-blue-500 text-white px-2 py-1 rounded"
         >
           Editar
@@ -190,11 +218,11 @@ const Beneficios = () => {
 
   const columnsCreditos = [
     { name: "ID", selector: (row) => row.idcreditos, sortable: true },
-    { name: "Usuario", selector: (row) => row.usuariocredi, sortable: true },
+    { name: "rotativo", selector: (row) => row.rotativo	, sortable: true },
     { name: "SEC", selector: (row) => row.SEC, sortable: true },
     {
       name: "Novedades Varias",
-      selector: (row) => row.novedades_varias,
+      selector: (row) => row.novedades_varias	,
       sortable: true,
     },
     {
@@ -212,7 +240,7 @@ const Beneficios = () => {
       name: "Acciones",
       cell: (row) => (
         <button
-          onClick={() => openModal8(row)}
+          onClick={() => handleEdit3(row)}
           className="bg-blue-500 text-white px-2 py-1 rounded"
         >
           Editar
@@ -231,6 +259,124 @@ const Beneficios = () => {
       ),
     },
   ];
+
+  const handleEdit = (row) => {
+    setSelectedUser(row);
+    openModal4(true);
+  };
+
+  const handleEdit2 = (row) => {
+    setSelectedUser2(row);
+    openModal6(true);
+  };
+
+  const handleEdit3 = (row) => {
+    setSelectedUser3(row);
+    openModal8(true);
+  };
+
+  const updateRecord = () => {
+    if (!selectedUser.idahorros || selectedUser.vista === "" || selectedUser.programado === "" || selectedUser.vacacional === "" || selectedUser.previo_vivienda === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Faltan datos",
+        text: "Por favor complete todos los campos antes de actualizar.",
+      });
+      return;
+    }
+  
+    Axios.put("http://localhost:3001/updateVolu", {
+      idahorros: selectedUser.idahorros,  // Asegúrate de incluir el `id`
+      vista: selectedUser.vista,
+      programado: selectedUser.programado,
+      vacacional: selectedUser.vacacional,
+      previo_vivienda: selectedUser.previo_vivienda,
+    })
+      .then(() => {
+        Swal.fire({
+          title: "Actualizado Correctamente",
+          text: `El usuario ${selectedUser.idahorros} fue actualizado con éxito`,
+          icon: "success",
+          timer: 3000,
+        });
+        fetchData(); // Asumiendo que esto refresca la lista de datos
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response?.data || error.message,
+        });
+      });
+  };
+
+  const updateOblig = () => {
+    if (!selectedUser2.idobligatorio || selectedUser2.ahorro_ordinario === "" || selectedUser2.ahorro_permanente === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Faltan datos",
+        text: "Por favor complete todos los campos antes de actualizar.",
+      });
+      return;
+    }
+  
+    Axios.put("http://localhost:3001/updateOblig", {
+      idobligatorio: selectedUser2.idobligatorio,
+      ahorro_ordinario: selectedUser2.ahorro_ordinario,
+      ahorro_permanente: selectedUser2.ahorro_permanente,
+    })
+      .then(() => {
+        Swal.fire({
+          title: "Actualizado Correctamente",
+          text: `El usuario ${selectedUser.idobligatorio} fue actualizado con éxito`,
+          icon: "success",
+          timer: 3000,
+        });
+        fetchData(); // Asumiendo que esto refresca la lista de datos
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response?.data || error.message,
+        });
+      });
+  };
+
+  const updateCredi = () => {
+    if (!selectedUser3.idcreditos || selectedUser3.rotativo === "" || selectedUser3.SEC === "" || selectedUser3.novedades_varias === "" || selectedUser3.compra_cartera === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Faltan datos",
+        text: "Por favor complete todos los campos antes de actualizar.",
+      });
+      return;
+    }
+  
+    Axios.put("http://localhost:3001/updateCredi", {
+      idcreditos: selectedUser3.idcreditos,
+      rotativo: selectedUser3.rotativo,
+      SEC: selectedUser3.SEC,
+      novedades_varias: selectedUser3.novedades_varias,
+      compra_cartera: selectedUser3.compra_cartera,
+    })
+      .then(() => {
+        Swal.fire({
+          title: "Actualizado Correctamente",
+          text: `El usuario ${selectedUser3.idcreditos} fue actualizado con éxito`,
+          icon: "success",
+          timer: 3000,
+        });
+        fetchData(); 
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response?.data || error.message,
+        });
+      });
+  };
 
   const handleFilter = (e) => {
     const value = e.target.value;
@@ -414,54 +560,69 @@ const Beneficios = () => {
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
-
                       <div className="flex-none">
-                    <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      value={Vista}
-                      placeholder="Numero De Documento"
-                      required
-                      onChange={(event) => {
-                        setVista(event.target.vista)
-                      }}
-                    />
-                    </div>
-                     <div>
-                    <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      required
-                    />
-                    </div>
-                    
-                    <div>
-                    <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      required
-                    />
-                    </div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          value={selectedUser.vista || ""}
+                          placeholder="Numero De Documento"
+                          required
+                          onChange={(event) => {
+                            setSelectedUser({
+                              ...selectedUser,
+                              vista: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser.programado || ""}
+                          onChange={(event) => {
+                            setSelectedUser({
+                              ...selectedUser,
+                              programado: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
 
-                    <div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser.vacacional || ""}
+                          onChange={(event) => {
+                            setSelectedUser({
+                              ...selectedUser,
+                              vacacional: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
 
-                    <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      required
-                    />
-</div>
-<div>
-                    <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      required
-                    />
-                    </div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser.previo_vivienda || ""}
+                          onChange={(event) => {
+                            setSelectedUser({
+                              ...selectedUser,
+                              previo_vivienda: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
+                     
                     </div>
                   </div>
                   <div>
@@ -471,7 +632,7 @@ const Beneficios = () => {
                     >
                       Cerrar
                     </button>
-                    <button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateRecord} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
                       Agregar
                     </button>
                   </div>
@@ -512,34 +673,46 @@ const Beneficios = () => {
                 </div>
               </div>
             )}
-             {isOpen6 && (
+            {isOpen6 && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Credito Obligatorio
+                    Credito Obligatorioo
                   </h2>
                   <p className="text-center">
                     Ingresa el Numero de Documento para seleccionar al asociado
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
-                      <div> <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      id="numeroDocumento"
-                      name="numeroDocumento"
-                      required
-                    /></div>
                       <div>
-                      <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      id="numeroDocumento"
-                      name="numeroDocumento"
-                      required
-                    />
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser2.ahorro_ordinario || ""}
+                          onChange={(event) => {
+                            setSelectedUser2({
+                              ...selectedUser2,
+                              ahorro_ordinario: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser2.ahorro_permanente || ""}
+                          onChange={(event) => {
+                            setSelectedUser2({
+                              ...selectedUser2,
+                              ahorro_permanente: event.target.value,
+                            })
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -550,14 +723,14 @@ const Beneficios = () => {
                     >
                       Cerrar
                     </button>
-                    <button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateOblig} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
                       Agregar
                     </button>
                   </div>
                 </div>
               </div>
             )}
-             {isOpen7 && (
+            {isOpen7 && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
@@ -590,36 +763,77 @@ const Beneficios = () => {
                 </div>
               </div>
             )}
-             {isOpen8 && (
+            {isOpen8 && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Ahorro Credito 
+                    Ahorro Credito
                   </h2>
                   <p className="text-center">
                     Ingresa el Numero de Documento para seleccionar al asociado
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
-                      <div> <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      id="numeroDocumento"
-                      name="numeroDocumento"
-                      required
-                    /></div>
                       <div>
-                      <input
-                      className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="number"
-                      placeholder="Numero De Documento"
-                      id="numeroDocumento"
-                      name="numeroDocumento"
-                      required
-                    />
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser3.rotativo || ""}
+                          onChange={(event) => {
+                            setSelectedUser3({
+                              ...selectedUser3,
+                              rotativo: event.target.value
+                            })
+                          }}
+                        />
                       </div>
-                    
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser3.SEC || ""}
+                          onChange={(event) => {
+                            setSelectedUser3({
+                              ...selectedUser3,
+                              SEC: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser3.novedades_varias || ""}
+                          onChange={(event) => {
+                            setSelectedUser3({
+                              ...selectedUser3,
+                              novedades_varias: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          type="number"
+                          placeholder="Numero De Documento"
+                          required
+                          value={selectedUser3.compra_cartera || ""}
+                          onChange={(event) => {
+                            setSelectedUser3({
+                              ...selectedUser3,
+                              compra_cartera: event.target.value,
+                            })
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -629,14 +843,14 @@ const Beneficios = () => {
                     >
                       Cerrar
                     </button>
-                    <button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateCredi} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
                       Agregar
                     </button>
                   </div>
                 </div>
               </div>
             )}
-             {isOpen9 && (
+            {isOpen9 && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">

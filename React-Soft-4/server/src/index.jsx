@@ -108,6 +108,8 @@ app.put("/updateaso", (req, res) => {
     const Correo = req.body.Correo;
     const Documento = req.body.Documento;
 
+   
+
 
     db.query(
         'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
@@ -122,6 +124,74 @@ app.put("/updateaso", (req, res) => {
         }
     );
 });
+
+app.put("/updateVolu", (req, res) => {
+    const { idahorros, vista, programado, vacacional, previo_vivienda } = req.body;
+
+    // Validar que todos los campos están presentes
+    if (!idahorros || vista === undefined || programado === undefined || vacacional === undefined || previo_vivienda === undefined) {
+        return res.status(400).send("Todos los campos son necesarios");
+    }
+
+    db.query(
+        'UPDATE ahorros_voluntarios SET vista=?, programado=?, vacacional=?, previo_vivienda=? WHERE idahorros=?',
+        [vista, programado, vacacional, previo_vivienda, idahorros],  // Incluye el `id` en la query
+        (err, result) => {
+            if (err) {
+                console.error("Error en la actualización:", err);
+                res.status(500).send("Error al actualizar el ahorros_voluntarios");
+            } else {
+                res.send(result);
+            }
+        }
+    );
+});
+
+app.put("/updateOblig", (req, res) => {
+    const { 
+        idobligatorio, ahorro_ordinario, ahorro_permanente } = req.body;
+
+    // Validar que todos los campos están presentes
+    if (!idobligatorio || ahorro_ordinario === undefined || ahorro_permanente === undefined ) {
+        return res.status(400).send("Todos los campos son necesarios");
+    }
+
+    db.query(
+        'UPDATE ahorros_obligatorios SET ahorro_ordinario=?, ahorro_permanente=? WHERE idobligatorio=?',
+        [ahorro_ordinario, ahorro_permanente, idobligatorio],  // Incluye el `id` en la query
+        (err, result) => {
+            if (err) {
+                console.error("Error en la actualización:", err);
+                res.status(500).send("Error al actualizar el ahorros_voluntarios");
+            } else {
+                res.send(result);
+            }
+        }
+    );
+});
+
+app.put("/updateCredi", (req, res) => {
+    const { idcreditos, rotativo, SEC, novedades_varias, compra_cartera } = req.body;
+
+    // Validar que todos los campos están presentes
+    if (!idcreditos || rotativo === undefined || SEC === undefined || novedades_varias === undefined || compra_cartera === undefined) {
+        return res.status(400).send("Todos los campos son necesarios");
+    }
+
+    db.query(
+        'UPDATE creditos SET rotativo=?, SEC=?, novedades_varias=?, compra_cartera=? WHERE idcreditos=?',
+        [rotativo, SEC, novedades_varias, compra_cartera, idcreditos],  
+        (err, result) => {
+            if (err) {
+                console.error("Error en la actualización:", err);
+                res.status(500).send("Error al actualizar el ahorros_voluntarios");
+            } else {
+                res.send(result);
+            }
+        }
+    );
+});
+
 
 
 app.delete("/delete/:id", (req, res) => {

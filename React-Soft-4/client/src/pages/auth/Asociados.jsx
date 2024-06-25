@@ -8,21 +8,10 @@ import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 import { HiMiniUsers } from "react-icons/hi2";
-
-
-import {
-  Select,
-  SelectItem,
-
-  Button,
-} from "@nextui-org/react";
-
-
+import { Button, } from "@nextui-org/react";
 
 // Este es una Rama de German
 const Alerta = withReactContent(Swal);
-
-
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -38,7 +27,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-// Estilos para el campo de texto y el botón de limpiar
+
 const TextField = styled.input`
   height: 44px;
   width: 260px;
@@ -51,33 +40,12 @@ const TextField = styled.input`
   padding: 0 32px 0 40px;
 `;
 
-const ClearButton = styled.button`
-  border-radius: 0.5rem;
-  height: 44px;
-  width: 85px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4484d4;
 
-  cursor: pointer;
-  left: 23%;
-  top: 45px;
-  z-index: 10;
-  color: white;
-  position: relative;
-  &:hover {
-    background-color: #ccc;
-  }
-`;
 
 // Componente de filtrado
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
-    <ClearButton type="button" onClick={onClear}>
-      Cancelar
-    </ClearButton>
+  
 
     <TextField
       id="search"
@@ -105,7 +73,6 @@ const Asociados = () => {
   const [Correo, setCorreo] = useState("");
   const [Documento, setDocumento] = useState("");
   const [Clave, setClave] = useState("");
-  const [id, setId] = useState("0");
 
 
   const add = () => {
@@ -144,7 +111,6 @@ const Asociados = () => {
     setDocumento("");
     setClave("");
   };
-
 
   const fetchData = async () => {
     try {
@@ -298,9 +264,6 @@ const Asociados = () => {
       ),
     },
   ];
-
-
-  
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -376,7 +339,6 @@ const Asociados = () => {
                 
                   <div>
                     <label
-                      for="email"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
                       Nombre

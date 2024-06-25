@@ -1,13 +1,6 @@
-
-import React from "react";
 import Menu from "./Menu";
-import { RxUpdate } from "react-icons/rx";
-import { HiOutlineUsers } from "react-icons/hi";
-import { IoMdInformationCircle } from "react-icons/io";
 import { PiSealWarningFill } from "react-icons/pi";
-import { MdOutlineManageHistory } from "react-icons/md";
-import { link } from "@nextui-org/theme";
-import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -15,8 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
-
-
   return (
     <div>
      <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -120,7 +111,7 @@ const Home = () => {
               <div className="absolute bg-gray-50 -bottom-24 w-56 p-3 flex flex-col gap-1 group-hover:-bottom-0 group-hover:duration-600 duration-500">
                 <span className="text-Third font-bold text-xs">Gestión</span>
                 <span className="text-gray-800 font-bold text-3xl">Gestiona a los usuarios</span>
-                <p className="text-neutral-800">Con Opciones para gestionar los procesos que quieren hacer los usuarios.</p>
+                <p className="text-neutral-800">Con Opciones para los procesos que quieren hacer los usuarios.</p>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
