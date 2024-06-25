@@ -18,9 +18,9 @@ import Registro from './pages/auth/Registro';
 import Asociados from './pages/auth/Asociados';
 import MenuAsesora from './pages/auth/MenuAsesora';
 import Asesora from './pages/auth/Asesora';
-import Beneficios from './pages/auth/Beneficios'
-import Ejemplo from './pages/auth/Ejemplo'
-
+import Beneficios from './pages/auth/Beneficios';
+import Ejemplo from './pages/auth/Ejemplo';
+import RutaPrivadaAdmin from './pages/auth/RutaPrivadaAdmin';
 
 
 
@@ -36,7 +36,6 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route index element={<Login />} />
-        <Route path='admin' element={<Admin/>} />
         <Route path="Home" element={<Home/>} />
         <Route path="Ajustes" element={<Ajustes/>} />
         <Route path="problemas" element={<Problemas />} />
@@ -48,9 +47,8 @@ function App() {
         <Route path='asociado' element={<Asociados />} />
         <Route path='asesora' element={<Asesora />} />
         <Route path='beneficios' element={<Beneficios />} />
-        <Route path='ejemplo' element={<Ejemplo />}/>
-    
-        
+        <Route path='ejemplo' element={<Ejemplo/>}/>
+        <Route path="admin" element={<RutaPrivadaAdmin element={<Admin />} />} />
 
 
 

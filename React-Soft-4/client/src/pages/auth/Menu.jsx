@@ -27,7 +27,7 @@ const Menu = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-
+  
   const handleLogout = () => {
     logout();
     navigate("/");

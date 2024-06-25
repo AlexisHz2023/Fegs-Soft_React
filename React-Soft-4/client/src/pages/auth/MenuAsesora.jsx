@@ -1,14 +1,25 @@
 import { Link } from "react-router-dom";
 import { useState } from 'react';
+import { useAuth } from './authcontext';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const MenuAsesora = () => {
-
-   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
    const toggleMenu = () => {
      setIsOpen(!isOpen);
    };
+
+   const handleLogout = () => {
+    logout();
+    navigate("/");
+    
+  }
 
   return (
    <div className="relative">
@@ -70,7 +81,7 @@ const MenuAsesora = () => {
            </Link>
          </li>
          <li>
-           <button
+           <Link to="/"
            onClick={handleLogout}
            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
            <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
@@ -78,7 +89,7 @@ const MenuAsesora = () => {
                </svg>
              <span 
              className="block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Salir</span>
-           </button>
+           </Link>
          </li>
        </ul>
      </div>
