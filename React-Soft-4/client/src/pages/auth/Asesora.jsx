@@ -9,6 +9,9 @@ import { CiSettings } from "react-icons/ci";
 const Asesora = () => {
   return (
     <div className=''>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       <MenuAsesora />
       <div className="w-[95%] left-[2%] h-[90%] bg-white border-2  absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
 
@@ -73,44 +76,44 @@ const Asesora = () => {
               <CiEdit class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M5.5 17a4.5 4.5 0 01-1.44-8.765 4.5 4.5 0 018.302-3.046 3.5 3.5 0 014.504 4.272A4 4 0 0115 17H5.5zm3.75-2.75a.75.75 0 001.5 0V9.66l1.95 2.1a.75.75 0 101.1-1.02l-3.25-3.5a.75.75 0 00-1.1 0l-3.25 3.5a.75.75 0 101.1 1.02l1.95-2.1v4.59z" clip-rule="evenodd" />
               </CiEdit>
-              <span><strong class="font-semibold text-gray-900">SOLIDARIDAD</strong> Deseamos que nuestra colaboración inspire a la ayuda mutua entre las personas, sin esperar nada a cambio.</span>
+              <span><strong class="font-semibold text-Third">SOLIDARIDAD</strong> Deseamos que nuestra colaboración inspire a la ayuda mutua entre las personas, sin esperar nada a cambio.</span>
             </li>
             <li class="flex gap-x-3">
               <CiUser class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
               </CiUser>
-              <span><strong class="font-semibold text-gray-900">TRANSPARENCIA</strong> Somos claros en nuestras actuaciones, en la recolección de la información, y en la utilización y desarrollo de los recursos financieros.</span>
+              <span><strong class="font-semibold text-Third">TRANSPARENCIA</strong> Somos claros en nuestras actuaciones, en la recolección de la información, y en la utilización y desarrollo de los recursos financieros.</span>
             </li>
             <li class="flex gap-x-3">
               <CiReceipt class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path d="M4.632 3.533A2 2 0 016.577 2h6.846a2 2 0 011.945 1.533l1.976 8.234A3.489 3.489 0 0016 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234z" />
                 <path fill-rule="evenodd" d="M4 13a2 2 0 100 4h12a2 2 0 100-4H4zm11.24 2a.75.75 0 01.75-.75H16a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75h-.01a.75.75 0 01-.75-.75V15zm-2.25-.75a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75h-.01z" clip-rule="evenodd" />
               </CiReceipt>
-              <span><strong class="font-semibold text-gray-900">HONESTIDAD</strong> Nos expresamos con coherencia y sinceridad al interior de nuestro Fondo y con los asociados.</span>
+              <span><strong class="font-semibold text-Third">HONESTIDAD</strong> Nos expresamos con coherencia y sinceridad al interior de nuestro Fondo y con los asociados.</span>
             </li>
             <li class="flex gap-x-3">
               <CiMoneyBill class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path d="M4.632 3.533A2 2 0 016.577 2h6.846a2 2 0 011.945 1.533l1.976 8.234A3.489 3.489 0 0016 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234z" />
                 <path fill-rule="evenodd" d="M4 13a2 2 0 100 4h12a2 2 0 100-4H4zm11.24 2a.75.75 0 01.75-.75H16a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75h-.01a.75.75 0 01-.75-.75V15zm-2.25-.75a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75h-.01z" clip-rule="evenodd" />
               </CiMoneyBill>
-              <span><strong class="font-semibold text-gray-900">LIDERAZGO</strong> En el desarrollo social de la región para construir un tejido social que facilite y acompañe los procesos de cambio.</span>
+              <span><strong class="font-semibold text-Third">LIDERAZGO</strong> En el desarrollo social de la región para construir un tejido social que facilite y acompañe los procesos de cambio.</span>
             </li>
             <li class="flex gap-x-3">
               <CiSaveDown2 class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path d="M4.632 3.533A2 2 0 016.577 2h6.846a2 2 0 011.945 1.533l1.976 8.234A3.489 3.489 0 0016 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234z" />
                 <path fill-rule="evenodd" d="M4 13a2 2 0 100 4h12a2 2 0 100-4H4zm11.24 2a.75.75 0 01.75-.75H16a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75h-.01a.75.75 0 01-.75-.75V15zm-2.25-.75a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75h-.01z" clip-rule="evenodd" />
               </CiSaveDown2>
-              <span><strong class="font-semibold text-gray-900">EQUIDAD</strong> En la actuación justa y ponderada frente a los asociados de nuestro fondo.</span>
+              <span><strong class="font-semibold text-Third">EQUIDAD</strong> En la actuación justa y ponderada frente a los asociados de nuestro fondo.</span>
             </li>
             <li class="flex gap-x-3">
               <CiSettings class="mt-1 h-5 w-5 flex-none text-primary" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path d="M4.632 3.533A2 2 0 016.577 2h6.846a2 2 0 011.945 1.533l1.976 8.234A3.489 3.489 0 0016 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234z" />
                 <path fill-rule="evenodd" d="M4 13a2 2 0 100 4h12a2 2 0 100-4H4zm11.24 2a.75.75 0 01.75-.75H16a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75h-.01a.75.75 0 01-.75-.75V15zm-2.25-.75a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75h-.01z" clip-rule="evenodd" />
               </CiSettings>
-              <span><strong class="font-semibold text-gray-900">SERVICIO</strong> Brindamos orientación, asesoría y apoyo oportuno, confiable y con calidad al asociado y a sus familias, para garantizar su satisfacción.</span>
+              <span><strong class="font-semibold text-Third">SERVICIO</strong> Brindamos orientación, asesoría y apoyo oportuno, confiable y con calidad al asociado y a sus familias, para garantizar su satisfacción.</span>
             </li>
           </ul>
-          <h2 class="mt-16 text-2xl font-bold tracking-tight text-gray-900">Fomentamos la cultura del ahorro</h2>
+          <h2 class="mt-16 text-2xl font-bold tracking-tight text-Third">Fomentamos la cultura del ahorro</h2>
           <p class="mt-6">Fomentar la cultura del ahorro es crucial para promover la estabilidad financiera y el bienestar a largo plazo. Desde la educación financiera temprana hasta la automatización de ahorros y la planificación a largo plazo, cada paso contribuye a cultivar hábitos financieros saludables. Al establecer metas claras, crear presupuestos y ofrecer incentivos, se motiva a las personas a tomar control de sus finanzas y a construir un futuro más seguro y próspero. Esta cultura no solo fortalece la capacidad de enfrentar imprevistos, sino que también facilita alcanzar objetivos financieros significativos a lo largo de la vida.</p>
         </div>
       </div>

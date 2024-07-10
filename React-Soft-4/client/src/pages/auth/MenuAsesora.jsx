@@ -40,7 +40,7 @@ const MenuAsesora = () => {
            </button>
            <Link to="/asesora" className="flex ms-2 md:me-24">
              <img src="./imagenes/adminLogo.PNG" className="h-8 me-3" alt="FlowBite Logo" />
-             <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Asesora</span>
+             <span className="self-center text-xl font-semibold sm:text-2xl whitespace text-primary">Asesora</span>
            </Link>
          </div>
        </div>

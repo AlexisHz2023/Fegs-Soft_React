@@ -31,7 +31,7 @@ const FilterComponent = ({ filterText, onFilter }) => (
       onChange={onFilter}
       className="-top-5 relative"
     />
-    <CiSearch className="w-9 h-9 text-gray-500 -top-[20px] ps-1 right-[30%] relative" />
+    <CiSearch className="w-9 h-9 text-gray-500 -top-[20px] ps-1 right-[85%] relative" />
   </div>
 );
 
@@ -513,6 +513,9 @@ const Beneficios = () => {
 
   return (
     <div>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       <MenuAsesora />
       <div className="w-[95%] left-[2%] h-[90%] bg-white border-2 absolute z-10 top-[5%] rounded-lg overflow-auto scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
         <div className="p-10 sm:ml-64">
@@ -527,16 +530,16 @@ const Beneficios = () => {
               </div>
             </div>
             <div className="flex flex-wrap justify-center gap-4 p-6">
-              <div className="flex-none m-4 bg-gray-700 max-w-[300px] rounded-xl hover:bg-gray-900 hover:scale-110 duration-700 p-5">
-                <figure className="w-10 h-10 p-2 bg-blue-800 rounded-md">
+              <div className="flex-none m-4 bg-white border-4 max-w-[300px] rounded-xl hover:bg-gray-200 hover:scale-110 duration-700 p-5">
+                <figure className="w-10 h-10 p-2 bg-primary rounded-md">
                   <svg width="24" height="24" fill="#FFFFFF">
                     <path d="M18.799 7.101L12.029.63a2.122 2.122 0 0 0-2.876.001L2.384 7.1a1.01 1.01 0 0 0 1.346 1.505l.804-.72v7.93a2.146 2.146 0 0 0 2.145 2.145h6.6a2.146 2.146 0 0 0 2.145-2.145V7.884l.807.723a1.01 1.01 0 1 0 1.346-1.505zm-8.896-5.59a.101.101 0 0 1 .136 0l6.371 5.558H3.53l6.373-5.558zM6.503 8.862H12.001v7.476H5.859a.101.101 0 0 1-.101-.101V8.862h.745zm11.134 0H13.5v7.376a.101.101 0 0 1-.101.101H12.0V8.862h5.637z" />
                   </svg>
                 </figure>
-                <h2 className="text-base font-medium text-white pt-3">
+                <h2 className="text-base font-medium text-primary pt-3">
                   Ahorro Voluntario
                 </h2>
-                <div className="text-sm text-gray-300">
+                <div className="text-sm text-gray-400">
                   Planificación a corto plazo
                 </div>
                 <button
@@ -546,21 +549,21 @@ const Beneficios = () => {
                     setIsOpen2(false);
                     setIsOpen3(false);
                   }}
-                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-blue-600 rounded-lg"
+                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third rounded-lg"
                 >
                   Ver más
                 </button>
               </div>
-              <div className="flex-none m-4 bg-gray-700 max-w-[300px] rounded-xl hover:bg-gray-900 hover:scale-110 duration-700 p-5">
-                <figure className="w-10 h-10 p-2 bg-blue-800 rounded-md">
+              <div className="flex-none m-4 bg-white border-4 max-w-[300px] rounded-xl hover:bg-gray-200 hover:scale-110 duration-700 p-5">
+                <figure className="w-10 h-10 p-2 bg-primary rounded-md">
                   <svg width="24" height="24" fill="#FFFFFF">
                     <path d="M16.06 1.22L14.06 0a3.246 3.246 0 0 0-4.12 0L5.94 1.22a3.246 3.246 0 0 0-1.94 3V20c0 1.11.89 2 2 2h10a2 2 0 0 0 2-2V4.22a3.246 3.246 0 0 0-1.94-3zM9 22v-8h6v8H9zm9-2c0 .55-.45 1-1 1H9v-8h6v8h1c.55 0 1-.45 1-1V4.22a1.996 1.996 0 0 0-1.34-1.91L14 1.5V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v.5L7.34 2.31c-.63.28-1.34.74-1.34 1.91V20h10V4.22a1.996 1.996 0 0 0-1.34-1.91L14 1.5V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v.5L7.34 2.31c-.63.28-1.34.74-1.34 1.91V20h10V4.22c0-.87-.51-1.64-1.28-1.96L12 1.5V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v.5L7.34 2.31c-.63.28-1.34.74-1.34 1.91V20h10V4.22a1.996 1.996 0 0 0-1.34-1.91L14 1.5V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v.5L7.34 2.31c-.63.28-1.34.74-1.34 1.91V20h10V4.22a1.996 1.996 0 0 0-1.34-1.91L14 1.5V1c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v.5L7.34 2.31c-.63.28-1.34.74-1.34 1.91V20h10z" />
                   </svg>
                 </figure>
-                <h2 className="text-base font-medium text-white pt-3">
+                <h2 className="text-base font-medium text-primary pt-3">
                   Ahorro Obligatorio
                 </h2>
-                <div className="text-sm text-gray-300">
+                <div className="text-sm text-gray-400">
                   Planificación a largo plazo
                 </div>
                 <button
@@ -570,21 +573,21 @@ const Beneficios = () => {
                     setIsOpen2(!isOpen2);
                     setIsOpen3(false);
                   }}
-                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-blue-600 rounded-lg"
+                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third rounded-lg"
                 >
                   Ver más
                 </button>
               </div>
-              <div className="flex-none m-4 bg-gray-700 max-w-[300px] rounded-xl hover:bg-gray-900 hover:scale-110 duration-700 p-5">
-                <figure className="w-10 h-10 p-2 bg-blue-800 rounded-md">
+              <div className="flex-none m-4 bg-white border-4 max-w-[300px] rounded-xl hover:bg-gray-200 hover:scale-110 duration-700 p-5">
+                <figure className="w-10 h-10 p-2 bg-primary rounded-md">
                   <svg width="24" height="24" fill="#FFFFFF">
                     <path d="M10.5 16.5v-3H7v3H4.5v-3H3v3c0 .825.675 1.5 1.5 1.5H4.5a1.5 1.5 0 0 0 1.5-1.5v-3h3zM20 7.5H10.5V9H20zM10.5 12H20v1.5H10.5zM16 0H8a8 8 0 0 0 0 16h8a8 8 0 0 0 0-16zM8 1.5h8a6.506 6.506 0 0 1 6.5 6.5 6.506 6.506 0 0 1-6.5 6.5H8A6.506 6.506 0 0 1 1.5 8 6.506 6.506 0 0 1 8 1.5z" />
                   </svg>
                 </figure>
-                <h2 className="text-base font-medium text-white pt-3">
+                <h2 className="text-base font-medium text-primary pt-3">
                   Créditos
                 </h2>
-                <div className="text-sm text-gray-300">
+                <div className="text-sm text-gray-400">
                   Créditos disponibles
                 </div>
                 <button
@@ -594,7 +597,7 @@ const Beneficios = () => {
                     setIsOpen2(false);
                     setIsOpen3(!isOpen3);
                   }}
-                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-blue-600 rounded-lg"
+                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third rounded-lg"
                 >
                   Ver más
                 </button>
@@ -639,10 +642,10 @@ const Beneficios = () => {
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Aqui puedes agregar al asociado
+                    Aqui puedes agregar los estados de cuenta
                   </h2>
                   <p className="text-center">
-                    Ingresa el Numero de Documento para seleccionar al asociado
+                    Ingresa los valores requeridos para mostrar el estados de cuenta 
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
@@ -651,7 +654,7 @@ const Beneficios = () => {
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
                           value={selectedUser.vista || ""}
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           onChange={(event) => {
                             setSelectedUser({
@@ -665,7 +668,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser.programado || ""}
                           onChange={(event) => {
@@ -681,7 +684,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser.vacacional || ""}
                           onChange={(event) => {
@@ -697,7 +700,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser.previo_vivienda || ""}
                           onChange={(event) => {
@@ -714,11 +717,11 @@ const Beneficios = () => {
                   <div>
                     <button
                       onClick={closeModal4}
-                      className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                      className="mt-4 left-[40%] relative px-5 py-2 bg-primary text-white rounded"
                     >
                       Cerrar
                     </button>
-                    <button onClick={updateRecord} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateRecord} className="relative left-[42%] mt-4 px-5 py-2 bg-primary text-white rounded">
                       Agregar
                     </button>
                   </div>
@@ -757,11 +760,11 @@ const Beneficios = () => {
                   <div>
                     <button
                       onClick={closeModal5}
-                      className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                      className="mt-4 left-[40%] relative px-5 py-2 bg-primary text-white rounded"
                     >
                       Cerrar
                     </button>
-                    <Button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded"
+                    <Button className="relative left-[42%] mt-4 px-5 py-2 bg-primary text-white rounded"
                     onClick={addvolu}>
                       Agregar
                     </Button>
@@ -774,10 +777,10 @@ const Beneficios = () => {
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Credito Obligatorioo
+                    Agregar ahorro obligatorio
                   </h2>
                   <p className="text-center">
-                    Ingresa el Numero de Documento para seleccionar al asociado
+                  Ingresa los valores requeridos para mostrar el estados de cuenta 
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
@@ -785,7 +788,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser2.ahorro_ordinario || ""}
                           onChange={(event) => {
@@ -800,7 +803,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser2.ahorro_permanente || ""}
                           onChange={(event) => {
@@ -816,11 +819,11 @@ const Beneficios = () => {
                   <div>
                     <button
                       onClick={closeModal6}
-                      className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                      className="mt-4 left-[40%] relative px-5 py-2 bg-primary text-white rounded"
                     >
                       Cerrar
                     </button>
-                    <button onClick={updateOblig} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateOblig} className="relative left-[42%] mt-4 px-5 py-2 bg-primary text-white rounded">
                       Agregar
                     </button>
                   </div>
@@ -836,7 +839,7 @@ const Beneficios = () => {
                                 method="POST"
                               >
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Obligatorio
+                    Aqui puedes agregar un asociado al beneficio
                   </h2>
                   <p className="text-center">
                     Ingresa el Numero de Documento para seleccionar al asociado
@@ -857,11 +860,11 @@ const Beneficios = () => {
                   <div>
                     <button
                       onClick={closeModal7}
-                      className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                      className="mt-4 left-[40%] relative px-5 py-2 bg-primary text-white rounded"
                     >
                       Cerrar
                     </button>
-                    <Button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded"
+                    <Button className="relative left-[42%] mt-4 px-5 py-2 bg-primary text-white rounded"
                     onClick={add}>
                       Agregar
                     </Button>
@@ -874,10 +877,10 @@ const Beneficios = () => {
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
                 <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
                   <h2 className="text-2xl font-bold mb-4 relative text-center">
-                    Ahorro Credito
+                   Agregar Ahorro Credito
                   </h2>
                   <p className="text-center">
-                    Ingresa el Numero de Documento para seleccionar al asociado
+                  Ingresa los valores requeridos para mostrar el estados de cuenta
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
@@ -885,7 +888,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser3.rotativo || ""}
                           onChange={(event) => {
@@ -900,7 +903,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser3.SEC || ""}
                           onChange={(event) => {
@@ -915,7 +918,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser3.novedades_varias || ""}
                           onChange={(event) => {
@@ -930,7 +933,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Numero De Documento"
+                          placeholder="Saldo"
                           required
                           value={selectedUser3.compra_cartera || ""}
                           onChange={(event) => {
@@ -946,11 +949,11 @@ const Beneficios = () => {
                   <div>
                     <button
                       onClick={closeModal8}
-                      className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                      className="mt-4 left-[40%] relative px-5 py-2 bg-primary text-white rounded"
                     >
                       Cerrar
                     </button>
-                    <button onClick={updateCredi} className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded">
+                    <button onClick={updateCredi} className="relative left-[42%] mt-4 px-5 py-2 bg-primary text-white rounded">
                       Agregar
                     </button>
                   </div>
@@ -966,7 +969,7 @@ const Beneficios = () => {
                               method="POST"
                             >
                 <h2 className="text-2xl font-bold mb-4 relative text-center">
-                  Creditos
+                 Agrega un asociado al ahorro credito
                 </h2>
                 <p className="text-center">
                   Ingresa el Numero de Documento para seleccionar al asociado

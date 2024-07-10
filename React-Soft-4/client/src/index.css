@@ -7,6 +7,15 @@ body {
     font-style: normal;
 }
 
+@media print {
+  .print-hidden {
+    display: none !important;
+  }
+  .hidden-scroll {
+    overflow: hidden;
+  }
+}
+
 a:hover {
 	text-decoration: none;
 }
@@ -41,9 +50,9 @@ display: none;
   margin: 10px auto;
   cursor: pointer;
   background-color: #F49825;
-  background-color: rgb(238, 238, 240);
   top: 130px;
   z-index: 1;
+  left: 70px;
 }
 .checkbox:checked + label:before,
 .checkbox:not(:checked) + label:before{

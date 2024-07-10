@@ -53,33 +53,12 @@ const TextField = styled.input`
   padding: 0 32px 0 40px;
 `;
 
-const ClearButton = styled.button`
-  border-radius: 0.5rem;
-  height: 44px;
-  width: 85px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4484d4;
 
-  cursor: pointer;
-  left: 23%;
-  top: 45px;
-  z-index: 10;
-  color: white;
-  position: relative;
-  &:hover {
-    background-color: #ccc;
-  }
-`;
 
 // Componente de filtrado
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
+const FilterComponent = ({ filterText, onFilter }) => (
   <>
-    <ClearButton type="button" onClick={onClear}>
-      Cancelar
-    </ClearButton>
+    
 
     <TextField
       id="search"
@@ -293,7 +272,7 @@ const Asociados = () => {
         onClick={() => {
           deleteUsuario(row);
         }}
-        className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 left-12 relative rounded"
+        className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
       >
         Eliminar
       </button>
@@ -351,6 +330,9 @@ const Asociados = () => {
 
   return (
     <div className="">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       <Asesora />
       <div className="w-[95%] left-[2%] h-[90%] bg-white border-2 absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
         <div className="p-10 sm:ml-64">
@@ -387,10 +369,10 @@ const Asociados = () => {
                       <input
                         value={Nombre}
                         id="username"
-                        name="email"
                         type="text"
-                        autocomplete="email"
+                        autocomplete="name"
                         required
+                        placeholder="Ingrese su nombre"
                         onChange={(event) => {
                           setNombre(event.target.value)
                         }}
@@ -412,7 +394,8 @@ const Asociados = () => {
                       <input
                         type="text"
                         value={Documento}
-                        autocomplete="current-password"
+                        autocomplete="document"
+                        placeholder="ingrese el numero de su documento"
                         required
                         onChange={(event) => {
                           setDocumento(event.target.value)
@@ -435,7 +418,8 @@ const Asociados = () => {
                       <input
                         value={Correo}
                         type="email"
-                        autocomplete="current-password"
+                        autocomplete="email"
+                        placeholder="ingrese su correo"
                         required
                         onChange={(event) => {
                           setCorreo(event.target.value)
@@ -458,6 +442,7 @@ const Asociados = () => {
                       value={Clave}
                         type="password"
                         autocomplete="current-password"
+                        placeholder="Mas de 5 digitos y utilizar caracteres especiales"
                         required
                         onChange={(event) => {
                           setClave(event.target.value)

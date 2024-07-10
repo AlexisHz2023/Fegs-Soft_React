@@ -179,7 +179,7 @@ const Admin = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-auto overflow-x-hidden ">
+    <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-auto overflow-x-hidden scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300 ">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link
@@ -301,11 +301,11 @@ const Admin = () => {
               <div className="">
                 <div className="section pb-5 pt-5 pt-sm-2 text-center top-5 hyphens-manual flex justify-center">
                   <img
-                    className="relative left-[85%] -top-20 w-48 h-auto"
+                    className="relative left-[85%] top-4 w-48 h-auto"
                     src="./imagenes/Logo.PNG"
                     alt=""
                   />
-                  <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[20%] -top-14">
+                  <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[25%] -top-14">
                     <p>
                       Bienvenido a la interfaz{" "}
                       <a className="underline decoration-Third">Usuarios</a>,
@@ -349,7 +349,7 @@ const Admin = () => {
                   />
 
                   <label for="reg-log"></label>
-                  <div className="card-3d-wrap mx-auto drop-shadow-2xl">
+                  <div className="card-3d-wrap mx-auto drop-shadow-2xl left-24 relative">
                     <div className="card-3d-wrapper   rounded-lg  ">
                       <div className=" [backface-visibility:hidden] ">
                         <div className="center-wrap ">
@@ -486,7 +486,7 @@ const Admin = () => {
                               </h2>
                             </div>
 
-                            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm relative -top-12">
+                            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm relative -top-14">
                               <form
                                 className="space-y-0"
                                 action="#"
@@ -527,7 +527,7 @@ const Admin = () => {
                                       onChange={(event) => {
                                         setDocumento(event.target.value);
                                       }}
-                                      placeholder="Ingrese Un Usuario"
+                                      placeholder="Ingrese Su documento"
                                       className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
                                   </div>
@@ -544,7 +544,7 @@ const Admin = () => {
                                       value={Correo}
                                       type="email"
                                       required
-                                      placeholder="Correo"
+                                      placeholder="Ingrese su Correo"
                                       onChange={(event) => {
                                         setCorreo(event.target.value);
                                       }}
@@ -558,14 +558,7 @@ const Admin = () => {
                                     <label className="block text-sm font-medium leading-6 text-gray-900">
                                       Contraseña
                                     </label>
-                                    <div className="text-sm">
-                                      <a
-                                        href="#"
-                                        className="font-semibold text-Third hover:text-primary"
-                                      >
-                                        Forgot password?
-                                      </a>
-                                    </div>
+                                    
                                   </div>
                                   <div className="mt-2">
                                     <input
