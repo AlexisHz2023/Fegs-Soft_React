@@ -8,24 +8,13 @@ import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
 import { HiMiniUsers } from "react-icons/hi2";
-
-
-import {
-  Select,
-  SelectItem,
-
-  Button,
-} from "@nextui-org/react";
-
-
-
+import { Select, SelectItem, Button } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { AiFillNotification } from "react-icons/ai";
 
 
 // Este es una Rama de German
 const Alerta = withReactContent(Swal);
-
-
-
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
@@ -46,20 +35,15 @@ const TextField = styled.input`
   width: 260px;
   border-radius: 10rem;
   border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-top-right-radius: 0;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 10px;
   border-bottom-right-radius: 0;
   border: 1px solid #e5e5e5;
   padding: 0 32px 0 40px;
 `;
-
-
-
 // Componente de filtrado
 const FilterComponent = ({ filterText, onFilter }) => (
   <>
-    
-
     <TextField
       id="search"
       type="text"
@@ -81,13 +65,12 @@ const Asociados = () => {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [originalRecords, setOriginalRecords] = useState([]);
-
+  const variants = ["underlined"];
   const [Nombre, setNombre] = useState("");
   const [Correo, setCorreo] = useState("");
   const [Documento, setDocumento] = useState("");
   const [Clave, setClave] = useState("");
   const [id, setId] = useState("0");
-
 
   const add = () => {
     Axios.post("http://localhost:3001/create", {
@@ -95,29 +78,29 @@ const Asociados = () => {
       Correo: Correo,
       Documento: Documento,
       Clave: Clave,
-      rol:"3",
+      rol: "3",
     })
-    .then(() => {
-      fetchData();
-      LimpiarCampos();
-      Alerta.fire({
-        title: <strong>Creado Correctamente</strong>,
-        html: <i>El usuario {Nombre} fue registrado con éxito</i>,
-        icon: "success",
-        timer: 3000,
+      .then(() => {
+        fetchData();
+        LimpiarCampos();
+        Alerta.fire({
+          title: <strong>Creado Correctamente</strong>,
+          html: <i>El usuario {Nombre} fue registrado con éxito</i>,
+          icon: "success",
+          timer: 3000,
+        });
+      })
+      .catch(function (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          footer:
+            JSON.parse(JSON.stringify(error)).message === "Network Error"
+              ? "intente mas tarde"
+              : JSON.parse(JSON.stringify(error)).message,
+        });
       });
-    })
-    .catch(function (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        footer:
-          JSON.parse(JSON.stringify(error)).message === "Network Error"
-            ? "intente mas tarde"
-            : JSON.parse(JSON.stringify(error)).message,
-      });
-    });
-  }
+  };
 
   const LimpiarCampos = () => {
     setNombre("");
@@ -125,7 +108,6 @@ const Asociados = () => {
     setDocumento("");
     setClave("");
   };
-
 
   const fetchData = async () => {
     try {
@@ -144,10 +126,10 @@ const Asociados = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchData(); 
+      fetchData();
       setLoading(false);
     }, 2000);
-  
+
     return () => clearTimeout(timeout);
   }, []);
 
@@ -163,7 +145,7 @@ const Asociados = () => {
 
   const updateRecord = () => {
     console.log(selectedUser.Nombre);
-    console.log(selectedUser.id)
+    console.log(selectedUser.id);
     Axios.put("http://localhost:3001/updateaso", {
       id: selectedUser.id,
       Nombre: selectedUser.Nombre,
@@ -180,7 +162,7 @@ const Asociados = () => {
         fetchData();
         closeModal();
       })
-      .catch(error => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -203,7 +185,7 @@ const Asociados = () => {
       confirmButtonText: "Si, Eliminarlo",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("Holaaa")
+        console.log("Holaaa");
         Axios.delete(`http://localhost:3001/delete/${selectedUser.id}`)
           .then(() => {
             fetchData();
@@ -213,7 +195,6 @@ const Asociados = () => {
               title: `${selectedUser.Nombre} Fue Eliminado.`,
               showConfirmButton: false,
               timer: 2000,
-              
             });
           })
           .catch(function (error) {
@@ -262,26 +243,23 @@ const Asociados = () => {
           Editar
         </button>
       ),
-    }
-    ,
+    },
     {
       name: "Acciones",
       cell: (row) => (
-              <button
-        type="button"
-        onClick={() => {
-          deleteUsuario(row);
-        }}
-        className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
-      >
-        Eliminar
-      </button>
+        <button
+          type="button"
+          onClick={() => {
+            deleteUsuario(row);
+          }}
+          className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
+        >
+          Eliminar
+        </button>
       ),
     },
   ];
 
-
-  
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -332,15 +310,19 @@ const Asociados = () => {
     <div className="">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
+      />
       <Asesora />
       <div className="w-[95%] left-[2%] h-[90%] bg-white border-2 absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
         <div className="p-10 sm:ml-64">
-          <div className="p-8 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+          <div className="px-2 py-28 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
             <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="flex items-center justify-center h-24 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">
-                  <span className="text-primary">Hola!,</span> Bienvenido, Aqui
+              <div className="flex items-center justify-center z-10 relative -top-10 left-[200%] h-32 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                <p className="text-2xl text-gray-400 dark:text-gray-500 px-10">
+                <AiFillNotification className="text-Third" /> <span className="text-primary">
+                  Hola!,</span> Bienvenido, Aqui
                   puedes Registrar a los
                   <span className="text-Third"> asociados</span>
                   <span className="text-primary">.</span>
@@ -349,125 +331,110 @@ const Asociados = () => {
             </div>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
               <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <HiMiniUsers 
-                  className="mx-auto h-20 w-auto text-Third "
-                />
               
               </div>
 
-              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <div className="absolute z-0 top-40">
+                <img
+                 src="./imagenes/AsesoraInicio.svg" className="realtive z-0"/>
+              </div>
+
+              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border-1 -top-20 border-gray-50 bg-gray-100 rounded-xl shadow-2xl p-5 relative z-40">
                 <form className="space-y-6" action="#" method="POST">
-                
                   <div>
-                    <label
-                      for="email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Nombre
-                    </label>
                     <div className="mt-2">
-                      <input
+                     {variants.map((variant) => (
+                      <div>
+                        <Input
+                        type="text"
+                        variant={variant}
+                        label="Nombre"
                         value={Nombre}
                         id="username"
-                        type="text"
                         autocomplete="name"
                         required
-                        placeholder="Ingrese su nombre"
                         onChange={(event) => {
-                          setNombre(event.target.value)
+                          setNombre(event.target.value);
                         }}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                        />
+                      </div>
+                     ))}
                     </div>
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        for="password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Numero De Documento
-                      </label>
-                    </div>
                     <div className="mt-2">
-                      <input
+                     {variants.map((variant) => (
+                      <div>
+                        <Input
                         type="text"
+                        variant={variant}
+                        label="Documento"
                         value={Documento}
-                        autocomplete="document"
-                        placeholder="ingrese el numero de su documento"
+                        autocomplete="name"
                         required
                         onChange={(event) => {
-                          setDocumento(event.target.value)
+                          setDocumento(event.target.value);
                         }}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                        />
+                      </div>
+                     ))}
                     </div>
                   </div>
 
                   <div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        for="Correo"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Correo
-                      </label>
-                    </div>
+                   
                     <div className="mt-2">
-                      <input
+                     {variants.map((variant) => (
+                      <div>
+                        <Input
+                        type="text"
+                        variant={variant}
+                        label="Correo"
                         value={Correo}
-                        type="email"
-                        autocomplete="email"
-                        placeholder="ingrese su correo"
+                        autocomplete="name"
                         required
                         onChange={(event) => {
-                          setCorreo(event.target.value)
+                          setCorreo(event.target.value);
                         }}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                        />
+                      </div>
+                     ))}
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        for="password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Contraseña
-                      </label>
-                    </div>
+                  
                     <div className="mt-2">
-                      <input
-                      value={Clave}
-                        type="password"
-                        autocomplete="current-password"
-                        placeholder="Mas de 5 digitos y utilizar caracteres especiales"
+                     {variants.map((variant) => (
+                      <div>
+                        <Input
+                        type="text"
+                        variant={variant}
+                        label="Contraseña"
+                        value={Clave}
+                        autocomplete="name"
                         required
                         onChange={(event) => {
-                          setClave(event.target.value)
+                          setClave(event.target.value);
                         }}
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                        />
+                      </div>
+                     ))}
                     </div>
                   </div>
-
-                
-
                   <div>
-                  <Button
-                                    onClick={add}
-                                    className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   text-white"
-                                  >
-                                    Registrar
-                                  </Button>
+                    <Button
+                      onClick={add}
+                      className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   text-white"
+                    >
+                      Registrar
+                    </Button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
-
-          <div className="pt-6">{subHeaderComponentMemo}</div>
+          <div className="pt-6 bg-gray-100 top-10 relative rounded-lg">{subHeaderComponentMemo}</div>
 
           <DataTable
             columns={columns}
@@ -484,75 +451,73 @@ const Asociados = () => {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-  <>
-    <div className="flex flex-col gap-1 text-center mb-4">
-      <h2 className="text-xl font-bold">Actualización de información</h2>
-    </div>
-    <div>
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        Nombre
-      </label>
-      <input
-        value={selectedUser ? selectedUser.Nombre : ""}
-        type="text"
-        onChange={(event) => {
-          setSelectedUser({
-            ...selectedUser,
-            Nombre: event.target.value,
-          });
-        }}
-        placeholder="Ingrese su nombre"
-        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-      />
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        Correo
-      </label>
-      <input
-        value={selectedUser ? selectedUser.Correo : ""}
-        type="text"
-        onChange={(event) => {
-          setSelectedUser({
-            ...selectedUser,
-            Correo: event.target.value,
-          });
-        }}
-        placeholder="Ingrese su correo"
-        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-      />
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        Documento
-      </label>
-      <input
-        value={selectedUser ? selectedUser.Documento : ""}
-        type="text"
-        onChange={(event) => {
-          setSelectedUser({
-            ...selectedUser,
-            Documento: event.target.value,
-          });
-        }}
-        placeholder="Ingrese su documento"
-        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-      />
-    </div>
-    <div className="flex justify-end gap-2 mt-4">
-      <button
-        onClick={closeModal}
-        className="bg-gray-300 text-black px-4 py-2 rounded"
-      >
-        Cancelar
-      </button>
-      <button
-        onClick={updateRecord}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Actualizar
-      </button>
-
-    
-    </div>
-  </>
-</Modal>
+        <>
+          <div className="flex flex-col gap-1 text-center mb-4">
+            <h2 className="text-xl font-bold">Actualización de información</h2>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Nombre
+            </label>
+            <input
+              value={selectedUser ? selectedUser.Nombre : ""}
+              type="text"
+              onChange={(event) => {
+                setSelectedUser({
+                  ...selectedUser,
+                  Nombre: event.target.value,
+                });
+              }}
+              placeholder="Ingrese su nombre"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+            />
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Correo
+            </label>
+            <input
+              value={selectedUser ? selectedUser.Correo : ""}
+              type="text"
+              onChange={(event) => {
+                setSelectedUser({
+                  ...selectedUser,
+                  Correo: event.target.value,
+                });
+              }}
+              placeholder="Ingrese su correo"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+            />
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Documento
+            </label>
+            <input
+              value={selectedUser ? selectedUser.Documento : ""}
+              type="text"
+              onChange={(event) => {
+                setSelectedUser({
+                  ...selectedUser,
+                  Documento: event.target.value,
+                });
+              }}
+              placeholder="Ingrese su documento"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={closeModal}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={updateRecord}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Actualizar
+            </button>
+          </div>
+        </>
+      </Modal>
     </div>
   );
 };

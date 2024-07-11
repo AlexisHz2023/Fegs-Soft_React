@@ -64,12 +64,7 @@ const VerSaldo = () => {
     content: () => componentRef.current,
   });
 
-  const handleGeneratePDF = () => {
-    const doc = new jsPDF();
-    doc.text("Contenido del PDF", 10, 10);
-    doc.autoTable({ html: '#tabla' });
-    doc.save("archivo.pdf");
-  };
+  
 
   return (
     <div className="absoluted">
@@ -167,52 +162,41 @@ const VerSaldo = () => {
           </tbody>
         </table>
 
-        <table className="border-separate border-spacing-2 border border-slate-500 absolute left-[40%] top-[60%] w-[30%] rounded-lg">
-          <thead>
-            <tr>
-              <th className="border-none border-slate-600 bg-orange-300 text-black rounded">Fecha</th>
-              <th className="border-none border-slate-600 bg-orange-300 text-black rounded">Ahorros Obligatorios</th>
-              <th className="border-none border-slate-600 bg-orange-300 text-black rounded">Monto</th>
-            </tr>
-          </thead>
-          <tbody>
-            {valoresList.map((val) => (
-              <React.Fragment key={val.idahorros}>
-                <tr>
-                  <td className="border border-none text-center border-slate-700">10/08/2023</td>
-                  <td className="border border-none text-center border-slate-700">A la vista</td>
-                  <td className="border border-none text-center border-slate-700">{val.vista}</td>
-                </tr>
-                <tr>
-                  <td className="border border-none text-center border-slate-700">11/08/2023</td>
-                  <td className="border border-none text-center border-slate-700">Programado</td>
-                  <td className="border border-none text-center border-slate-700">{val.programado}</td>
-                </tr>
-                <tr>
-                  <td className="border border-none text-center border-slate-700">12/08/2023</td>
-                  <td className="border border-none text-center border-slate-700">Vacacional</td>
-                  <td className="border border-none text-center border-slate-700">{console.log(val.vacacional)}</td>
-                </tr>
-                <tr>
-                  <td className="border border-none text-center border-slate-700">12/08/2023</td>
-                  <td className="border border-none text-center border-slate-700">Previo de vivienda</td>
-                  <td className="border border-none text-center border-slate-700">{val.previo_vivienda}</td>
-                </tr>
-                <tr>
-                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">12/08/2023</td>
-                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">Total</td>
-                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
-                    {val.vista + val.programado + val.vacacional + val.previo_vivienda}
-                  </td>
-                </tr>
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
+        <table className="border-separate border-spacing-2 border border-slate-500 left-[35%] top-[65%] absolute rounded-lg w-[30%]">
+    <thead>
+      <tr>
+        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Fecha</th>
+        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Ahorros Obligatorio</th>
+        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Saldo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {valoresList.map((val, key) => (
+        <React.Fragment key={val.idobligatorio}>
+          <tr>
+            <td className="border border-none text-center border-slate-700">{val.fecha}</td>
+            <td className="border border-none text-center border-slate-700">Ahorros ordinarios</td>
+            <td className="border border-none text-center border-slate-700">{val.ahorro_ordinario}</td>
+          </tr>
+          <tr>
+            <td className="border border-none text-center border-slate-700">{val.fecha}</td>
+            <td className="border border-none text-center border-slate-700">Ahorro permanente</td>
+            <td className="border border-none text-center border-slate-700">{val.ahorro_permanente}</td>
+          </tr>
+          <tr>
+            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">{val.fecha}</td>
+            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">Total ahorros obligatorios</td>
+            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
+              {val.ahorro_ordinario + val.ahorro_permanente}
+            </td>
+          </tr>
+        </React.Fragment>
+      ))}
+    </tbody>
+  </table>
 
-        <Button onClick={handlePrint} className="absolute left-[82%] bottom-10">Imprimir</Button>
-        <Button onClick={handleGeneratePDF} className="absolute right-8 bottom-10">Generar PDF</Button>
-        <Link to="/"><Button onClick={handleLogout} className="absolute right-8 bottom-10">Logout</Button></Link>
+        <Button onClick={handlePrint} className="absolute left-[85%] bottom-10 w-10 h-10">Imprimir</Button>
+        <Link to="/"><Button onClick={handleLogout} className="absolute right-8 bottom-10">Volver</Button></Link>
       </div>
     </div>
   );
