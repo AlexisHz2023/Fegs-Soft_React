@@ -187,6 +187,11 @@ display: none;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
 
+.rdt_Table{
+  position: relative;
+  padding: auto;
+}
+
 .rdt_TableCol {
   background-color: #f49825;
   color: white;
@@ -201,7 +206,7 @@ display: none;
 
 .rdt_TableFooter {
   background-color: #4484d4;
-  width: 200px;
+  width: 10px;
 }
 
 

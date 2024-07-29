@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Asesora from "./MenuAsesora";
 import DataTable from "react-data-table-component";
 import Axios from "axios";
@@ -7,13 +6,10 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import styled from "styled-components";
 import { CiSearch } from "react-icons/ci";
-import { HiMiniUsers } from "react-icons/hi2";
-import { Select, SelectItem, Button } from "@nextui-org/react";
-import { Input } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { AiFillNotification } from "react-icons/ai";
+import Validation from "./Validation";
 
-
-// Este es una Rama de German
 const Alerta = withReactContent(Swal);
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -29,20 +25,19 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-// Estilos para el campo de texto y el botón de limpiar
 const TextField = styled.input`
   height: 44px;
   width: 260px;
-  border-radius: 10rem;
-  border-top-left-radius: 10px;
+  border-radius: 0rem;
+  border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 0;
   border: 1px solid #e5e5e5;
   padding: 0 32px 0 40px;
 `;
-// Componente de filtrado
-const FilterComponent = ({ filterText, onFilter }) => (
+
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
     <TextField
       id="search"
@@ -52,8 +47,7 @@ const FilterComponent = ({ filterText, onFilter }) => (
       value={filterText}
       onChange={onFilter}
     />
-
-    <CiSearch className="w-9 h-9 text-gray-500 -top-[40px] ps-1 relative" />
+    <CiSearch className="w-9 h-9 text-gray-500 -top-[0px] ps-1 relative right-64" />
   </>
 );
 
@@ -63,21 +57,40 @@ const Asociados = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [filterText, setFilterText] = useState("");
+  const variants = ["underlined"];
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [originalRecords, setOriginalRecords] = useState([]);
-  const variants = ["underlined"];
   const [Nombre, setNombre] = useState("");
-  const [Correo, setCorreo] = useState("");
-  const [Documento, setDocumento] = useState("");
-  const [Clave, setClave] = useState("");
-  const [id, setId] = useState("0");
+  const [values, setValues] = useState({
+    name: '',
+    Documento: '',
+    email: '',
+    password: ''
+  });
+  const [errors, setErrors] = useState({});
+
+  function handleInput(event) {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  }
+
+  function handleValidation(event) {
+    event.preventDefault();
+    const validationErrors = Validation(values);
+    setErrors(validationErrors);
+
+    // Si no hay errores, llama a la función add
+    if (Object.keys(validationErrors).length === 0) {
+      add();
+    }
+  }
 
   const add = () => {
     Axios.post("http://localhost:3001/create", {
-      Nombre: Nombre,
-      Correo: Correo,
-      Documento: Documento,
-      Clave: Clave,
+      Nombre: values.name,
+      Correo: values.email,
+      Documento: values.Documento,
+      Clave: values.password,
       rol: "3",
     })
       .then(() => {
@@ -85,28 +98,30 @@ const Asociados = () => {
         LimpiarCampos();
         Alerta.fire({
           title: <strong>Creado Correctamente</strong>,
-          html: <i>El usuario {Nombre} fue registrado con éxito</i>,
+          html: <i>El usuario {values.name} fue registrado con éxito</i>,
           icon: "success",
           timer: 3000,
         });
       })
-      .catch(function (error) {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
           footer:
             JSON.parse(JSON.stringify(error)).message === "Network Error"
-              ? "intente mas tarde"
+              ? "intente más tarde"
               : JSON.parse(JSON.stringify(error)).message,
         });
       });
   };
 
   const LimpiarCampos = () => {
-    setNombre("");
-    setCorreo("");
-    setDocumento("");
-    setClave("");
+    setValues({
+      name: '',
+      Documento: '',
+      email: '',
+      password: ''
+    });
   };
 
   const fetchData = async () => {
@@ -144,8 +159,6 @@ const Asociados = () => {
   };
 
   const updateRecord = () => {
-    console.log(selectedUser.Nombre);
-    console.log(selectedUser.id);
     Axios.put("http://localhost:3001/updateaso", {
       id: selectedUser.id,
       Nombre: selectedUser.Nombre,
@@ -176,35 +189,34 @@ const Asociados = () => {
 
   const deleteUsuario = (selectedUser) => {
     Swal.fire({
-      title: "Confirmar eliminacion?",
-      html: `<i>Esta Seguro de eliminar a <strong>${selectedUser.Nombre}</strong></i>`,
+      title: "Confirmar eliminación?",
+      html: `<i>¿Está seguro de eliminar a <strong>${selectedUser.Nombre}</strong>?</i>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Eliminarlo",
+      confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("Holaaa");
         Axios.delete(`http://localhost:3001/delete/${selectedUser.id}`)
           .then(() => {
             fetchData();
             LimpiarCampos();
             Alerta.fire({
               icon: "success",
-              title: `${selectedUser.Nombre} Fue Eliminado.`,
+              title: `${selectedUser.Nombre} fue eliminado.`,
               showConfirmButton: false,
               timer: 2000,
             });
           })
-          .catch(function (error) {
+          .catch((error) => {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "No se pudo Eliminar!",
+              text: "No se pudo eliminar.",
               footer:
                 JSON.parse(JSON.stringify(error)).message === "Network Error"
-                  ? "intente mas tarde"
+                  ? "Intente más tarde"
                   : JSON.parse(JSON.stringify(error)).message,
             });
           });
@@ -249,9 +261,7 @@ const Asociados = () => {
       cell: (row) => (
         <button
           type="button"
-          onClick={() => {
-            deleteUsuario(row);
-          }}
+          onClick={() => deleteUsuario(row)}
           className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
           Eliminar
@@ -297,29 +307,25 @@ const Asociados = () => {
         <h1>
           <img
             className="flex items-center justify-center w-full h-full bg-cover bg-center"
-            src="./Imagenes/cargando2.gif"
-            alt=""
+            src="./Imagenes/carga.gif"
+            alt="loading"
           />
         </h1>
-        <h3></h3>
       </div>
     );
   }
 
   return (
-    <div className="">
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <div>
+       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet"
-      />
+      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
       <Asesora />
-      <div className="w-[95%] left-[2%] h-[90%] bg-white border-2 absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
-        <div className="p-10 sm:ml-64">
-          <div className="px-2 py-28 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="flex items-center justify-center z-10 relative -top-10 left-[200%] h-32 bg-gray-100 dark:bg-gray-800 rounded-lg">
+      
+      <div className="w-[95%] left-[2%] h-[90%] bg-white border-2  absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
+      <div className="p-10 sm:ml-64">
+      <div className="px-2 py-48 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+      <div className="flex items-center justify-center z-10 relative  left-[70%] h-32 w-[25%] -top-24 bg-gray-100 dark:bg-gray-800 rounded-lg">
                 <p className="text-2xl text-gray-400 dark:text-gray-500 px-10">
                 <AiFillNotification className="text-Third" /> <span className="text-primary">
                   Hola!,</span> Bienvenido, Aqui
@@ -328,128 +334,99 @@ const Asociados = () => {
                   <span className="text-primary">.</span>
                 </p>
               </div>
-            </div>
-            <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              
-              </div>
-
-              <div className="absolute z-0 top-40">
+              <div className="absolute z-0 top-96 right-96">
                 <img
                  src="./imagenes/AsesoraInicio.svg" className="realtive z-0"/>
               </div>
-
-              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border-1 -top-20 border-gray-50 bg-gray-100 rounded-xl shadow-2xl p-5 relative z-40">
-                <form className="space-y-6" action="#" method="POST">
-                  <div>
-                    <div className="mt-2">
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border-1 -top-16 border-gray-50 bg-gray-100 rounded-xl shadow-2xl p-20 right-[0%] relative">
+        <form className="space-y-6" onSubmit={handleValidation}>
+          <div className="grid grid-cols-1 gap-4 relative">
+            <div>
+              <h1 className="text-center text-3xl">Formulario</h1>
+            <div className="mt-2">
                      {variants.map((variant) => (
                       <div>
-                        <Input
+              <Input
                         type="text"
+                        name="name"
                         variant={variant}
                         label="Nombre"
-                        value={Nombre}
-                        id="username"
+                        value={values.name}
                         autocomplete="name"
                         required
-                        onChange={(event) => {
-                          setNombre(event.target.value);
-                        }}
+                        onChange={handleInput}
                         />
                       </div>
                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="mt-2">
-                     {variants.map((variant) => (
-                      <div>
-                        <Input
-                        type="text"
-                        variant={variant}
-                        label="Documento"
-                        value={Documento}
-                        autocomplete="name"
-                        required
-                        onChange={(event) => {
-                          setDocumento(event.target.value);
-                        }}
-                        />
-                      </div>
-                     ))}
-                    </div>
-                  </div>
-
-                  <div>
-                   
-                    <div className="mt-2">
-                     {variants.map((variant) => (
-                      <div>
-                        <Input
-                        type="text"
-                        variant={variant}
-                        label="Correo"
-                        value={Correo}
-                        autocomplete="name"
-                        required
-                        onChange={(event) => {
-                          setCorreo(event.target.value);
-                        }}
-                        />
-                      </div>
-                     ))}
-                    </div>
-                  </div>
-                  <div>
-                  
-                    <div className="mt-2">
-                     {variants.map((variant) => (
-                      <div>
-                        <Input
-                        type="text"
-                        variant={variant}
-                        label="Contraseña"
-                        value={Clave}
-                        autocomplete="name"
-                        required
-                        onChange={(event) => {
-                          setClave(event.target.value);
-                        }}
-                        />
-                      </div>
-                     ))}
-                    </div>
-                  </div>
-                  <div>
-                    <Button
-                      onClick={add}
-                      className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   text-white"
-                    >
-                      Registrar
-                    </Button>
-                  </div>
-                </form>
               </div>
+      
+              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Documento:</label>
+              <Input
+                type="text"
+                name="Documento"
+                value={values.Documento}
+                onChange={handleInput}
+                placeholder="Documento"
+                aria-label="Documento"
+                className="w-full mt-1"
+              />
+              {errors.Documento && <p className="text-red-500 text-sm">{errors.Documento}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Correo:</label>
+              <Input
+                type="email"
+                name="email"
+                value={values.email}
+                onChange={handleInput}
+                placeholder="Correo"
+                aria-label="Correo"
+                className="w-full mt-1"
+              />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Contraseña:</label>
+              <Input
+                type="password"
+                name="password"
+                value={values.password}
+                onChange={handleInput}
+                placeholder="Contraseña"
+                aria-label="Contraseña"
+                className="w-full mt-1"
+              />
+              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
+            >
+              Registrar
+            </Button>
           </div>
-          <div className="pt-6 bg-gray-100 top-10 relative rounded-lg">{subHeaderComponentMemo}</div>
-
-          <DataTable
-            columns={columns}
-            data={Array.isArray(records) ? records : []}
-            pagination
-            paginationPerPage={4}
-            selectableRows
-            fixedHeader
-            progressPending={loading}
-            progressComponent={<Loader />}
-            theme="black"
-          />
+        </form>
         </div>
+        <DataTable
+          columns={columns}
+          data={records}
+          progressPending={loading}
+          progressComponent={<Loader />}
+          subHeader
+          subHeaderComponent={subHeaderComponentMemo}
+          pagination
+          paginationResetDefaultPage={resetPaginationToggle}
+        />
+              </div>
+        
+             </div>
+             
+       
       </div>
-
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <>
           <div className="flex flex-col gap-1 text-center mb-4">
