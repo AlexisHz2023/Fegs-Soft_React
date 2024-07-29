@@ -21,7 +21,9 @@ const TextField = styled.input`
 const Alerta = withReactContent(Swal);
 
 const FilterComponent = ({ filterText, onFilter }) => (
+  
   <div style={{ display: "flex", alignItems: "center" }}>
+    <div>
     <TextField
       id="search"
       type="text"
@@ -29,9 +31,10 @@ const FilterComponent = ({ filterText, onFilter }) => (
       aria-label="Search Input"
       value={filterText}
       onChange={onFilter}
-      className="-top-5 relative"
+      className="top-5 relative"
     />
-    <CiSearch className="w-9 h-9 text-gray-500 -top-[20px] ps-1 right-[85%] relative" />
+    <CiSearch className="w-9 h-9 text-gray-500 -top-[20px] ps-1 right-[0%] relative" />
+    </div>
   </div>
 );
 
@@ -48,6 +51,7 @@ const Beneficios = () => {
   const [isOpen7, setIsOpen7] = useState(false);
   const [isOpen8, setIsOpen8] = useState(false);
   const [isOpen9, setIsOpen9] = useState(false);
+  const [isOpen10, setIsOpen10] = useState(false);
   const [records, setRecords] = useState([]);
   const [selectedUser, setSelectedUser] = useState({
   idahorros: null,
@@ -94,6 +98,9 @@ const Beneficios = () => {
 
   const openModal9 = () => setIsOpen9(true);
   const closeModal9 = () => setIsOpen9(false);
+
+  const openModal10 = () => setIsOpen10(true);
+  const closeModal10 = () => setIsOpen10(false);
 
 
   const add = (e) => {
@@ -602,7 +609,35 @@ const Beneficios = () => {
                   Ver más
                 </button>
               </div>
+              <div className="flex-none m-4 bg-primary border-4 max-w-[300px] rounded-xl hover:bg-gray-100 hover:text-primary hover:scale-110 duration-700 p-5">
+                <figure className="w-10 h-10 p-2 bg-primary rounded-md">
+                  <svg width="24" height="24" fill="#FFFFFF">
+                    <path d="M10.5 16.5v-3H7v3H4.5v-3H3v3c0 .825.675 1.5 1.5 1.5H4.5a1.5 1.5 0 0 0 1.5-1.5v-3h3zM20 7.5H10.5V9H20zM10.5 12H20v1.5H10.5zM16 0H8a8 8 0 0 0 0 16h8a8 8 0 0 0 0-16zM8 1.5h8a6.506 6.506 0 0 1 6.5 6.5 6.506 6.506 0 0 1-6.5 6.5H8A6.506 6.506 0 0 1 1.5 8 6.506 6.506 0 0 1 8 1.5z" />
+                  </svg>
+                </figure>
+                <h2 className="text-base font-medium text-white pt-3">
+                  Añadir
+                </h2>
+                <div className="text-sm text-gray-400">
+                  Créditos disponibles
+                </div>
+                <button
+                  onClick={() => {
+                    fetchCreditos();
+                    setIsOpen1(false);
+                    setIsOpen2(false);
+                    setIsOpen3(false);
+                    setIsOpen4(false);
+                    setIsOpen10(!isOpen10);
+                  }}
+                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third rounded-lg"
+                >
+                  Ver más
+                </button>
+              </div>
             </div>
+
+            
 
             {loading ? (
               <Loader />
@@ -616,7 +651,7 @@ const Beneficios = () => {
                     subHeader
                     subHeaderComponent={subHeaderComponentMemo}
                   />
-                )}
+                )}            
                 {isOpen2 && (
                   <DataTable
                     columns={columnsObligatorios}
@@ -653,8 +688,7 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          value={selectedUser.vista || ""}
-                          placeholder="Saldo"
+                          placeholder="Saldo Vista"
                           required
                           onChange={(event) => {
                             setSelectedUser({
@@ -668,9 +702,9 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Programado"
                           required
-                          value={selectedUser.programado || ""}
+                          
                           onChange={(event) => {
                             setSelectedUser({
                               ...selectedUser,
@@ -684,9 +718,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Vacacional"
                           required
-                          value={selectedUser.vacacional || ""}
                           onChange={(event) => {
                             setSelectedUser({
                               ...selectedUser,
@@ -700,9 +733,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Previo vivienda"
                           required
-                          value={selectedUser.previo_vivienda || ""}
                           onChange={(event) => {
                             setSelectedUser({
                               ...selectedUser,
@@ -788,9 +820,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Ahorro ordinario"
                           required
-                          value={selectedUser2.ahorro_ordinario || ""}
                           onChange={(event) => {
                             setSelectedUser2({
                               ...selectedUser2,
@@ -803,9 +834,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Permanente"
                           required
-                          value={selectedUser2.ahorro_permanente || ""}
                           onChange={(event) => {
                             setSelectedUser2({
                               ...selectedUser2,
@@ -888,9 +918,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Rotativo"
                           required
-                          value={selectedUser3.rotativo || ""}
                           onChange={(event) => {
                             setSelectedUser3({
                               ...selectedUser3,
@@ -903,9 +932,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo SEC"
                           required
-                          value={selectedUser3.SEC || ""}
                           onChange={(event) => {
                             setSelectedUser3({
                               ...selectedUser3,
@@ -916,11 +944,10 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[215px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Novedades varias"
                           required
-                          value={selectedUser3.novedades_varias || ""}
                           onChange={(event) => {
                             setSelectedUser3({
                               ...selectedUser3,
@@ -933,9 +960,8 @@ const Beneficios = () => {
                         <input
                           className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
                           type="number"
-                          placeholder="Saldo"
+                          placeholder="Saldo Compra cartera"
                           required
-                          value={selectedUser3.compra_cartera || ""}
                           onChange={(event) => {
                             setSelectedUser3({
                               ...selectedUser3,
@@ -990,6 +1016,49 @@ const Beneficios = () => {
                 <div>
                   <button
                     onClick={closeModal9}
+                    className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                  >
+                    Cerrar
+                  </button>
+                  <Button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded"
+                  onClick={addcredi}>
+                    Agregar
+                  </Button>
+                </div>
+                </form>
+              </div>
+            </div>
+            )}
+             {isOpen10 && (
+              <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
+              <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
+              <form
+                              className="space-y-0"
+                              action="#"
+                              method="POST"
+                            >
+                <h2 className="text-2xl font-bold mb-4 relative text-center">
+                 Aqui puede agregar al asociado dependiendo del tipo bono
+                </h2>
+                <p className="text-center">
+                  Ingresa el Numero de Documento para seleccionar al asociado
+                </p>
+                <div className="py-5">
+                  <input
+                    className="bg-slate-50 w-[400px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                    type="text"
+                    placeholder="Numero De Documento"
+                    id="numeroDocumento"
+                    value={DocumentoCredi}
+                    required
+                    onChange={(event) => {
+                      setDocumentoCredi(event.target.value);
+                    }}
+                  />
+                </div>
+                <div>
+                  <button
+                    onClick={closeModal10}
                     className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
                   >
                     Cerrar
