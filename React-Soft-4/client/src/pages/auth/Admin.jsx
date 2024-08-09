@@ -10,6 +10,8 @@ import { AiOutlineDoubleRight } from "react-icons/ai";
 import { GiPreviousButton } from "react-icons/gi";
 import { Select, SelectItem,Modal,ModalContent,ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import { roles } from "./data";
+import { PiShieldWarningThin } from "react-icons/pi";
+
 
 const Alerta = withReactContent(Swal);
 
@@ -177,8 +179,9 @@ const Admin = () => {
       });
   };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  
 
-  return (
+  return(
     <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-auto overflow-x-hidden scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300 ">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -187,6 +190,7 @@ const Admin = () => {
         rel="stylesheet"
       />
       <Menu />
+  
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 top-20 relative ">
         <div className="w-full bg-white rounded-lg md:mt-0 sm:max-w-md xl:p-0"></div>
       </div>
@@ -299,14 +303,24 @@ const Admin = () => {
           <div className="container">
             <div className="">
               <div className="">
-                <div className="section pb-5 pt-5 pt-sm-2 text-center top-5 hyphens-manual flex justify-center">
+                <div className="section pb-5 pt-5 pt-sm-2 text-center top-[50%] hyphens-manual flex justify-center">
                   <img
-                    className="relative left-[85%] top-4 w-48 h-auto"
+                    className="relative left-[85%] top-40 w-60 h-auto"
                     src="./imagenes/Logo.PNG"
                     alt=""
                   />
-                  <div className="flex justify-center text-2xl w-[60%] h-auto px-8 relative left-[25%] -top-14">
-                    <p>
+
+<img src="./imagenes/HomeAdmin.svg" className=" w-[50%] h-[50%] absolute top-[12%] left-[60%]" />
+
+             <div className="rounded-2xl border-2 border-gray-100 w-[50%] h-[60%] -top-20 relative left-36 shadow-xl">
+              <div className="relative w-full white rounded-t-xl border-2 border-gray-200
+              
+              bg-Third">
+              <PiShieldWarningThin className="relative text-white  w-16 h-16 left-[45%] top-0 animate-pulse duration-0" />
+              </div>
+              <br />
+              <h1 className="text-primary text-3xl py-1">Informacion Importante</h1>
+              <p className="text-1xl">
                       Bienvenido a la interfaz{" "}
                       <a className="underline decoration-Third">Usuarios</a>,
                       Donde tendras como opcion ver a los usuarios a tra vez de
@@ -339,7 +353,7 @@ const Admin = () => {
                         <AiOutlineDoubleLeft className="relative top-5 text-Third animate-pulse duration-0" />
                       </div>
                     </p>
-                  </div>
+              </div>    
 
                   <input
                     className="checkbox"
@@ -349,7 +363,7 @@ const Admin = () => {
                   />
 
                   <label for="reg-log"></label>
-                  <div className="card-3d-wrap mx-auto drop-shadow-2xl left-24 relative">
+                  <div className="card-3d-wrap mx-auto drop-shadow-xl left-[5%] -top-2 relative">
                     <div className="card-3d-wrapper   rounded-lg  ">
                       <div className=" [backface-visibility:hidden] ">
                         <div className="center-wrap ">
@@ -358,9 +372,9 @@ const Admin = () => {
                               Asesoras Registradas
                             </h4>
                             <FaUsersRays className="text-primary text-5xl relative left-[36%] -top-8" />
-                            <div>
-                              <div className="relative  sm:rounded-lg z-10 bg-gray-100 w-[106%] -left-[3%] -top-6 rounded-lg  shadow-2xl scrollbar scrollbar-thumb-gray-200 overflow-x-auto scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full ">
-                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-40 ">
+                            <div className="">
+                              <div className="relative  sm:rounded-lg z-10 bg-gray-100 w-[100%] h-[90%] -left-[0%] py-7 rounded-lg  shadow-2xl scrollbar scrollbar-thumb-gray-200 overflow-x-auto scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full ">
+                                <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-40 overflow-x-hidden ">
                                   <thead>
                                     <tr>
                                       <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-2 text-white">
@@ -372,7 +386,7 @@ const Admin = () => {
                                       <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-6 text-white">
                                         Documento
                                       </th>
-                                      <th className="px-20 py-5 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">
+                                      <th className="px-5 py-4 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">
                                         Acciones
                                       </th>
                                     </tr>
@@ -392,7 +406,7 @@ const Admin = () => {
 
                                         <td className="">
                                           <div
-                                            className="flex px-10 py-5 relative -left-[5%]"
+                                            className="flex px-5 py-5 relative -left-[5%]"
                                             role="group"
                                             aria-label="Basic example"
                                           >
@@ -427,7 +441,7 @@ const Admin = () => {
                                     <GiPreviousButton className="relative w-7 h-7 left-2 top-1.5 rounded-none bg-primary text-white " />
                                   </div>
                                   <button
-                                    className="cursor-pointer bg-gray-300 text-primary w-24 h-10 -right-[1%] relative rounded-lg hover:bg-Third hover:text-white"
+                                    className="cursor-pointer bg-gray-200 text-primary w-24 h-10 -right-[1%] relative rounded-lg hover:bg-Third hover:text-white"
                                     onClick={prevPage}
                                   >
                                     Anterior
@@ -436,7 +450,7 @@ const Admin = () => {
                                     <GiNextButton className="relative w-7 h-7 left-2 top-1.5 bg-primary text-white" />
                                   </div>
                                   <button
-                                    className="cursor-pointer bg-gray-300 text-primary w-24 h-10  right-7 relative rounded-lg hover:bg-Third hover:text-white"
+                                    className="cursor-pointer bg-gray-200 text-primary w-24 h-10  right-7 relative rounded-lg hover:bg-Third hover:text-white"
                                     onClick={nextPage}
                                   >
                                     Siguiente

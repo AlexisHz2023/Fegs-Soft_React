@@ -10,6 +10,8 @@ import { Button, Input } from "@nextui-org/react";
 import { AiFillNotification } from "react-icons/ai";
 import Validation from "./Validation";
 
+
+
 const Alerta = withReactContent(Swal);
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -61,11 +63,12 @@ const Asociados = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [originalRecords, setOriginalRecords] = useState([]);
   const [Nombre, setNombre] = useState("");
+  const [rol, setRol] = useState("");
   const [values, setValues] = useState({
-    name: '',
-    Documento: '',
-    email: '',
-    password: ''
+    name: "",
+    Documento: "",
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -117,10 +120,10 @@ const Asociados = () => {
 
   const LimpiarCampos = () => {
     setValues({
-      name: '',
-      Documento: '',
-      email: '',
-      password: ''
+      name: "",
+      Documento: "",
+      email: "",
+      password: "",
     });
   };
 
@@ -317,115 +320,141 @@ const Asociados = () => {
 
   return (
     <div>
-       <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
+      />
       <Asesora />
-      
+
       <div className="w-[95%] left-[2%] h-[90%] bg-white border-2  absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
-      <div className="p-10 sm:ml-64">
-      <div className="px-2 py-48 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-      <div className="flex items-center justify-center z-10 relative  left-[70%] h-32 w-[25%] -top-24 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                <p className="text-2xl text-gray-400 dark:text-gray-500 px-10">
-                <AiFillNotification className="text-Third" /> <span className="text-primary">
-                  Hola!,</span> Bienvenido, Aqui
-                  puedes Registrar a los
-                  <span className="text-Third"> asociados</span>
-                  <span className="text-primary">.</span>
-                </p>
-              </div>
-              <div className="absolute z-0 top-96 right-96">
-                <img
-                 src="./imagenes/AsesoraInicio.svg" className="realtive z-0"/>
-              </div>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border-1 -top-16 border-gray-50 bg-gray-100 rounded-xl shadow-2xl p-20 right-[0%] relative">
-        <form className="space-y-6" onSubmit={handleValidation}>
-          <div className="grid grid-cols-1 gap-4 relative">
-            <div>
-              <h1 className="text-center text-3xl">Formulario</h1>
-            <div className="mt-2">
-                     {variants.map((variant) => (
+        <div className="p-10 sm:ml-64">
+          <div className="px-2 py-48 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div className="flex items-center justify-center z-10 relative  left-[70%] h-32 w-[25%] -top-24 bg-gray-100 dark:bg-gray-800 rounded-lg">
+              <p className="text-2xl text-gray-400 dark:text-gray-500 px-10">
+                <AiFillNotification className="text-Third" />{" "}
+                <span className="text-primary">Hola!,</span> Bienvenido, Aqui
+                puedes Registrar a los
+                <span className="text-Third"> asociados</span>
+                <span className="text-primary">.</span>
+              </p>
+            </div>
+            <div className="absolute z-0 top-96 right-96">
+              <img
+                src="./imagenes/AsesoraInicio.svg"
+                className="realtive z-0"
+              />
+            </div>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border-1 -top-16 border-gray-50 bg-gray-100 rounded-xl shadow-2xl p-20 right-[0%] relative">
+              <form className="space-y-6" onSubmit={handleValidation}>
+                <div className="grid grid-cols-1 gap-4 relative">
+                  <div>
+                    <h1 className="text-center text-3xl">Formulario</h1>
+                    <div className="mt-2">
+                      {variants.map((variant) => (
+                        <div>
+                          <Input
+                            type="text"
+                            name="name"
+                            variant={variant}
+                            label="Nombre"
+                            value={values.name}
+                            autocomplete="name"
+                            required
+                            onChange={handleInput}
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    {errors.name && (
+                      <p className="text-red-500 text-sm">{errors.name}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    {variants.map((variant) => (
                       <div>
-              <Input
-                        type="text"
-                        name="name"
-                        variant={variant}
-                        label="Nombre"
-                        value={values.name}
-                        autocomplete="name"
-                        required
-                        onChange={handleInput}
+                        <Input
+                          type="number"
+                          name="Documento"
+                          variant={variant}
+                          label="Documento"
+                          value={values.Documento}
+                          autocomplete="name"
+                          required
+                          onChange={handleInput}
                         />
                       </div>
-                     ))}
-              </div>
+                    ))}
+                    {errors.Documento && (
+                      <p className="text-red-500 text-sm">{errors.Documento}</p>
+                    )}
+                  </div>
+                  <div>
+                    {variants.map((variant) => (
+                      <div>
+                        <Input
+                          type="text"
+                          name="email"
+                          variant={variant}
+                          label="Correo"
+                          value={values.email}
+                          autocomplete="name"
+                          required
+                          onChange={handleInput}
+                        />
+                      </div>
+                    ))}
+                    {errors.email && (
+                      <p className="text-red-500 text-sm">{errors.email}</p>
+                    )}
+                  </div>
+                  <div>
+                    {variants.map((variant) => (
+                      <div>
+                        <Input
+                          type="password"
+                          name="password"
+                          variant={variant}
+                          label="Contraseña"
+                          value={values.password}
+                          autocomplete="name"
+                          required
+                          onChange={handleInput}
+                        />
+                      </div>
+                    ))}
+                    {errors.password && (
+                      <p className="text-red-500 text-sm">{errors.password}</p>
+                    )}
+                  </div>             
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
+                  >
+                    Registrar
+                  </Button>
+                </div>
+              </form>
+            </div>
+            <div className="top-36 relative">
+              <h1 className="text-center text-2xl">Asociados Registrados<span className="text-Third">.</span></h1>
+            <DataTable
+              columns={columns}
+              data={records}
+              progressPending={loading}
+              progressComponent={<Loader />}
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              pagination
+              paginationResetDefaultPage={resetPaginationToggle}
+            />
+            </div>
       
-              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Documento:</label>
-              <Input
-                type="text"
-                name="Documento"
-                value={values.Documento}
-                onChange={handleInput}
-                placeholder="Documento"
-                aria-label="Documento"
-                className="w-full mt-1"
-              />
-              {errors.Documento && <p className="text-red-500 text-sm">{errors.Documento}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Correo:</label>
-              <Input
-                type="email"
-                name="email"
-                value={values.email}
-                onChange={handleInput}
-                placeholder="Correo"
-                aria-label="Correo"
-                className="w-full mt-1"
-              />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Contraseña:</label>
-              <Input
-                type="password"
-                name="password"
-                value={values.password}
-                onChange={handleInput}
-                placeholder="Contraseña"
-                aria-label="Contraseña"
-                className="w-full mt-1"
-              />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
-            >
-              Registrar
-            </Button>
           </div>
-        </form>
         </div>
-        <DataTable
-          columns={columns}
-          data={records}
-          progressPending={loading}
-          progressComponent={<Loader />}
-          subHeader
-          subHeaderComponent={subHeaderComponentMemo}
-          pagination
-          paginationResetDefaultPage={resetPaginationToggle}
-        />
-              </div>
-        
-             </div>
-             
-       
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <>

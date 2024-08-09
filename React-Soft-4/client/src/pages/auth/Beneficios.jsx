@@ -8,6 +8,8 @@ import { useDisclosure } from "@nextui-org/react";
 import withReactContent from "sweetalert2-react-content";
 import {  Button } from "@nextui-org/react";
 import Swal from "sweetalert2";
+import { Select, SelectItem } from "@nextui-org/react";
+import { beneficios } from "./tiposbene";
 
 
 const TextField = styled.input`
@@ -53,6 +55,7 @@ const Beneficios = () => {
   const [isOpen9, setIsOpen9] = useState(false);
   const [isOpen10, setIsOpen10] = useState(false);
   const [records, setRecords] = useState([]);
+  const [rol, setRol] = useState("");
   const [selectedUser, setSelectedUser] = useState({
   idahorros: null,
   vista: '',
@@ -76,7 +79,7 @@ const Beneficios = () => {
   const [filterText, setFilterText] = useState("");
   const [originalRecords, setOriginalRecords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [Documento, setDocumento] = useState("");
+  const [DocumentoBene, setDocumento] = useState("");
   const [DocumentoBli, setDocumentoBli] = useState("");
   const [DocumentoCredi, setDocumentoCredi] = useState("");
   
@@ -158,7 +161,7 @@ const Beneficios = () => {
   const addcredi = (e) => {
     e.preventDefault()
     Axios.post("http://localhost:3001/NuevoCredi", {
-      DocumentoCredi: DocumentoCredi,
+      Documento: Documento,
     })
       .then(() => {
         fetchCreditos();
@@ -180,6 +183,48 @@ const Beneficios = () => {
         });
       });
   };
+
+  const addbeneficio = (e) => {
+    e.preventDefault();
+  
+    if (!DocumentoBene || !rol) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos incompletos",
+        text: "Por favor, complete todos los campos.",
+      });
+      return;
+    }
+  
+    console.log("DocumentoBene:", DocumentoBene);
+    console.log("rol:", rol);
+  
+    Axios.post("http://localhost:3001/NuevoBeneficio", {
+      Documento: DocumentoBene,
+      benefitId: rol,
+    })
+      .then(response => {
+        console.log("Respuesta del servidor:", response);
+        fetchCreditos();
+        Alerta.fire({
+          title: <strong>Creado Correctamente</strong>,
+          html: <i>El usuario fue asociado con éxito</i>,
+          icon: "success",
+          timer: 3000,
+        });
+      })
+      .catch(function (error) {
+        console.error("Error completo:", error); // Imprime el error completo
+        const errorMessage = error.response ? error.response.data : "Error desconocido";
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: errorMessage,
+          footer: error.message === "Network Error" ? "Intente más tarde" : error.message,
+        });
+      });
+  };
+  
 
   const fetchData = async () => {
     setLoading(true);
@@ -609,18 +654,9 @@ const Beneficios = () => {
                   Ver más
                 </button>
               </div>
-              <div className="flex-none m-4 bg-primary border-4 max-w-[300px] rounded-xl hover:bg-gray-100 hover:text-primary hover:scale-110 duration-700 p-5">
-                <figure className="w-10 h-10 p-2 bg-primary rounded-md">
-                  <svg width="24" height="24" fill="#FFFFFF">
-                    <path d="M10.5 16.5v-3H7v3H4.5v-3H3v3c0 .825.675 1.5 1.5 1.5H4.5a1.5 1.5 0 0 0 1.5-1.5v-3h3zM20 7.5H10.5V9H20zM10.5 12H20v1.5H10.5zM16 0H8a8 8 0 0 0 0 16h8a8 8 0 0 0 0-16zM8 1.5h8a6.506 6.506 0 0 1 6.5 6.5 6.506 6.506 0 0 1-6.5 6.5H8A6.506 6.506 0 0 1 1.5 8 6.506 6.506 0 0 1 8 1.5z" />
-                  </svg>
-                </figure>
-                <h2 className="text-base font-medium text-white pt-3">
-                  Añadir
-                </h2>
-                <div className="text-sm text-gray-400">
-                  Créditos disponibles
-                </div>
+            </div>
+   <div className="flex-none m-4  max-w-[300px] rounded-xl hover:bg-gray-100 hover:scale-110 duration-700 p-5">
+                <h1 className="text-center text-2xl text-gray-400">Registra a los <span className="text-Third">Asociados</span></h1>
                 <button
                   onClick={() => {
                     fetchCreditos();
@@ -630,13 +666,11 @@ const Beneficios = () => {
                     setIsOpen4(false);
                     setIsOpen10(!isOpen10);
                   }}
-                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third rounded-lg"
+                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third hover:bg-primary rounded-lg"
                 >
-                  Ver más
+                  Click Aqui
                 </button>
               </div>
-            </div>
-
             
 
             {loading ? (
@@ -874,19 +908,7 @@ const Beneficios = () => {
                   <p className="text-center">
                     Ingresa el Numero de Documento para seleccionar al asociado
                   </p>
-                  <div className="py-5">
-                    <input
-                      className="bg-slate-50 w-[400px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
-                      type="text"
-                      placeholder="Numero De Documento"
-                      id="numeroDocumento"
-                      value={Documento}
-                      required
-                      onChange={(event) => {
-                        setDocumento(event.target.value);
-                      }}
-                    />
-                  </div>
+                  
                   <div>
                     <button
                       onClick={closeModal7}
@@ -1031,7 +1053,7 @@ const Beneficios = () => {
             )}
              {isOpen10 && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-90 h-[82%] w-[76%] left-[19%] top-[12%] z-30 rounded-lg">
-              <div className="bg-white w-3/4 p-6 rounded shadow-lg  mx-auto relative">
+              <div className="bg-white w-3/4 p-6 max-w-sm rounded shadow-lg  mx-auto relative">
               <form
                               className="space-y-0"
                               action="#"
@@ -1041,32 +1063,65 @@ const Beneficios = () => {
                  Aqui puede agregar al asociado dependiendo del tipo bono
                 </h2>
                 <p className="text-center">
-                  Ingresa el Numero de Documento para seleccionar al asociado
+                  Ingresa el Numero de Documento
                 </p>
-                <div className="py-5">
+                <div className="py-5 text-center">
                   <input
-                    className="bg-slate-50 w-[400px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                    className="bg-slate-50 max-w-xs py-4 px-5 relative shadow-lg border-2 shadow-blue-500/40 rounded-lg top-4"
                     type="text"
                     placeholder="Numero De Documento"
                     id="numeroDocumento"
-                    value={DocumentoCredi}
+                    value={DocumentoBene}
                     required
                     onChange={(event) => {
-                      setDocumentoCredi(event.target.value);
+                      setDocumento(event.target.value);
                     }}
                   />
                 </div>
-                <div>
+
+                <div className="py-5 text-center">
+                  <Select
+                  className="max-w-xs pt-6 pb-8 mx-w-xs"
+                  isRequired
+                  label="Seleccione el tipo de Beneficio"
+                  defaultSelectedKeys={[""]}
+                  value={rol}
+                  onChange={(event) =>
+                    setRol(event.target.value)
+                  }
+                  >
+                    {beneficios.map (
+                      (
+                        rolItem
+                      ) => (
+                        <SelectItem
+                        key={rolItem.value}
+                        value={rolItem.value}
+                        >
+                          {rolItem.label}
+                        </SelectItem>
+                      )
+                    )}
+                  </Select>
+                </div>
+
+                <div className="py-5 px-7 flex text-center flexs">
+                <div className="px-4">
+                  <button className="mt-4 px-5 py-2 bg-Third text-white rounded"
+                  onClick={addbeneficio}>
+                    Agregar
+                  </button>
+                  </div>
+                  <div className="px-0">
                   <button
                     onClick={closeModal10}
-                    className="mt-4 left-[40%] relative px-5 py-2 bg-gray-600 text-white rounded"
+                    className="mt-4  px-5 py-2 bg-Third text-white rounded"
                   >
                     Cerrar
                   </button>
-                  <Button className="relative left-[42%] mt-4 px-5 py-2 bg-gray-600 text-white rounded"
-                  onClick={addcredi}>
-                    Agregar
-                  </Button>
+
+                  </div>
+                 
                 </div>
                 </form>
               </div>

@@ -30,64 +30,31 @@ useEffect(() => {
 }, []);
 
   return (
+    
     <div className='absolute h-[90%] w-[95%] z-20 border-2 border-blue-400 rounded-lg bg-white'>
+       <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
+      />
         <Menu />
-
+  
   <div className="profile-card w-[85%] rounded-md shadow-xl overflow-hidden z-[10] relative cursor-pointer snap-start shrink-0 bg-white flex flex-col items-center justify-center gap-3 transition-all duration-300 group left-[10%] top-28"
 >
+  
   <div
     className="avatar w-full pt-5 flex items-center justify-center flex-col gap-1"
   >
-    <div
-      className="img_container w-full flex items-center justify-center relative z-40 after:absolute after:h-[6px] after:w-full after:bg-gray-200 after:top-4 after:group-hover:size-[1%] after:delay-300 after:group-hover:delay-0 after:group-hover:transition-all after:group-hover:duration-300 after:transition-all after:duration-300 before:absolute before:h-[6px] before:w-full before:bg-gray-200 before:bottom-4 before:group-hover:size-[1%] before:delay-300 before:group-hover:delay-0 before:group-hover:transition-all before:group-hover:duration-300 before:transition-all before:duration-300"
-    >
-      <svg
-        className="size-36 z-40 border-4 border-gray-200 rounded-full group-hover:border-8 group-hover:transition-all group-hover:duration-300 transition-all duration-300"
-        id="avatar"
-        viewBox="0 0 61.8 61.8"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g data-name="Layer 2">
-          <g data-name="—ÎÓÈ 1">
-            
-            <circle fill="#FFFFFF" r="30.9" cy="30.9" cx="30.9"></circle>
-            <path
-              d="M52.797 52.701a30.896 30.896 0 0 1-44.08-.293l1.221-3.098 9.103-4.122c3.262 5.98 6.81 11.524 12.317 15.455A45.397 45.397 0 0 0 43.2 45.483l8.144 3.853z"
-              fill-rule="evenodd"
-              fill="#4484d4"
-            ></path>
-           
-            <path
-              d="M31.114 8.666c8.722 0 12.377 6.2 12.601 13.367.307 9.81-5.675 21.43-12.6 21.43-6.56 0-12.706-12.018-12.333-21.928.26-6.953 3.814-12.869 12.332-12.869z"
-              fill-rule="evenodd"
-              fill="#ffe8be"
-            ></path>
-           
-           
-            <path
-              d="M24.765 42.431a14.125 14.125 0 0 0 6.463 5.236l-4.208 6.144-5.917-9.78z"
-              fill-rule="evenodd"
-              fill="#4484d4"
-            ></path>
-            <path
-              d="M37.682 42.431a14.126 14.126 0 0 1-6.463 5.236l4.209 6.144 5.953-9.668z"
-              fill-rule="evenodd"
-              fill="#4484d4"
-            ></path>
-         
-           
-           
-          </g>
-        </g>
-      </svg>
-      <div
-        className="absolute bg-tertiary z-10 size-[60%] w-full group-hover:size-[1%] group-hover:transition-all group-hover:duration-300 transition-all duration-300 delay-700 group-hover:delay-0"
-      ></div>
+    <div>
+      
+    <p className="text-gray-400 text-4xl">Informacion del administrador</p>
+      
     </div>
   </div>
   <div className="headings *:text-center *:leading-4">
-    <p className="text-xl font-serif font-semibold text-Third">{user.Nombre}</p>
-    <p className="text-sm font-semibold text-primary">{user.Correo}</p>
+    <p className="text-2xl  font-semibold text-Third py-5 ">{user.Nombre}</p>
+    <p className="text-sm font-semibold text-primary">Esta es tu información</p>
   </div>
   <div className="w-full items-center justify-center flex">
     <ul
@@ -96,7 +63,7 @@ useEffect(() => {
       <li className="py-2">  
        
         
-        <FaUser className="w-5 h-5" />
+        <FaUser className="w-5 h-5 text-primary" />
 
        
         <Input
@@ -107,13 +74,13 @@ useEffect(() => {
       label="Nombre"
       value={user.Nombre} readOnly
       variant="bordered"
-      className="max-w-xs w-64"
+      className="max-w-xs w-96"
     />
       </li>
-      <li className="py-2">  
+      <li className="py-5">  
        
          
-         <MdEmail className="w-5 h-5" />
+         <MdEmail className="w-5 h-5 text-primary" />
 
         
         <Input
@@ -124,13 +91,13 @@ useEffect(() => {
       type="email"
       label="Email"
       variant="bordered"
-      className="max-w-xs w-64"
+      className="max-w-xs w-96"
     />
       </li>
-      <li className="py-2">  
+      <li className="py-5">  
        
           <g data-name="Layer 2">
-          <MdOutlineDocumentScanner className="w-5 h-5" />
+          <MdOutlineDocumentScanner className="w-5 h-5 text-primary" />
 
           </g>
       
@@ -143,12 +110,12 @@ useEffect(() => {
       label="Documento"
       variant="bordered"
       defaultValue="1045491338"
-      className="max-w-xs w-64"
+      className="max-w-xs w-96"
     />
       </li>
-      <li>
+      <li className="py-5">
       
-          <GrUserAdmin className="w-5 h-5" />
+          <GrUserAdmin className="w-5 h-5 text-primary" />
 
 
    
@@ -161,13 +128,13 @@ useEffect(() => {
       label="Rol"
       variant="bordered"
       defaultValue="administrador"
-      className="max-w-xs w-64"
+      className="max-w-xs w-96"
     />
       </li>
     </ul>
   </div>
   <hr
-    className="w-full group-hover:h-5 h-3 bg-tertiary group-hover:transition-all group-hover:duration-300 transition-all duration-300"
+    className="w-full group-hover:h-5 h-3 bg-Third group-hover:transition-all group-hover:duration-300 transition-all duration-300"
   />
 </div>
      
