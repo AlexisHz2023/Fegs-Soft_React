@@ -3,12 +3,13 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@ne
 import { useAuth } from "./authcontext";
 
 
+
 const Registro = () => {
   const { user } = useAuth();
 
   return (
     <div className='absolute'>
-      <div className='flex items-center gap-4 z-10 fixed top-[4.5%] left-[80%]'>
+      <div className='flex items-center gap-4 z-10 fixed top-[6.5%] left-[55%] bg-gray-200 rounded-lg px-4 py-3'>
         <Dropdown placement="bottom-start">
           <DropdownTrigger className='bg-primary'>
             <User
@@ -22,6 +23,7 @@ const Registro = () => {
               description={user.Correo}
               name={user.Nombre}
             />
+          
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">

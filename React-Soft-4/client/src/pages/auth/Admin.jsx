@@ -3,21 +3,42 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Menu from "./Menu";
-import { FaUsersRays } from "react-icons/fa6";
 import { GiNextButton } from "react-icons/gi";
-import { AiOutlineDoubleLeft } from "react-icons/ai";
-import { AiOutlineDoubleRight } from "react-icons/ai";
+import { FaUsersRays } from "react-icons/fa6";
 import { GiPreviousButton } from "react-icons/gi";
-import { Select, SelectItem,Modal,ModalContent,ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import {
+  Select,
+  SelectItem,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { roles } from "./data";
-import { PiShieldWarningThin } from "react-icons/pi";
-
+import Validation from "./Validation2";
 
 const Alerta = withReactContent(Swal);
 
 const Admin = () => {
+  useEffect(() => {
+    Swal.fire({
+      title: "Informacion Importante!",
+      icon: "info",
+      html: '<p>Bienvenido a la interfaz Usuarios Donde tendras como opcion ver a los usuarios atra vez de una tabla y Registrar nuevas Asociadas. Te explicaremos como funciona la interfaz:</p>  <br />Cuando le das click al circulo y cambia a la posicion derecha indica que esta mostrando el registro para los asociados: <img class="Derecho" src="./imagenes/RegistroUsu.PNG" /> <br/> Cuando le das click al Circulo y cambia a la posicion izquierda esta indicando que esta mostrando la tabla de todas las asesoras Registradas:<br /><img class="izquierdo" src="./imagenes/UsuariosTabla.PNG" />',
+      confirmButtonText: "Continuar",
+      footer: "Por favor tener encuenta esta informacion",
+      width: '50%'
+      })
+  }, []);
+ 
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 4;
+  const variants = ["underlined"];
 
   useEffect(() => {
     getUsuarios();
@@ -40,16 +61,41 @@ const Admin = () => {
   const [Editar, setEditar] = useState(false);
   const [usuariosList, setUsuarios] = useState([]);
 
+  const [values, setValues] = useState({
+    name: "",
+    Documento: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  function handleInput(event) {
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
+  }
+
+  function handleValidation(event) {
+    event.preventDefault();
+    const validationErrors = Validation(values);
+    setErrors(validationErrors);
+
+    // Si no hay errores, llama a la función add
+    if (Object.keys(validationErrors).length === 0) {
+      add();
+    }
+  }
+
   useEffect(() => {
     getUsuarios();
   }, []);
 
   const add = () => {
     Axios.post("http://localhost:3001/create", {
-      Nombre: Nombre,
-      Correo: Correo,
-      Documento: Documento,
-      Clave: Clave,
+      Nombre: values.name,
+      Correo: values.email,
+      Documento: values.Documento,
+      Clave: values.password,
       rol: rol,
     })
       .then(() => {
@@ -57,7 +103,7 @@ const Admin = () => {
         LimpiarCampos();
         Alerta.fire({
           title: <strong>Creado Correctamente</strong>,
-          html: <i>El usuario {Nombre} fue registrado con éxito</i>,
+          html: <i>El usuario {values.name} fue registrado con éxito</i>,
           icon: "success",
           timer: 3000,
         });
@@ -143,12 +189,13 @@ const Admin = () => {
   };
 
   const LimpiarCampos = () => {
-    setNombre("");
-    setCorreo("");
-    setDocumento("");
-    setClave("");
-    setRol("");
-    setEditar(false);
+    setValues({
+      name: "",
+      Documento: "",
+      email: "",
+      password: "",
+      rol: "",
+    });
   };
 
   const EditarUsuario = (val) => {
@@ -179,10 +226,9 @@ const Admin = () => {
       });
   };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  
 
-  return(
-    <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-auto overflow-x-hidden scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300 ">
+  return (
+    <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-hidden">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link
@@ -190,7 +236,7 @@ const Admin = () => {
         rel="stylesheet"
       />
       <Menu />
-  
+
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0 top-20 relative ">
         <div className="w-full bg-white rounded-lg md:mt-0 sm:max-w-md xl:p-0"></div>
       </div>
@@ -305,56 +351,9 @@ const Admin = () => {
               <div className="">
                 <div className="section pb-5 pt-5 pt-sm-2 text-center top-[50%] hyphens-manual flex justify-center">
                   <img
-                    className="relative left-[85%] top-40 w-60 h-auto"
-                    src="./imagenes/Logo.PNG"
-                    alt=""
+                    src="./imagenes/HomeAdmin.svg"
+                    className=" w-[50%] h-[50%] absolute top-[20%] left-[5%]"
                   />
-
-<img src="./imagenes/HomeAdmin.svg" className=" w-[50%] h-[50%] absolute top-[12%] left-[60%]" />
-
-             <div className="rounded-2xl border-2 border-gray-100 w-[50%] h-[60%] -top-20 relative left-36 shadow-xl">
-              <div className="relative w-full white rounded-t-xl border-2 border-gray-200
-              
-              bg-Third">
-              <PiShieldWarningThin className="relative text-white  w-16 h-16 left-[45%] top-0 animate-pulse duration-0" />
-              </div>
-              <br />
-              <h1 className="text-primary text-3xl py-1">Informacion Importante</h1>
-              <p className="text-1xl">
-                      Bienvenido a la interfaz{" "}
-                      <a className="underline decoration-Third">Usuarios</a>,
-                      Donde tendras como opcion ver a los usuarios a tra vez de
-                      una tabla y Registrar nuevas Asociadas. Te explicaremos
-                      como funciona la interfaz:
-                      <br />
-                      <br /> <span className="text-Third">1.</span> El Circulo
-                      en la{" "}
-                      <a className="underline decoration-Third">
-                        posicion Derecha
-                      </a>{" "}
-                      indica que esta mostrando el Registro para las asociadas.{" "}
-                      <div className="flex justify-center py-8">
-                        <AiOutlineDoubleRight className="text-primary animate-pulse duration-0 " />
-                        <img src="./imagenes/RegistroUsu.PNG" />
-                        <AiOutlineDoubleRight className="relative top-5 text-Third animate-pulse duration-0" />
-                      </div>
-                      <span className="text-primary">2.</span> Cuando le das
-                      click al Circulo y cambia a la{" "}
-                      <a className="underline decoration-primary">
-                        posicion Izquierda
-                      </a>{" "}
-                      esta indicando que esta mostrando la tabla de todas las{" "}
-                      <a className="underline decoration-primary">
-                        asesoras Registradas.
-                      </a>
-                      <div className="flex justify-center py-8">
-                        <AiOutlineDoubleLeft className="text-primary animate-pulse duration-0" />
-                        <img src="./imagenes/UsuariosTabla.PNG" />
-                        <AiOutlineDoubleLeft className="relative top-5 text-Third animate-pulse duration-0" />
-                      </div>
-                    </p>
-              </div>    
-
                   <input
                     className="checkbox"
                     type="checkbox"
@@ -363,18 +362,18 @@ const Admin = () => {
                   />
 
                   <label for="reg-log"></label>
-                  <div className="card-3d-wrap mx-auto drop-shadow-xl left-[5%] -top-2 relative">
+                  <div className="card-3d-wrap mx-auto drop-shadow-xl left-[5%] -top-32 max-w-md relative ">
                     <div className="card-3d-wrapper   rounded-lg  ">
                       <div className=" [backface-visibility:hidden] ">
                         <div className="center-wrap ">
-                          <div className="relative -top-64 bg-white h-20 rounded-lg  ">
-                            <h4 className="-left-[7%] top-5 rounded-lg w-[50%] text-3xl relative text-Third h-12   z-0">
+                          <div className="relative -top-64 bg-white h-20 rounded-lg ">
+                            <h4 className="-left-[7%] top-0 rounded-lg w-[50%] text-3xl relative text-Third h-12   z-0">
                               Asesoras Registradas
                             </h4>
-                            <FaUsersRays className="text-primary text-5xl relative left-[36%] -top-8" />
+                            <FaUsersRays className="text-primary text-5xl relative left-[36%] -top-14" />
                             <div className="">
-                              <div className="relative  sm:rounded-lg z-10 bg-gray-100 w-[100%] h-[90%] -left-[0%] py-7 rounded-lg  shadow-2xl scrollbar scrollbar-thumb-gray-200 overflow-x-auto scrollbar-track-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full ">
-                                <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-40 overflow-x-hidden ">
+                              <div className="relative  sm:rounded-lg z-10 bg-gray-100 w-[90%] h-1/4 -top-12 left-[5%] py-7 rounded-lg  shadow-2xl scrollbar scrollbar-thumb-primary overflow-x-auto scrollbar-track-gray-50 scrollbar-thumb-rounded-full scrollbar-track-rounded-full ">
+                                <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-40 overflow-x-hidden  ">
                                   <thead>
                                     <tr>
                                       <th className="px-10 py-3 bg-primary relative rounded-t-lg w-5 h-auto left-2 text-white">
@@ -503,88 +502,101 @@ const Admin = () => {
                             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm relative -top-14">
                               <form
                                 className="space-y-0"
-                                action="#"
-                                method="POST"
+                                onSubmit={handleValidation}
                               >
                                 <div>
-                                  <div className="flex items-center justify-between">
-                                    <label className="block text-sm font-medium leading-6  text-gray-900">
-                                      Nombre
-                                    </label>
-                                  </div>
+                                  <div className="flex items-center justify-between"></div>
                                   <div className="mt-2">
-                                    <input
-                                      value={Nombre}
-                                      id="username"
-                                      type="text"
-                                      onChange={(event) => {
-                                        setNombre(event.target.value);
-                                      }}
-                                      required
-                                      placeholder="Ingrese Su Nombre"
-                                      className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                    {variants.map((variant) => (
+                                      <Input
+                                        type="text"
+                                        name="name"
+                                        variant={variant}
+                                        label="Nombre"
+                                        value={values.name}
+                                        autocomplete="name"
+                                        required
+                                        onChange={handleInput}
+                                      />
+                                    ))}
+                                  </div>
+                                  {errors.name && (
+                                    <p className="text-red-500 text-sm">
+                                      {errors.name}
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div>
+                                  <div className="flex items-center justify-between"></div>
+                                  <div className="mt-2">
+                                    {variants.map((variant) => (
+                                      <Input
+                                        type="number"
+                                        name="Documento"
+                                        variant={variant}
+                                        label="Documento"
+                                        value={values.Documento}
+                                        autocomplete="name"
+                                        required
+                                        onChange={handleInput}
+                                      />
+                                    ))}
+                                    {errors.Documento && (
+                                      <p className="text-red-500 text-sm">
+                                        {errors.Documento}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
 
                                 <div>
-                                  <div className="flex items-center justify-between">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                      Documento
-                                    </label>
-                                  </div>
+                                  <div className="flex items-center justify-between"></div>
                                   <div className="mt-2">
-                                    <input
-                                      type="text"
-                                      value={Documento}
-                                      required
-                                      onChange={(event) => {
-                                        setDocumento(event.target.value);
-                                      }}
-                                      placeholder="Ingrese Su documento"
-                                      className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                    {variants.map((variant) => (
+                                      <div>
+                                        <Input
+                                          type="text"
+                                          name="email"
+                                          variant={variant}
+                                          label="Correo"
+                                          value={values.email}
+                                          autocomplete="name"
+                                          required
+                                          onChange={handleInput}
+                                        />
+                                      </div>
+                                    ))}
+                                    {errors.email && (
+                                      <p className="text-red-500 text-sm">
+                                        {errors.email}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
 
                                 <div>
-                                  <div className="flex items-center justify-between">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                      Correo
-                                    </label>
-                                  </div>
+                                  <div className="flex items-center justify-between"></div>
                                   <div className="mt-2">
-                                    <input
-                                      value={Correo}
-                                      type="email"
-                                      required
-                                      placeholder="Ingrese su Correo"
-                                      onChange={(event) => {
-                                        setCorreo(event.target.value);
-                                      }}
-                                      className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <div className="flex items-center justify-between">
-                                    <label className="block text-sm font-medium leading-6 text-gray-900">
-                                      Contraseña
-                                    </label>
-                                    
-                                  </div>
-                                  <div className="mt-2">
-                                    <input
-                                      type="password"
-                                      required
-                                      placeholder="********"
-                                      value={Clave}
-                                      onChange={(event) => {
-                                        setClave(event.target.value);
-                                      }}
-                                      className="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
+                                    {variants.map((variant) => (
+                                      <div>
+                                        <Input
+                                          type="password"
+                                          name="password"
+                                          variant={variant}
+                                          label="Contraseña"
+                                          value={values.password}
+                                          autocomplete="name"
+                                          required
+                                          onChange={handleInput}
+                                        />
+                                      </div>
+                                    ))}
+                                    {errors.password && (
+                                      <p className="text-red-500 text-sm">
+                                        {errors.password}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
 
@@ -617,7 +629,7 @@ const Admin = () => {
 
                                 <div>
                                   <Button
-                                    onClick={add}
+                                    type="submit"
                                     className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   text-white"
                                   >
                                     Registrar

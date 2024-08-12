@@ -51,9 +51,10 @@ display: none;
   margin: 10px auto;
   cursor: pointer;
   background-color: #F49825;
-  top: 130px;
+  top: -20px;
   z-index: 1;
   left: 70px;
+  box-shadow: 6px 6px 6px #d4cfc9;
 }
 .checkbox:checked + label:before,
 .checkbox:not(:checked) + label:before{
@@ -210,6 +211,16 @@ display: none;
   width: 10px;
 }
 
+.Derecho {
+  position: relative;
+  left: 45%;
+  top: 5%;
+}
 
+.izquierdo {
+  position: relative;
+  left: 45%;
+  top: 0%;
+}
 
 
