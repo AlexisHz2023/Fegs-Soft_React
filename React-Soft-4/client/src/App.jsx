@@ -6,28 +6,19 @@ import AuthLayout from "./layouts/auth/AuthLayout";
 
 // pages
 import Login from './pages/auth/Login';
-import Error404 from "./pages/404"
-import Eleccion from './pages/auth/Eleccion';
+import Registro from './pages/auth/Registro';
+import Error404 from "./pages/404";
 import Problemas from './pages/auth/Problemas';
-import  Actualizar from './pages/auth/actualizar'
-import VerSaldo from './pages/auth/VerSaldo';
 import Admin from './pages/auth/Admin';
 import Home from './pages/auth/Home';
 import Ajustes from './pages/auth/Ajustes';
-import Registro from './pages/auth/Registro';
+import Asesora from './pages/auth/Asesora';
+import {RutaPrivadaAdmin, RutaPrivadaAsesora} from './pages/auth/RutaPrivadaAdmin';
+import VerSaldo from './pages/auth/VerSaldo';
 import Asociados from './pages/auth/Asociados';
 import MenuAsesora from './pages/auth/MenuAsesora';
-import Asesora from './pages/auth/Asesora';
 import Beneficios from './pages/auth/Beneficios';
-import Ejemplo from './pages/auth/Ejemplo';
-import RutaPrivadaAdmin from './pages/auth/RutaPrivadaAdmin';
-
-
-
-
-
-
-
+import Movimientos from './pages/auth/Movimientos'
 
 
 function App() {
@@ -35,25 +26,18 @@ function App() {
     
     <Routes>
       <Route path="/" element={<AuthLayout />}>
-        <Route index element={<Login />} />
+        <Route index  element={<Login/>}/>
         <Route path="Home" element={<Home/>} />
         <Route path="Ajustes" element={<Ajustes/>} />
         <Route path="problemas" element={<Problemas />} />
-        <Route path="eleccion" element={<Eleccion />} />
-        <Route path='actualizar' element={<Actualizar />} />
         <Route path='verSaldo' element={<VerSaldo />} />
         <Route path='registro' element={<Registro />} />
         <Route path='menuasesora' element={<MenuAsesora />} />
         <Route path='asociado' element={<Asociados />} />
         <Route path='asesora' element={<Asesora />} />
-        <Route path='beneficios' element={<Beneficios />} />
-        <Route path='ejemplo' element={<Ejemplo/>}/>
-        <Route path="admin" element={<Admin />} />
-
-
-
-
-
+        <Route path='movimientos' element={<Movimientos />} />
+        <Route path='beneficios' element={<RutaPrivadaAsesora element={<Beneficios />} />} />
+        <Route path="admin" element={<RutaPrivadaAdmin element={<Admin />} />} />
       </Route>
       <Route path="*" element={<Error404 />} />
     </Routes>

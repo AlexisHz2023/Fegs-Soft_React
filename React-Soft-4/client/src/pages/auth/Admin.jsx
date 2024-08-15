@@ -126,7 +126,6 @@ const Admin = () => {
       Nombre: Nombre,
       Correo: Correo,
       Documento: Documento,
-      rol: rol,
     })
       .then(() => {
         getUsuarios();
@@ -349,7 +348,7 @@ const Admin = () => {
           <div className="container">
             <div className="">
               <div className="">
-                <div className="section pb-5 pt-5 pt-sm-2 text-center top-[50%] hyphens-manual flex justify-center">
+                <div className="section pb-5 pt-5 pt-sm-2 text-center top-8 left-[10%] hyphens-manual flex justify-center">
                   <img
                     src="./imagenes/HomeAdmin.svg"
                     className=" w-[50%] h-[50%] absolute top-[20%] left-[5%]"
@@ -462,11 +461,11 @@ const Admin = () => {
                       </div>
                       <div className="card-back">
                         <div className="center-wrap">
-                          <div className="z-0 relative top-[50%]">
+                          <div className="z-0 relative top-[40%]">
                             <svg
                               viewBox="0 0 200 200"
                               xmlns="http://www.w3.org/2000/svg"
-                              className="relative top-[420px] right-32"
+                              className="relative top-[10px] right-20"
                             >
                               <path
                                 fill="#ffffff"
@@ -475,20 +474,20 @@ const Admin = () => {
                               />
                             </svg>
                           </div>
-                          <div className="flex min-h-full flex-col justify-center px-6 py-5 lg:px-8 h-[50rem] w-[60%] relative right-16 -top-[36rem] bg-white">
+                          <div className="flex min-h-full flex-col justify-center px-6 py-5 lg:px-8 h-[20rem] rounded-lg w-[60%] relative right-3 -top-[36rem] bg-white">
                             <div className="sm:mx-auto sm:w-full sm:max-w-sm relative">
-                              <div className="relative right-40 top-48">
+                              <div className="relative right-48 top-48">
                                 <img
-                                  className="mx-auto h-7 w-auto"
+                                  className="mx-auto h-7 top-7 w-auto relative"
                                   src="./imagenes/Logo3.png"
                                 />
                                 <div className="relative mx-auto left-[230%]">
-                                  <h1 className="relative right-10 text-Third">
+                                  <h1 className="relative right-28 text-Third">
                                     Fondo De Empleados
                                   </h1>
                                   <img
                                     src="./imagenes/FondoSgn.svg"
-                                    className="relative w-auto h-[80%] top-[10rem] right-44"
+                                    className="relative w-auto h-[80%] top-[10rem] right-44 tracking-tight font-bold leading-9"
                                     alt=""
                                   />
                                 </div>
@@ -505,8 +504,8 @@ const Admin = () => {
                                 onSubmit={handleValidation}
                               >
                                 <div>
-                                  <div className="flex items-center justify-between"></div>
-                                  <div className="mt-2">
+                                 
+                                  <div className="mt-2 relative">
                                     {variants.map((variant) => (
                                       <Input
                                         type="text"

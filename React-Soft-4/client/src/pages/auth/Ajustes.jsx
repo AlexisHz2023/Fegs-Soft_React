@@ -31,7 +31,7 @@ useEffect(() => {
 
   return (
     
-    <div className='absolute h-[90%] w-[95%] z-20 border-2 border-blue-400 rounded-lg bg-white'>
+    <div className='absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg overflow-hidden'>
        <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link
@@ -113,24 +113,7 @@ useEffect(() => {
       className="max-w-xs w-96"
     />
       </li>
-      <li className="py-5">
       
-          <GrUserAdmin className="w-5 h-5 text-primary" />
-
-
-   
-        <Input
-      isReadOnly
-      id="Rol"
-      name="Rol"
-      value={user.rol}
-      type="text"
-      label="Rol"
-      variant="bordered"
-      defaultValue="administrador"
-      className="max-w-xs w-96"
-    />
-      </li>
     </ul>
   </div>
   <hr

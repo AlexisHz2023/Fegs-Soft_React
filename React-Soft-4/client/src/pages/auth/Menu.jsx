@@ -63,7 +63,7 @@ const Menu = () => {
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           />
         </svg>
-        <h1 className="fixed bg-gray-200 rounded-lg top-14 text- left-[7%] px-10 py-4 ps-10 text-2xl md:text-base lg:text-lg xl:text-xl">
+        <h1 className="fixed bg-gray-100 rounded-lg top-14 text- left-[7%] px-10 py-4 ps-10 text-2xl md:text-base lg:text-lg xl:text-xl">
           Menu de navegacion
         </h1>
 
@@ -72,7 +72,7 @@ const Menu = () => {
       </button>
       
 
-      <div className="relative left-[75%] px-8 -top-11 bg-gray-200 w-80 py-2  rounded-lg">
+      <div className="relative left-[75%] px-8 -top-11 bg-gray-100 text-primary w-80 py-2  rounded-lg">
       <Badge content="99+" shape="circle" color="danger">
       <Button
         radius="full"
@@ -87,11 +87,12 @@ const Menu = () => {
         
       
       <Dropdown placement="bottom-start ">
-          <DropdownTrigger className='bg-primary py-30 relative' >
+          <DropdownTrigger className='bg-primary py-30 relative ' >
             <User
               
               className="transition-transform "
               name="Notificaciones"
+              
               
             />
           

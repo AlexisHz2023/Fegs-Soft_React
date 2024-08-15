@@ -89,8 +89,8 @@ app.post("/login", (req, res) => {
 
 
 app.put("/update", (req, res) => {
-    const { id, Nombre, Correo, Documento, rol } = req.body;
-
+    const { id, Nombre, Correo, Documento } = req.body;
+        console.log("Paso aqui")
     try {
         db.query(
             'SELECT * FROM usuarios WHERE (Correo = ? OR Documento = ?) AND id != ?',
@@ -103,7 +103,7 @@ app.put("/update", (req, res) => {
                     res.status(400).send("Correo o Documento ya existen");
                 } else {
                     db.query(
-                        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=?, rol=? WHERE id=?',
+                        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
                         [Nombre, Correo, Documento, rol, id],
                         (err, result) => {
                             if (err) {

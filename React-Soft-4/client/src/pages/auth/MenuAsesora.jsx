@@ -2,11 +2,18 @@ import { Link } from "react-router-dom";
 import { useState } from 'react';
 import { useAuth } from './authcontext';
 import { useNavigate } from 'react-router-dom';
+import Registro from "./Registro";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
+import { AiFillBell } from "react-icons/ai";
+import {Badge, Button} from "@nextui-org/react";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
+
 
 
 
 const MenuAsesora = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
   
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -14,6 +21,7 @@ const MenuAsesora = () => {
    const toggleMenu = () => {
      setIsOpen(!isOpen);
    };
+
 
    const handleLogout = () => {
     logout();
@@ -23,7 +31,7 @@ const MenuAsesora = () => {
 
   return (
    <div className="relative">
-   <nav className="fixed top-10 z-50 w-[90%] right-[5%] shadow-md rounded-lg bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+   <nav className="fixed top-10 z-50 w-[90%] h-20 px-11 right-[5%] shadow-md rounded-lg border-4 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
      <div className="px-3 py-3 lg:px-5 lg:pl-3">
        <div className="flex items-center justify-between">
          <div className="flex items-center justify-start rtl:justify-end">
@@ -39,16 +47,88 @@ const MenuAsesora = () => {
              </svg>
            </button>
            <Link to="/asesora" className="flex ms-2 md:me-24">
-             <img src="./imagenes/adminLogo.PNG" className="h-8 me-3" alt="FlowBite Logo" />
-             <span className="self-center text-xl font-semibold sm:text-2xl whitespace text-primary">Asesora</span>
+             <img src="./imagenes/adminLogo.PNG" className="h-10 me-3 relative -top-2 right-8" alt="FlowBite Logo" />
+             <span className="self-center text-xl font-semibold sm:text-3xl whitespace -top-1 relative text-primary">Bienvenido!</span>
            </Link>
+           
+
+           <div className='flex items-center text-primary gap-4 z-10 fixed  left-[35%] rounded-lg px-9 py-3 top-12'>
+        <Dropdown placement="bottom-start">
+          <DropdownTrigger className='bg-primary '>
+            <User
+              as="button"
+              avatarProps={{
+                isBordered: true,
+                color: "primary",
+                src: "",
+              }}
+              className="transition-transform "
+              description={user.Correo}
+              name={user.Nombre}
+            />
+          
+          </DropdownTrigger>
+          <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-bold">Registrado Como</p>
+              <p className="font-bold">@{user.Correo}</p>
+            </DropdownItem>
+            
+           
+            
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+
+
+
+
+
+           <div className="relative  -left-[20%] -top-1  text-primary  py-2 px-10  rounded-lg">
+      <Badge content="99+" shape="circle" color="danger">
+      <Button
+        radius="full"
+        isIconOnly
+        aria-label="more than 99 notifications"
+        variant="light"
+        className="realtive left-10 z-40 "
+      >
+        <AiFillBell  className="w-10 h-10 text-primary left-0 relative z-40 "/>
+      </Button>
+    </Badge>
+        
+      
+      <Dropdown placement="bottom-start ">
+          <DropdownTrigger className='bg-primary py-30 relative ' >
+            <User
+              
+              className="transition-transform "
+              name="Notificaciones"
+              
+              
+            />
+          
+          </DropdownTrigger>
+          <DropdownMenu aria-label="User Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-bold">Actualizate de informacion</p>
+              <p className="font-bold">{user.Nombre}!</p>
+            </DropdownItem>
+          
+            
+           
+            <DropdownItem key="system">No tienes notificaciones</DropdownItem>
+           
+          </DropdownMenu>
+        </Dropdown>
+        </div>
          </div>
        </div>
      </div>
    </nav>
    <aside 
      id="logo-sidebar" 
-     className={`fixed top-12 border-primary rounded-2xl left-[2%] z-40 w-64 h-[84%] pt-20 transition-transform ${
+     className={`fixed top-28 border-primary rounded-2xl left-[3%] z-40 w-64 h-[70%] pt-20 transition-transform ${
        isOpen ? 'translate-x-0' : '-translate-x-full'
      } bg-white border-r sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`} 
      aria-label="Sidebar"
@@ -81,6 +161,14 @@ const MenuAsesora = () => {
            </Link>
          </li>
          <li>
+           <Link to="/Movimientos" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+             <svg className="w-8 h-8 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+             <FaMoneyBillTransfer />
+             </svg>
+             <span className="block px-1 py-2 text-xl text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Movimientos</span>
+           </Link>
+         </li>
+         <li>
            <Link to="/"
            onClick={handleLogout}
            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -91,6 +179,7 @@ const MenuAsesora = () => {
              className="block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Salir</span>
            </Link>
          </li>
+         
        </ul>
      </div>
    </aside>

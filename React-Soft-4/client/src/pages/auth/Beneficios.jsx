@@ -581,6 +581,26 @@ const Beneficios = () => {
                 </p>
               </div>
             </div>
+
+            <div className="flex-none relative left-[5%] m-4 w-[90%] rounded-xl  hover:bg-gray-100 border-4 hover:scale-110 duration-700 p-5">
+                <h1 className="text-center text-2xl text-primary">Registra a los <span className="text-Third">Asociados</span></h1>
+                <button
+                  onClick={() => {
+                    fetchCreditos();
+                    setIsOpen1(false);
+                    setIsOpen2(false);
+                    setIsOpen3(false);
+                    setIsOpen4(false);
+                    setIsOpen10(!isOpen10);
+                  }}
+                  className="flex-none relative left-[45%] w-28 mt-8 px-5 p-10 py-4 text-center text-sm font-medium text-white bg-Third hover:bg-primary rounded-lg"
+                >
+                  Click Aqui
+                </button>
+              </div>
+
+
+
             <div className="flex flex-wrap justify-center gap-4 p-6">
               <div className="flex-none m-4 bg-white border-4 max-w-[300px] rounded-xl hover:bg-gray-200 hover:scale-110 duration-700 p-5">
                 <figure className="w-10 h-10 p-2 bg-primary rounded-md">
@@ -655,22 +675,7 @@ const Beneficios = () => {
                 </button>
               </div>
             </div>
-   <div className="flex-none m-4  max-w-[300px] rounded-xl hover:bg-gray-100 hover:scale-110 duration-700 p-5">
-                <h1 className="text-center text-2xl text-gray-400">Registra a los <span className="text-Third">Asociados</span></h1>
-                <button
-                  onClick={() => {
-                    fetchCreditos();
-                    setIsOpen1(false);
-                    setIsOpen2(false);
-                    setIsOpen3(false);
-                    setIsOpen4(false);
-                    setIsOpen10(!isOpen10);
-                  }}
-                  className="block w-full mt-4 px-4 py-2 text-center text-sm font-medium text-white bg-Third hover:bg-primary rounded-lg"
-                >
-                  Click Aqui
-                </button>
-              </div>
+   
             
 
             {loading ? (

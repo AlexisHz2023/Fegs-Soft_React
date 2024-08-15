@@ -340,7 +340,7 @@ const Asociados = () => {
                 <span className="text-primary">.</span>
               </p>
             </div>
-            <div className="absolute z-0 top-96 right-96">
+            <div className="absolute z-0 top-96 right-80">
               <img
                 src="./imagenes/AsesoraInicio.svg"
                 className="realtive z-0"
