@@ -1,7 +1,4 @@
-import { Routes, Route} from 'react-router-dom'
-
-
-
+import { Routes, Route} from 'react-router-dom';
 import AuthLayout from "./layouts/auth/AuthLayout";
 
 // pages
@@ -19,7 +16,6 @@ import Asociados from './pages/auth/Asociados';
 import MenuAsesora from './pages/auth/MenuAsesora';
 import Beneficios from './pages/auth/Beneficios';
 import Movimientos from './pages/auth/Movimientos'
-
 
 function App() {
   return (

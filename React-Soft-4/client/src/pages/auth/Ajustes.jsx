@@ -2,7 +2,6 @@ import Menu from "./Menu";
 import {Input} from "@nextui-org/react";
 import { FaUser } from "react-icons/fa";
 import { MdOutlineDocumentScanner } from "react-icons/md";
-import { GrUserAdmin } from "react-icons/gr";
 import { MdEmail } from "react-icons/md";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';

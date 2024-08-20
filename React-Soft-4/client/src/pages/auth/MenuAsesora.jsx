@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState } from 'react';
 import { useAuth } from './authcontext';
 import { useNavigate } from 'react-router-dom';
-import Registro from "./Registro";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
 import { AiFillBell } from "react-icons/ai";
 import {Badge, Button} from "@nextui-org/react";

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import MenuAsesora from './MenuAsesora'
-import { IoWalletOutline } from "react-icons/io5";
 import { Select, SelectItem } from "@nextui-org/react";
 import { beneficios } from "./tiposbene";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
@@ -29,11 +28,8 @@ const Movimientos = () => {
       
       <div class="p-8 sm:p-10 lg:flex-auto text-center text-primary">
         <FaMoneyBillTransfer
-        className='w-28 h-28 relative -top-[10%] left-[41%] '/>
-        <input type="text"
-        placeholder='Ingrese el numero de Documento'
-        className='bg-gray-100  relative -top-5  z-20 text-gray-900 sm:text-sm rounded-lg block w-full p-4'
-        />
+        className='w-28 h-28 relative -top-[3%] left-[45%] animate-ping '/>
+
 
 <div className="py-5 text-center">
                   <Select
@@ -61,8 +57,19 @@ const Movimientos = () => {
                   </Select>
                 </div>
 
+                <input type="text"
+        placeholder='Ingrese el numero de Documento'
+        className='bg-gray-100  relative -top-5  z-20 text-gray-900 sm:text-sm rounded-lg block w-full p-4'
+        />
                 <div className="text-white">
                     <button className="bg-Third p-2 rounded-lg hover:bg-primary">Consultar</button>
+                </div>
+                
+                <div className="p-10">
+                <div className="w-94 py-20 bg-gray-200 rounded-lg relative text-center content-center">
+                  
+
+                </div>
                 </div>
 
         <div class="mt-10 flex items-center gap-x-4">
@@ -75,11 +82,6 @@ const Movimientos = () => {
          
           
         </ul>
-      </div>
-      <div class="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-        <div class="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-300 lg:flex lg:flex-col lg:justify-center lg:py-16">
-         
-        </div>
       </div>
     </div>
   </div>
