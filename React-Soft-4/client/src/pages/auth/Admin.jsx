@@ -121,7 +121,8 @@ const Admin = () => {
   };
 
   const update = () => {
-    Axios.put("http://localhost:3001/update", {
+    console.log(id, Nombre, Correo, Documento);
+    Axios.put("http://localhost:3001/updateaso", {
       id: id,
       Nombre: Nombre,
       Correo: Correo,
@@ -385,7 +386,7 @@ const Admin = () => {
                                         Documento
                                       </th>
                                       <th className="px-5 py-4 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">
-                                        Acciones
+                                        Rol
                                       </th>
                                     </tr>
                                   </thead>
@@ -401,6 +402,7 @@ const Admin = () => {
                                         <td className="px-9 py-3">
                                           {val.Documento}
                                         </td>
+                                        
 
                                         <td className="">
                                           <div

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { useReactToPrint } from 'react-to-print';
-import jsPDF from 'jspdf';
 import { useAuth } from "./authcontext";
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
@@ -14,6 +13,7 @@ const VerSaldo = () => {
   const [valoresList, setValores] = useState([]);
   const [voluList, setVolu] = useState([]);
   const [crediList, setCredi] = useState([]);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     if (user && user.id) {
@@ -62,22 +62,20 @@ const VerSaldo = () => {
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    onBeforeGetContent: () => setIsPrinting(true),
+    onAfterPrint: () => setIsPrinting(false),
   });
-
-  
 
   return (
     <div className="absoluted">
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-
+      {/* ... enlaces de estilos omitidos para brevedad ... */}
       <div ref={componentRef} className="bg-white w-[95%] z-20 h-[95%] border-2 border-blue-400 right-[2%] top-5 rounded-lg absolute overflow-hidden overflow-x-hidden print:hidden-scroll">
         <h1 className="relative text-center text-4xl top-5">Estado De Cuenta</h1>
         <h2 className="relative text-center text-2xl top-7">CEDULA: {user.Documento}</h2>
         <h2 className="relative text-center text-2xl top-10">NOMBRE: {user.Nombre}</h2>
         <img className="relative w-60 left-8 -top-16 max-w-full h-auto" src="./imagenes/Logo.PNG" alt="" />
 
+        {/* Primera tabla */}
         <table id="tabla" className="border-separate border-spacing-2 border border-slate-500 absolute left-[20%] top-[24%] rounded-lg w-[30%]">
           <thead>
             <tr>
@@ -119,6 +117,7 @@ const VerSaldo = () => {
           </tbody>
         </table>
 
+        {/* Segunda tabla */}
         <table className="border-separate border-spacing-2 border border-slate-500 absolute left-[55%] top-[25%] w-[30%] rounded-lg">
           <thead>
             <tr>
@@ -162,41 +161,33 @@ const VerSaldo = () => {
           </tbody>
         </table>
 
+        {/* Tercera tabla */}
         <table className="border-separate border-spacing-2 border border-slate-500 left-[35%] top-[65%] absolute rounded-lg w-[30%]">
-    <thead>
-      <tr>
-        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Fecha</th>
-        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Ahorros Obligatorio</th>
-        <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Saldo</th>
-      </tr>
-    </thead>
-    <tbody>
-      {valoresList.map((val, key) => (
-        <React.Fragment key={val.idobligatorio}>
-          <tr>
-            <td className="border border-none text-center border-slate-700">{val.fecha}</td>
-            <td className="border border-none text-center border-slate-700">Ahorros ordinarios</td>
-            <td className="border border-none text-center border-slate-700">{val.ahorro_ordinario}</td>
-          </tr>
-          <tr>
-            <td className="border border-none text-center border-slate-700">{val.fecha}</td>
-            <td className="border border-none text-center border-slate-700">Ahorro permanente</td>
-            <td className="border border-none text-center border-slate-700">{val.ahorro_permanente}</td>
-          </tr>
-          <tr>
-            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">{val.fecha}</td>
-            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">Total ahorros obligatorios</td>
-            <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
-              {val.ahorro_ordinario + val.ahorro_permanente}
-            </td>
-          </tr>
-        </React.Fragment>
-      ))}
-    </tbody>
-  </table>
+          <thead>
+            <tr>
+              <th className="border-none border-slate-600 bg-orange-300 text-black rounded">Fecha</th>
+              <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Ahorros Obligatorios</th>
+              <th className="border-none text-center border-slate-600 bg-orange-300 text-black rounded">Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {valoresList.map((val) => (
+              <tr key={val.idahorros}>
+                <td className="border-none text-center border-slate-700">11/08/2023</td>
+                <td className="border-none text-center border-slate-700">Fondo Social</td>
+                <td className="border-none text-center border-slate-700">{val.fondo_social}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-        <Button onClick={handlePrint} className="absolute left-[85%] bottom-10 w-10 h-10">Imprimir</Button>
-        <Link to="/"><Button onClick={handleLogout} className="absolute right-8 bottom-10">Volver</Button></Link>
+        {/* Botones para Imprimir y Volver, que solo se muestran cuando no se está imprimiendo */}
+        {!isPrinting && (
+          <>
+            <Button onClick={handlePrint} className="no-print absolute left-[85%] bottom-10 w-10 h-10">Imprimir</Button>
+            <Link to="/"><Button onClick={handleLogout} className="no-print absolute right-8 bottom-10">Volver</Button></Link>
+          </>
+        )}
       </div>
     </div>
   );

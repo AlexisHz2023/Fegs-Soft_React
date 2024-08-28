@@ -69,7 +69,7 @@ const Beneficios = () => {
     ahorro_permanente: '',
   });
   const [selectedUser3, setSelectedUser3] = useState({
-    idcreditos: null,
+    idcreditos: null, 
     rotativo: '',
     SEC: '',
     novedades_varias: '',

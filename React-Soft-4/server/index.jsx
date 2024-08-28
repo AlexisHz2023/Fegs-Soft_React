@@ -180,7 +180,6 @@ app.get("/tblcreditos", (req, res) => {
             c.compra_cartera, 
             u.Nombre AS nombreCredi, 
             u.Documento AS documentoCredi,
-            c.seg_credito,
             c.fecha
         FROM creditos c
         INNER JOIN usuarios u ON c.usuariocredi = u.id
@@ -202,7 +201,6 @@ app.get("/tblobligatorios", (req, res) => {
             ao.ahorro_permanente, 
             u.Nombre AS nombreUsuario, 
             u.Documento AS documentoUsuario, 
-            ao.seg_ahorro_obligatorio, 
             ao.fecha
         FROM ahorros_obligatorios ao
         INNER JOIN usuarios u ON ao.usuariobli = u.id
@@ -218,7 +216,7 @@ app.get("/tblobligatorios", (req, res) => {
 
 app.get("/tblvoluntarios", (req, res) => {
     db.query(`
-        SELECT av.idahorros, av.vista, av.programado, av.vacacional, av.previo_vivienda, u.Nombre, u.Documento, av.seg_ahorro_voluntario, av.fecha
+        SELECT av.idahorros, av.vista, av.programado, av.vacacional, av.previo_vivienda, u.Nombre, u.Documento, av.fecha
         FROM ahorros_voluntarios av
         INNER JOIN usuarios u ON av.usuariovolu = u.id
     `, (err, result) => {
@@ -250,7 +248,7 @@ app.delete("/delete/:id", (req, res) => {
 
 app.get("/creditos/:id", (req, res) => {
     const id = req.params.id;
-    db.query('SELECT idcreditos, rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha FROM creditos WHERE usuariocredi = ?;',
+    db.query('SELECT idcreditos, rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, fecha FROM creditos WHERE usuariocredi = ?;',
         [id],
         (err, result) => {
             if (err) {
@@ -264,7 +262,7 @@ app.get("/creditos/:id", (req, res) => {
 
 app.get("/obligatorios/:id", (req, res) => {
     const id = req.params.id; // Obtener el id de los parámetros de ruta
-    db.query('SELECT idobligatorio, ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha FROM ahorros_obligatorios WHERE usuariobli = ?;',
+    db.query('SELECT idobligatorio, ahorro_ordinario, ahorro_permanente, usuariobli, fecha FROM ahorros_obligatorios WHERE usuariobli = ?;',
         [id],
         (err, result) => {
             if (err) {
@@ -278,7 +276,7 @@ app.get("/obligatorios/:id", (req, res) => {
 
 app.get("/voluntarios/:id", (req, res) => {
     const id = req.params.id;
-    db.query('SELECT idahorros, vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha FROM ahorros_voluntarios WHERE usuariovolu = ?;',
+    db.query('SELECT idahorros, vista, programado, vacacional, previo_vivienda, usuariovolu, fecha FROM ahorros_voluntarios WHERE usuariovolu = ?;',
         [id],
         (err, result) => {
             if (err) {
@@ -448,241 +446,6 @@ app.get("/asociados", (req, res) => {
         });
 });
 
-
-app.post("/NuevoObligatorio", (req, res) => {
-    const Documento = req.body.Documento;
-    const benefitId = 3; // ID para ahorros obligatorios
-
-    try {
-        // Verificar si el usuario existe
-        db.query('SELECT id FROM usuarios WHERE Documento = ?', [Documento], (err, userResult) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error al buscar el usuario");
-            } else if (userResult.length === 0) {
-                res.status(404).send("Usuario no encontrado");
-            } else {
-                const userId = userResult[0].id;
-
-                // Verificar si ya existe en ahorros obligatorios
-                db.query('SELECT * FROM ahorros_obligatorios WHERE usuariobli = ?', [userId], (err, obligResult) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send("Error al buscar ahorros obligatorios");
-                    } else if (obligResult.length > 0) {
-                        res.status(400).send("El usuario ya tiene un ahorro obligatorio asociado");
-                    } else {
-                        // Verificar si ya existe en aso_bene
-                        db.query('SELECT * FROM aso_bene WHERE usuario = ? AND beneficios = ?', [userId, benefitId], (err, asoBeneResult) => {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send("Error al verificar beneficio asociado");
-                            } else if (asoBeneResult.length > 0) {
-                                res.status(400).send("El usuario ya tiene este beneficio asociado");
-                            } else {
-                                // Insertar en aso_bene
-                                db.query(
-                                    'INSERT INTO aso_bene (usuario, beneficios) VALUES (?, ?)',
-                                    [userId, benefitId],
-                                    (err, result) => {
-                                        if (err) {
-                                            console.log(err);
-                                            res.status(500).send("Error al asociar beneficio al usuario");
-                                        } else {
-                                            db.query(
-                                                'INSERT INTO seg_ahorros_obligatorios (monto, usuario, beneficios, tipo_monto, fecha) VALUES (?, ?, ?, ?, NOW())',
-                                                [0, userId, benefitId, 'Tipo de monto'],
-                                                (err, segAhorrosObligatoriosResult) => {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        res.status(500).send("Error al crear segmento de ahorro obligatorio");
-                                                    } else {
-                                                        db.query(
-                                                            'INSERT INTO ahorros_obligatorios (ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha) VALUES (?, ?, ?, ?, NOW())',
-                                                            [0, 0, userId, segAhorrosObligatoriosResult.insertId],
-                                                            (err, ahorrosObligatoriosResult) => {
-                                                                if (err) {
-                                                                    console.log(err);
-                                                                    res.status(500).send("Error al crear ahorro obligatorio asociado");
-                                                                } else {
-                                                                    res.send("Beneficio asociado y ahorro obligatorio creado correctamente");
-                                                                }
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            );
-                                        }
-                                    }
-                                );
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error en el servidor");
-    }
-});
-
-app.post("/NuevoVolu", (req, res) => {
-    const DocumentoBli = req.body.DocumentoBli;
-    const benefitId = 2; // ID para ahorros voluntarios
-
-    try {
-        // Verificar si el usuario existe
-        db.query('SELECT id FROM usuarios WHERE Documento = ?', [DocumentoBli], (err, userResult) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error al buscar el usuario");
-            } else if (userResult.length === 0) {
-                res.status(404).send("Usuario no encontrado");
-            } else {
-                const userId = userResult[0].id;
-
-                // Verificar si ya existe en ahorros voluntarios
-                db.query('SELECT * FROM ahorros_voluntarios WHERE usuariovolu = ?', [userId], (err, voluResult) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send("Error al buscar ahorros voluntarios");
-                    } else if (voluResult.length > 0) {
-                        res.status(400).send("El usuario ya tiene un ahorro voluntario asociado");
-                    } else {
-                        // Verificar si ya existe en aso_bene
-                        db.query('SELECT * FROM aso_bene WHERE usuario = ? AND beneficios = ?', [userId, benefitId], (err, asoBeneResult) => {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send("Error al verificar beneficio asociado");
-                            } else if (asoBeneResult.length > 0) {
-                                res.status(400).send("El usuario ya tiene este beneficio asociado");
-                            } else {
-                                // Insertar en aso_bene
-                                db.query(
-                                    'INSERT INTO aso_bene (usuario, beneficios) VALUES (?, ?)',
-                                    [userId, benefitId],
-                                    (err, result) => {
-                                        if (err) {
-                                            console.log(err);
-                                            res.status(500).send("Error al asociar beneficio al usuario");
-                                        } else {
-                                            db.query(
-                                                'INSERT INTO seg_ahorros_voluntarios (monto, usuario, beneficios, tipo_monto, fecha) VALUES (?, ?, ?, ?, NOW())',
-                                                [0, userId, benefitId, 'Tipo de monto'],
-                                                (err, segAhorrosVoluntariosResult) => {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        res.status(500).send("Error al crear segmento de ahorro voluntario");
-                                                    } else {
-                                                        db.query(
-                                                            'INSERT INTO ahorros_voluntarios (vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha) VALUES (?, ?, ?, ?, ?, ?, NOW())',
-                                                            [0, 0, 0, 0, userId, segAhorrosVoluntariosResult.insertId],
-                                                            (err, ahorrosVoluntariosResult) => {
-                                                                if (err) {
-                                                                    console.log(err);
-                                                                    res.status(500).send("Error al crear ahorro voluntario asociado");
-                                                                } else {
-                                                                    res.send("Beneficio asociado y ahorro voluntario creado correctamente");
-                                                                }
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            );
-                                        }
-                                    }
-                                );
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error en el servidor");
-    }
-});
-
-app.post("/NuevoCredi", (req, res) => {
-    const DocumentoCredi = req.body.DocumentoCredi;
-    const benefitId = 1; // ID para créditos
-
-    try {
-        // Verificar si el usuario existe
-        db.query('SELECT id FROM usuarios WHERE Documento = ?', [DocumentoCredi], (err, userResult) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error al buscar el usuario");
-            } else if (userResult.length === 0) {
-                res.status(404).send("Usuario no encontrado");
-            } else {
-                const userId = userResult[0].id;
-
-                // Verificar si ya existe en créditos
-                db.query('SELECT * FROM creditos WHERE usuariocredi = ?', [userId], (err, credResult) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send("Error al buscar créditos");
-                    } else if (credResult.length > 0) {
-                        res.status(400).send("El usuario ya tiene un crédito asociado");
-                    } else {
-                        // Verificar si ya existe en aso_bene
-                        db.query('SELECT * FROM aso_bene WHERE usuario = ? AND beneficios = ?', [userId, benefitId], (err, asoBeneResult) => {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send("Error al verificar beneficio asociado");
-                            } else if (asoBeneResult.length > 0) {
-                                res.status(400).send("El usuario ya tiene este beneficio asociado");
-                            } else {
-                                // Insertar en aso_bene
-                                db.query(
-                                    'INSERT INTO aso_bene (usuario, beneficios) VALUES (?, ?)',
-                                    [userId, benefitId],
-                                    (err, result) => {
-                                        if (err) {
-                                            console.log(err);
-                                            res.status(500).send("Error al asociar beneficio al usuario");
-                                        } else {
-                                            db.query(
-                                                'INSERT INTO seg_creditos (monto, usuario, beneficios, tipo_monto, fecha) VALUES (?, ?, ?, ?, NOW())',
-                                                [0, userId, benefitId, 'Tipo de monto'],
-                                                (err, segCreditResult) => {
-                                                    if (err) {
-                                                        console.log(err);
-                                                        res.status(500).send("Error al crear segmento de crédito");
-                                                    } else {
-                                                        db.query(
-                                                            'INSERT INTO creditos (rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha) VALUES (?, ?, ?, ?, ?, ?, NOW())',
-                                                            [0, 0, 0, 0, userId, segCreditResult.insertId],
-                                                            (err, creditResult) => {
-                                                                if (err) {
-                                                                    console.log(err);
-                                                                    res.status(500).send("Error al crear crédito asociado");
-                                                                } else {
-                                                                    res.send("Beneficio asociado y crédito creado correctamente");
-                                                                }
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            );
-                                        }
-                                    }
-                                );
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send("Error en el servidor");
-    }
-});
-
 app.post("/NuevoBeneficio", (req, res) => {
     const { Documento, benefitId } = req.body;    
     
@@ -799,6 +562,162 @@ app.post("/NuevoBeneficio", (req, res) => {
     }
   });  
   
+
+  app.get("/usuario-datos", (req, res) => {
+    const documento = req.query.documento;
+    const beneficio = parseInt(req.query.beneficio);
+  
+    if (!documento || isNaN(beneficio)) {
+      return res.status(400).send('Parámetros de entrada inválidos');
+    }
+  
+    // Consulta para obtener el ID del usuario basado en el documento
+    const getUserIdQuery = `
+        SELECT id 
+        FROM usuarios 
+        WHERE documento = ?;
+    `;
+  
+    db.query(getUserIdQuery, [documento], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el ID del usuario:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+  
+        if (result.length === 0) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+  
+        const userId = result[0].id;
+        console.log(`ID del usuario encontrado: ${userId}`); // Depuración
+  
+        let query;
+        let queryParams = [userId];
+  
+        switch (beneficio) {
+          case 1:
+            query = `
+                SELECT 
+                    'Credito' AS tipo,
+                    seg.idsegC AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_creditos seg
+                JOIN 
+                    usuarios usr ON seg.usuario = usr.id
+                WHERE 
+                    seg.usuario = ?;
+            `;
+            break;
+  
+          case 2:
+            query = `
+                SELECT 
+                    'Ahorro Voluntario' AS tipo,
+                    seg.idsegV AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_ahorros_voluntarios seg
+                JOIN 
+                    usuarios usr ON seg.usuario = usr.id
+                WHERE 
+                    seg.usuario = ?;
+            `;
+            break;
+  
+          case 3:
+            query = `
+                SELECT 
+                    'Ahorro Obligatorio' AS tipo,
+                    seg.idsegO AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_ahorros_obligatorios seg
+                JOIN 
+                    usuarios usr ON seg.usuario = usr.id
+                WHERE 
+                    seg.usuario = ?;
+            `;
+            break;
+  
+          case 0:
+            query = `
+                SELECT 
+                    'Credito' AS tipo,
+                    seg.idsegC AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_creditos seg
+                JOIN 
+                    usuarios usr ON seg.usuario = ?
+                
+                UNION ALL
+                
+                SELECT 
+                    'Ahorro Voluntario' AS tipo,
+                    seg.idsegV AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_ahorros_voluntarios seg
+                JOIN 
+                    usuarios usr ON seg.usuario = ?
+                
+                UNION ALL
+                
+                SELECT 
+                    'Ahorro Obligatorio' AS tipo,
+                    seg.idsegO AS id,
+                    seg.monto,
+                    seg.beneficios,
+                    seg.tipo_monto,
+                    seg.fecha,
+                    usr.documento
+                FROM 
+                    seg_ahorros_obligatorios seg
+                JOIN 
+                    usuarios usr ON seg.usuario = ?
+                
+                ORDER BY 
+                    fecha;
+            `;
+            queryParams = [userId, userId, userId];
+            break;
+  
+          default:
+            return res.status(400).send('Beneficio no válido');
+        }
+  
+        // Ejecutar la consulta según el beneficio seleccionado
+        db.query(query, queryParams, (err, result) => {
+            if (err) {
+                console.error('Error al obtener los datos del usuario:', err);
+                return res.status(500).send('Error interno del servidor');
+            }
+            console.log(`Resultados de la consulta:`, result); // Depuración
+            res.send(result);
+        });
+    });
+  });
 
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001");

@@ -1,37 +1,133 @@
-import React, { useState } from "react";
-import MenuAsesora from './MenuAsesora'
+import React, { useState, useEffect } from "react";
+import MenuAsesora from "./MenuAsesora";
 import { Select, SelectItem } from "@nextui-org/react";
 import { beneficios } from "./tiposbene";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import DataTable from "react-data-table-component";
+import Axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-
-
+const Alerta = withReactContent(Swal);
 
 const Movimientos = () => {
-    const [rol, setRol] = useState("");
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [DocumentoBene, setDocumento] = useState("");
+  const [records, setRecords] = useState([]);
+  const [originalRecords, setOriginalRecords] = useState([]);
+  const [rol, setRol] = useState("");
+
+  const addbeneficio = async (e) => {
+    e.preventDefault();
+  
+    if (!DocumentoBene || !rol) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos incompletos",
+        text: "Por favor, complete todos los campos.",
+      });
+      return;
+    }
+  
+    setLoading(true); // Inicia la carga
+  
+    try {
+      console.log(rol);
+      // Realiza la solicitud GET utilizando async/await
+      const response = await Axios.get("http://localhost:3001/usuario-datos", {
+        params: {
+          documento: DocumentoBene,
+          beneficio: rol,
+        },
+      });
+  
+      console.log(response.data);
+      setRecords(response.data || []);
+      setOriginalRecords(response.data || []);
+  
+      Alerta.fire({
+        title: <strong>Consulta Exitosa</strong>,
+        html: <i>Datos obtenidos con éxito</i>,
+        icon: "success",
+        timer: 3000,
+      });
+  
+      setIsOpen1(true); // Abre la tabla
+  
+    } catch (error) {
+      // Maneja el error de la solicitud
+      console.error("Error fetching data:", error);
+  
+      const errorMessage = error.response
+        ? error.response.data
+        : "Error desconocido";
+  
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: errorMessage,
+        footer: error.message === "Network Error" ? "Intente más tarde" : error.message,
+      });
+    } finally {
+      // Detiene la carga sin importar el resultado
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    addbeneficio();
+  }, []);
+
+  const columnsVoluntarios = [
+    { name: "Documento", selector: (row) => row.documento, sortable: true },
+    { name: "Beneficio", selector: (row) => row.beneficios, sortable: true },
+    { name: "Tipo_Monto", selector: (row) => row.tipo_monto, sortable: true },
+    { name: "Monto", selector: (row) => row.monto, sortable: true },
+    { name: "Fecha", selector: (row) => row.fecha, sortable: true },
+  ];
+
+  
+
+  function Loader() {
+    return (
+      <div>
+        <h1>
+          <img
+            className="flex items-center justify-center w-full h-full bg-cover bg-center"
+            src="./Imagenes/cargando2.gif"
+            alt="Cargando"
+          />
+        </h1>
+        <h3></h3>
+      </div>
+    );
+  }
+
   return (
-    <div className=''>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <div className="">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-        <MenuAsesora />
-        <div className="w-[95%] left-[2%] h-[90%] bg-white border-4  absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
+      <link
+        href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet"
+      />
+      <MenuAsesora />
+      <div className="w-[95%] left-[2%] h-[90%] bg-white border-4 absolute z-20 top-[5%] rounded-lg overflow-auto scrollbar scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
         <div className="p-10 sm:ml-64">
-        <div className="p-8 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-            
-        <div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl sm:text-center">
-      <h2 class="text-3xl font-bold tracking-tight text-Third sm:text-4xl">Consulte los movimientos aqui.</h2>
-    </div>
-    <div class="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
-      
-      <div class="p-8 sm:p-10 lg:flex-auto text-center text-primary">
-        <FaMoneyBillTransfer
-        className='w-28 h-28 relative -top-[3%] left-[45%] animate-ping '/>
+          <div className="p-8 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div className="bg-white py-24 sm:py-32">
+              <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl sm:text-center">
+                  <h2 className="text-3xl font-bold tracking-tight text-Third sm:text-4xl">
+                    Consulte los movimientos aquí.
+                  </h2>
+                </div>
+                <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
+                  <div className="p-8 sm:p-10 lg:flex-auto text-center text-primary">
+                    <FaMoneyBillTransfer className="w-28 h-28 relative -top-[3%] left-[45%] animate-pulse " />
 
-
-<div className="py-5 text-center">
+                    <div className="py-5 text-center">
                   <Select
                   className="max-w-xs pt-6 pb-8 mx-w-xs"
                   isRequired
@@ -57,45 +153,62 @@ const Movimientos = () => {
                   </Select>
                 </div>
 
-                <input type="text"
-        placeholder='Ingrese el numero de Documento'
-        className='bg-gray-100  relative -top-5  z-20 text-gray-900 sm:text-sm rounded-lg block w-full p-4'
-        />
-                <div className="text-white">
-                    <button className="bg-Third p-2 rounded-lg hover:bg-primary">Consultar</button>
-                </div>
-                
-                <div className="p-10">
-                <div className="w-94 py-20 bg-gray-200 rounded-lg relative text-center content-center">
-                  
+                    <form className="space-y-0" action="#" method="POST">
+                      <input
+                        type="text"
+                        placeholder="Ingrese el número de Documento"
+                        value={DocumentoBene}
+                        className="bg-gray-100 relative -top-5 z-20 text-gray-900 sm:text-sm rounded-lg block w-full p-4"
+                        onChange={(event) => setDocumento(event.target.value)}
+                      />
+                    </form>
 
-                </div>
-                </div>
+                    <div className="text-white">
+                      <button
+                        className="bg-Third p-2 rounded-lg hover:bg-primary"
+                        onClick={addbeneficio}
+                      >
+                        Consultar
+                      </button>
+                    </div>
 
-        <div class="mt-10 flex items-center gap-x-4">
-          <h4 class="flex-none text-sm font-semibold leading-6 text-blue-300">Consulta los Movimientos</h4>
-          <div class="h-px flex-auto bg-gray-100"></div>
+                    <div className="p-10">
+                      <div className="w-94 py-20 bg-gray-200 rounded-lg relative text-center content-center">
+                        {loading ? (
+                          <Loader />
+                        ) : (
+                          <div>
+                            {isOpen1 && (
+                              <DataTable
+                                columns={columnsVoluntarios}
+                                data={records}
+                                pagination
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-10 flex items-center gap-x-4">
+                      <h4 className="flex-none text-sm font-semibold leading-6 text-blue-300">
+                        Consulta los Movimientos
+                      </h4>
+                      <div className="h-px flex-auto bg-gray-100"></div>
+                    </div>
+                    <ul
+                      role="list"
+                      className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+                    ></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <ul role="list" class="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6">
-         
-          
-         
-          
-        </ul>
       </div>
     </div>
-  </div>
-</div>
+  );
+};
 
-
-
-
-        </div>
-        </div>
-        </div>
-
-    </div>
-  )
-}
-
-export default Movimientos
+export default Movimientos;
