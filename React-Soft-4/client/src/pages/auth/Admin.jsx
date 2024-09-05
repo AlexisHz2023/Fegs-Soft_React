@@ -122,11 +122,10 @@ const Admin = () => {
 
   const update = () => {
     console.log(id, Nombre, Correo, Documento);
-    Axios.put("http://localhost:3001/updateaso", {
+    Axios.put("http://localhost:3001/update", {
       id: id,
       Nombre: Nombre,
       Correo: Correo,
-      Documento: Documento,
     })
       .then(() => {
         getUsuarios();
@@ -388,6 +387,9 @@ const Admin = () => {
                                       <th className="px-5 py-4 bg-primary relative rounded-t-lg w-5 h-auto left-10 text-white">
                                         Rol
                                       </th>
+                                      <th className="px-5 py-4 bg-primary relative rounded-t-lg w-5 h-auto left-12 text-white">
+                                        Acciones
+                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -401,6 +403,9 @@ const Admin = () => {
                                         </td>
                                         <td className="px-9 py-3">
                                           {val.Documento}
+                                        </td>
+                                        <td className="px-9 py-3">
+                                          {val.rol_nombre}
                                         </td>
                                         
 

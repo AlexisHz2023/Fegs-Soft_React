@@ -186,7 +186,7 @@ const Beneficios = () => {
 
   const addbeneficio = (e) => {
     e.preventDefault();
-  
+
     if (!DocumentoBene || !rol) {
       Swal.fire({
         icon: "error",
@@ -195,13 +195,22 @@ const Beneficios = () => {
       });
       return;
     }
-  
-    console.log("DocumentoBene:", DocumentoBene);
-    console.log("rol:", rol);
-  
+
+    // Convertir rol a número si es un string
+    const tipoBeneficio = Number(rol);
+
+    if (isNaN(tipoBeneficio)) {
+      Swal.fire({
+        icon: "error",
+        title: "Tipo de beneficio no válido",
+        text: "Por favor, seleccione un beneficio válido.",
+      });
+      return;
+    }
+
     Axios.post("http://localhost:3001/NuevoBeneficio", {
       Documento: DocumentoBene,
-      benefitId: rol,
+      tipoBeneficio: tipoBeneficio, // Asegúrate de que sea numérico
     })
       .then(response => {
         console.log("Respuesta del servidor:", response);
@@ -223,7 +232,7 @@ const Beneficios = () => {
           footer: error.message === "Network Error" ? "Intente más tarde" : error.message,
         });
       });
-  };
+};
   
 
   const fetchData = async () => {

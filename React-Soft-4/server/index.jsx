@@ -89,34 +89,46 @@ app.post("/login", (req, res) => {
 
 
 app.put("/update", (req, res) => {
-    const { id, Nombre, Correo, Documento } = req.body;
-        console.log("Paso aqui")
+    const { id, Nombre, Correo } = req.body;
+
     try {
-        db.query(
-            'SELECT * FROM usuarios WHERE (Correo = ? OR Documento = ?) AND id != ?',
-            [Correo, Documento, id],
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send("Error en el servidor");
-                } else if (result.length > 0) {
-                    res.status(400).send("Correo o Documento ya existen");
-                } else {
-                    db.query(
-                        'UPDATE usuarios SET Nombre=?, Correo=?, Documento=? WHERE id=?',
-                        [Nombre, Correo, Documento, rol, id],
-                        (err, result) => {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send("Error al actualizar el usuario");
-                            } else {
-                                res.send(result);
-                            }
-                        }
-                    );
+        // Si el Correo está presente, verificamos si ya existe para otro usuario
+        if (Correo) {
+            db.query(
+                'SELECT * FROM usuarios WHERE Correo = ? AND id != ?',
+                [Correo, id],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error en el servidor");
+                    } else if (result.length > 0) {
+                        res.status(400).send("Correo ya existe");
+                    } else {
+                        // Si no existe, procedemos a la actualización
+                        actualizarUsuario();
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            // Si solo se va a actualizar el Nombre, procedemos directamente
+            actualizarUsuario();
+        }
+
+        // Función para actualizar el usuario
+        const actualizarUsuario = () => {
+            db.query(
+                'UPDATE usuarios SET Nombre = ?, Correo = COALESCE(?, Correo) WHERE id = ?',
+                [Nombre, Correo, id],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error al actualizar el usuario");
+                    } else {
+                        res.send(result);
+                    }
+                }
+            );
+        };
     } catch (error) {
         console.log(error);
         res.status(500).send('Error en el servidor');
@@ -159,7 +171,11 @@ app.put("/updateaso", (req, res) => {
 });
 
 app.get("/usuarios", (req, res) => {
-    db.query('SELECT id, Nombre, Correo, Documento, rol FROM usuarios WHERE rol = 2',
+    db.query(
+        `SELECT u.id, u.Nombre, u.Correo, u.Documento, r.rol AS rol_nombre
+         FROM usuarios u
+         JOIN rol r ON u.rol = r.idrol
+         WHERE u.rol = 2`,
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -167,7 +183,8 @@ app.get("/usuarios", (req, res) => {
             } else {
                 res.send(result);
             }
-        });
+        }
+    );
 });
 
 app.get("/tblcreditos", (req, res) => {
@@ -447,120 +464,98 @@ app.get("/asociados", (req, res) => {
 });
 
 app.post("/NuevoBeneficio", (req, res) => {
-    const { Documento, benefitId } = req.body;    
-    
-    // console.log("Datos recibidos en el servidor:", req.body);
+    const { Documento, tipoBeneficio } = req.body;
+    console.log(tipoBeneficio);
+    let benefitId;
+    let ahorroTabla, usuarioCampo, ahorroCampos, ahorroValores;
 
-    const documentoNumber = Number(Documento);
-    const benefitIdNumber = Number(benefitId);
-    
+    // Definir variables según el tipo de beneficio
+    if (tipoBeneficio === 3) { // Obligatorio
+        benefitId = 3;
+        ahorroTabla = "ahorros_obligatorios";
+        usuarioCampo = "usuariobli";
+        ahorroCampos = "ahorro_ordinario, ahorro_permanente, usuariobli, beneficios, fecha";
+        ahorroValores = [0, 0]; // valores para ahorro_ordinario, ahorro_permanente
+    } else if (tipoBeneficio === 2) { // Voluntario
+        benefitId = 2;
+        ahorroTabla = "ahorros_voluntarios";
+        usuarioCampo = "usuariovolu";
+        ahorroCampos = "vista, programado, vacacional, previo_vivienda, usuariovolu, beneficios, fecha";
+        ahorroValores = [0, 0, 0, 0]; // valores para vista, programado, vacacional, previo_vivienda
+    } else if (tipoBeneficio === 1) { // Crédito
+        benefitId = 1;
+        ahorroTabla = "creditos";
+        usuarioCampo = "usuariocredi";
+        ahorroCampos = "rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, beneficios, fecha";
+        ahorroValores = [0, 0, 0, 0]; // valores para rotativo, SEC, novedades_varias, compra_cartera
+    } else {
+        res.status(400).send("Tipo de beneficio no válido");
+        return;
+    }
 
-    if (isNaN(documentoNumber) || isNaN(benefitIdNumber)) {
-      return res.status(400).send("Documento o benefitId no es un número válido");
-    }
-    // console.log("Datos recibidos:", benefitIdNumber, documentoNumber);
-  
-    let tablaAhorro, campoUsuario, campoSegAhorro, tablaSegAhorro, camposSegAhorro, camposAhorro, mensajeErrorAhorro;
-  
-    switch (benefitIdNumber) {
-      case 1:
-        tablaAhorro = 'creditos';
-        campoUsuario = 'usuariocredi';
-        campoSegAhorro = 'seg_credito';
-        tablaSegAhorro = 'seg_creditos';
-        camposSegAhorro = 'monto, usuario, beneficios, tipo_monto, fecha';
-        camposAhorro = 'rotativo, SEC, novedades_varias, compra_cartera, usuariocredi, seg_credito, fecha';
-        mensajeErrorAhorro = 'Error al crear crédito asociado';
-        break;
-      case 2:
-        tablaAhorro = 'ahorros_voluntarios';
-        campoUsuario = 'usuariovolu';
-        campoSegAhorro = 'seg_ahorro_voluntario';
-        tablaSegAhorro = 'seg_ahorros_voluntarios';
-        camposSegAhorro = 'monto, usuario, beneficios, tipo_monto, fecha';
-        camposAhorro = 'vista, programado, vacacional, previo_vivienda, usuariovolu, seg_ahorro_voluntario, fecha';
-        mensajeErrorAhorro = 'Error al crear ahorro voluntario asociado';
-        break;
-      case 3:
-        tablaAhorro = 'ahorros_obligatorios';
-        campoUsuario = 'usuariobli';
-        campoSegAhorro = 'seg_ahorro_obligatorio';
-        tablaSegAhorro = 'seg_ahorros_obligatorios';
-        camposSegAhorro = 'monto, usuario, beneficios, tipo_monto, fecha';
-        camposAhorro = 'ahorro_ordinario, ahorro_permanente, usuariobli, seg_ahorro_obligatorio, fecha';
-        mensajeErrorAhorro = 'Error al crear ahorro obligatorio asociado';
-        break;
-      default:
-        return res.status(400).send("ID de beneficio inválido");
-    }
-  
     try {
-      db.query('SELECT id FROM usuarios WHERE Documento = ?', [documentoNumber], (err, userResult) => {
-        if (err) {
-          console.log("Error al buscar usuario:", err);
-          return res.status(500).send("Error al buscar el usuario");
-        }
-        console.log("Resultado de búsqueda de usuario:", userResult);
-  
-        if (userResult.length === 0) {
-          return res.status(404).send("Usuario no encontrado");
-        }
-        const userId = userResult[0].id;
-
-        console.log("se encontro el usuario")
-
-        db.query(`SELECT * FROM ${tablaAhorro} WHERE ${campoUsuario} = ?`, [userId], (err, ahorroResult) => {
-          if (err) {
-            console.log("Error al buscar en tabla de ahorro:", err);
-            return res.status(500).send(`Error al buscar en ${tablaAhorro}`);
-          }
-          console.log("Resultado de búsqueda en tabla de ahorro:", ahorroResult);
-  
-          if (ahorroResult.length > 0) {
-            return res.status(400).send(`El usuario ya tiene un registro en ${tablaAhorro}`);
-          }
-          db.query('SELECT * FROM aso_bene WHERE usuario = ? AND beneficios = ?', [userId, benefitIdNumber], (err, asoBeneResult) => {
+        // Verificar si el usuario existe
+        db.query('SELECT id FROM usuarios WHERE Documento = ?', [Documento], (err, userResult) => {
             if (err) {
-              console.log("Error al verificar beneficio asociado:", err);
-              return res.status(500).send("Error al verificar beneficio asociado");
-            }
-            console.log("Resultado de verificación de beneficio asociado:", asoBeneResult);
-  
-            if (asoBeneResult.length > 0) {
-              return res.status(400).send("El usuario ya tiene este beneficio asociado");
-            }
-            db.query('INSERT INTO aso_bene (usuario, beneficios) VALUES (?, ?)', [userId, benefitIdNumber], (err, result) => {
-              if (err) {
-                console.log("Error al asociar beneficio:", err);
-                return res.status(500).send("Error al asociar beneficio al usuario");
-              }
-              console.log("Resultado de inserción en aso_bene:", result);
-  
-              db.query(`INSERT INTO ${tablaSegAhorro} (${camposSegAhorro}) VALUES (?, ?, ?, ?, NOW())`, [0, userId, benefitIdNumber, 'Tipo de monto'], (err, segAhorroResult) => {
-                if (err) {
-                  console.log("Error al crear segmento de ahorro:", err);
-                  return res.status(500).send(`Error al crear segmento de ${tablaAhorro}`);
-                }
-                console.log("Resultado de inserción en segmento de ahorro:", segAhorroResult);
-  
-                db.query(`INSERT INTO ${tablaAhorro} (${camposAhorro}) VALUES (?, ?, ?, ?, ?, ?, NOW())`, [0, 0, 0, 0, userId, segAhorroResult.insertId], (err, ahorroResult) => {
-                  if (err) {
-                    console.log("Error al crear registro en tabla de ahorro:", err);
-                    return res.status(500).send(mensajeErrorAhorro);
-                  }
-                  console.log("Resultado de inserción en tabla de ahorro:", ahorroResult);
-                  res.send("Beneficio asociado y registro creado correctamente");
+                console.log(err);
+                res.status(500).send("Error al buscar el usuario");
+            } else if (userResult.length === 0) {
+                res.status(404).send("Usuario no encontrado");
+            } else {
+                const userId = userResult[0].id;
+
+                // Verificar si ya existe en la tabla correspondiente
+                db.query(`SELECT * FROM ${ahorroTabla} WHERE ${usuarioCampo} = ?`, [userId], (err, ahorroResult) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error al buscar en la tabla de ahorros");
+                    } else if (ahorroResult.length > 0) {
+                        res.status(400).send(`El usuario ya tiene un beneficio de tipo ${tipoBeneficio} asociado`);
+                    } else {
+                        // Verificar si ya existe en aso_bene
+                        db.query('SELECT * FROM aso_bene WHERE usuario = ? AND beneficios = ?', [userId, benefitId], (err, asoBeneResult) => {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send("Error al verificar beneficio asociado");
+                            } else if (asoBeneResult.length > 0) {
+                                res.status(400).send("El usuario ya tiene este beneficio asociado");
+                            } else {
+                                // Insertar en aso_bene
+                                db.query(
+                                    'INSERT INTO aso_bene (usuario, beneficios) VALUES (?, ?)',
+                                    [userId, benefitId],
+                                    (err, result) => {
+                                        if (err) {
+                                            console.log(err);
+                                            res.status(500).send("Error al asociar beneficio al usuario");
+                                        } else {
+                                            // Insertar en la tabla correspondiente
+                                            db.query(
+                                                `INSERT INTO ${ahorroTabla} (${ahorroCampos}) VALUES (${ahorroValores.map(() => '?').join(', ')}, ?, ?, ?)`,
+                                                [...ahorroValores, userId, benefitId, new Date()],
+                                                (err, ahorroResult) => {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        res.status(500).send("Error al crear ahorro asociado");
+                                                    } else {
+                                                        res.send(`Beneficio tipo ${tipoBeneficio} asociado correctamente y datos insertados en ${ahorroTabla}`);
+                                                    }
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
+                        });
+                    }
                 });
-              });
-            });
-          });
+            }
         });
-      });
     } catch (error) {
-      console.log("Error en el servidor:", error);
-      res.status(500).send("Error en el servidor");
+        console.log(error);
+        res.status(500).send("Error en el servidor");
     }
-  });  
+});
   
 
   app.get("/usuario-datos", (req, res) => {
