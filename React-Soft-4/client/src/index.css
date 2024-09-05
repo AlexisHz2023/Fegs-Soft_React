@@ -51,9 +51,9 @@ display: none;
   margin: 10px auto;
   cursor: pointer;
   background-color: #F49825;
-  top: -20px;
+  top: -50px;
   z-index: 1;
-  left: 70px;
+  right: 90px;
   box-shadow: 6px 6px 6px #d4cfc9;
 }
 .checkbox:checked + label:before,

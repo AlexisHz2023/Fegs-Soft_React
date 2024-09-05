@@ -175,11 +175,11 @@ app.get("/usuarios", (req, res) => {
         `SELECT u.id, u.Nombre, u.Correo, u.Documento, r.rol AS rol_nombre
          FROM usuarios u
          JOIN rol r ON u.rol = r.idrol
-         WHERE u.rol = 2`,
+         WHERE u.rol IN (1, 2)`,
         (err, result) => {
             if (err) {
                 console.log(err);
-                res.status(500).send('Error al obtener asesoras');
+                res.status(500).send('Error al obtener usuarios');
             } else {
                 res.send(result);
             }

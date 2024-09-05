@@ -351,7 +351,7 @@ const Admin = () => {
                 <div className="section pb-5 pt-5 pt-sm-2 text-center top-8 left-[10%] hyphens-manual flex justify-center">
                   <img
                     src="./imagenes/HomeAdmin.svg"
-                    className=" w-[50%] h-[50%] absolute top-[20%] left-[5%]"
+                    className=" w-[50%] h-[50%] absolute top-[20%] left-[50%]"
                   />
                   <input
                     className="checkbox"
@@ -361,7 +361,7 @@ const Admin = () => {
                   />
 
                   <label for="reg-log"></label>
-                  <div className="card-3d-wrap mx-auto drop-shadow-xl left-[5%] -top-32 max-w-md relative ">
+                  <div className="card-3d-wrap mx-auto drop-shadow-xl -left-[10%] -top-40 max-w-md relative ">
                     <div className="card-3d-wrapper   rounded-lg  ">
                       <div className=" [backface-visibility:hidden] ">
                         <div className="center-wrap ">
