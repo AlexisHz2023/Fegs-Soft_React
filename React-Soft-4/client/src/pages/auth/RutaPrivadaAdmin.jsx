@@ -27,7 +27,7 @@ export const RutaPrivadaAdmin = ({ element }) => {
   }, [isLoggedIn, rol]);
 
   // Si el usuario está autenticado y es un administrador, mostrar el componente
-  return isLoggedIn && rol ===1 ? element : <Navigate to="/Admin" />;
+  return isLoggedIn && rol ===1 ? element : <Navigate to="/" />;
 };
 
 export const RutaPrivadaAsesora = ({ element }) => {
@@ -49,13 +49,13 @@ export const RutaPrivadaAsesora = ({ element }) => {
       // Si no, redirigir al inicio o a otra página
       // Puedes ajustar la ruta según tus necesidades
       handleLogout();
-      navigate('/404');
+      navigate('/Login');
       
     }
   }, [isLoggedIn, rol]);
 
   // Si el usuario está autenticado y es un administrador, mostrar el componente
-  return isLoggedIn && rol === 2 ? element : <Navigate to="" />;
+  return isLoggedIn && rol === 2 ? element : <Navigate to="/" />;
 };
 
 export const RutaPrivadaAsociado = ({ element }) => {
@@ -71,17 +71,17 @@ export const RutaPrivadaAsociado = ({ element }) => {
 
   useEffect(() => {
     // Verificar si el usuario está autenticado y es un administrador
-    if (!isLoggedIn && !rol === 2) {
+    if (!isLoggedIn && !rol === 3) {
       // Si no, redirigir al inicio o a otra página
       // Puedes ajustar la ruta según tus necesidades
       handleLogout();
-      navigate('/');
+      navigate('/Login');
       
     }
   }, [isLoggedIn, rol]);
 
   // Si el usuario está autenticado y es un administrador, mostrar el componente
-  return isLoggedIn && rol ? element : <Navigate to="/" />;
+  return isLoggedIn && rol === 3 ? element : <Navigate to="/" />;
 };
 
 export const RutaPrivadaLoged = ({ element }) => {

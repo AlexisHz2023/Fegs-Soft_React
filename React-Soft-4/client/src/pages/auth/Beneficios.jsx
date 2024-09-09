@@ -132,6 +132,8 @@ const Beneficios = () => {
       });
   };
 
+
+
   const addvolu = (e) => {
     e.preventDefault()
     Axios.post("http://localhost:3001/NuevoVolu", {
@@ -234,6 +236,115 @@ const Beneficios = () => {
       });
 };
   
+const deleteAhorroObligatorio = (selectedUser) => {
+  Swal.fire({
+    title: "Confirmar eliminación?",
+    html: `<i>¿Está seguro de eliminar los ahorros obligatorios de <strong>${selectedUser.Nombre}</strong>?</i>`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Axios.delete(`http://localhost:3001/EliminarAhorroObligatorio/${selectedUser.idUsuario}`)
+        .then(() => {
+          fetchData(); // Actualiza la lista de usuarios
+          Alerta.fire({
+            icon: "success",
+            title: `Los ahorros obligatorios de ${selectedUser.Nombre} fueron eliminados.`,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo eliminar.",
+            footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+              ? "Intente más tarde"
+              : JSON.parse(JSON.stringify(error)).message,
+          });
+        });
+    }
+  });
+};
+
+
+const deleteAhorroVoluntario = (selectedUser) => {
+  console.log(selectedUser.idahorros)
+  Swal.fire({
+    title: "Confirmar eliminación?",
+    html: `<i>¿Está seguro de eliminar los ahorros voluntarios de <strong>${selectedUser.Nombre}</strong>?</i>`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Axios.delete(`http://localhost:3001/EliminarAhorroVoluntario/${selectedUser.idUsuario}`)
+        .then(() => {
+          fetchData(); // Actualiza la lista de usuarios
+          Alerta.fire({
+            icon: "success",
+            title: `Los ahorros voluntarios de ${selectedUser.Nombre} fueron eliminados.`,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo eliminar.",
+            footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+              ? "Intente más tarde"
+              : JSON.parse(JSON.stringify(error)).message,
+          });
+        });
+    }
+  });
+};
+
+
+const deleteCredito = (selectedUser) => {
+  console.log("ID seleccionado para eliminación:", selectedUser.idcreditos);  // Verifica el ID seleccionado
+  Swal.fire({
+    title: "Confirmar eliminación?",
+    html: `<i>¿Está seguro de eliminar los créditos de <strong>${selectedUser.idUsuario}</strong>?</i>`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Axios.delete(`http://localhost:3001/EliminarCredito/${selectedUser.usuariocredi}`)
+        .then(() => {
+          fetchData(); 
+          Alerta.fire({
+            icon: "success",
+            title: `Los créditos de ${selectedUser.Nombre} fueron eliminados.`,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        })
+        .catch((error) => {
+          console.log("Error en Axios.delete:", error);  // Verifica el error en Axios
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo eliminar.",
+            footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+              ? "Intente más tarde"
+              : JSON.parse(JSON.stringify(error)).message,
+          });
+        });
+    }
+  });
+};
 
   const fetchData = async () => {
     setLoading(true);
@@ -279,7 +390,7 @@ const Beneficios = () => {
   }, []);
 
   const columnsVoluntarios = [
-    { name: "ID", selector: (row) => row.idahorros, sortable: true },
+    { name: "Usuario", selector: (row) => row.idUsuario, sortable: true },
     { name: "Nombre", selector: (row) => row.Nombre, sortable: true },
     { name: "Documento", selector: (row) => row.Documento, sortable: true },
     { name: "Vista", selector: (row) => row.vista, sortable: true },
@@ -311,6 +422,7 @@ const Beneficios = () => {
       name: "eliminar",
       cell: (row) => (
         <button
+        type="button"
           onClick={() => deleteAhorroVoluntario(row)}
           className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
@@ -321,7 +433,7 @@ const Beneficios = () => {
   ];
 
   const columnsObligatorios = [
-    { name: "ID", selector: (row) => row.idobligatorio, sortable: true },
+    { name: "usuario", selector: (row) => row.idUsuario, sortable: true },
     { name: "Nombre", selector: (row) => row.nombreUsuario, sortable: true },
     { name: "Documento", selector: (row) => row.documentoUsuario, sortable: true },
     { name: "ahorro_ordinario", selector: (row) => row.ahorro_ordinario, sortable: true },
@@ -352,6 +464,7 @@ const Beneficios = () => {
       name: "eliminar",
       cell: (row) => (
         <button
+          type="button"
           onClick={() => deleteAhorroObligatorio(row)}
           className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
@@ -362,7 +475,7 @@ const Beneficios = () => {
   ];
 
   const columnsCreditos = [
-    { name: "ID", selector: (row) => row.idcreditos, sortable: true },
+    { name: "Usuario", selector: (row) => row.idUsuario, sortable: true },
     { name: "Nombre", selector: (row) => row.nombreCredi, sortable: true },
     { name: "Documento", selector: (row) => row.documentoCredi, sortable: true },
     { name: "rotativo", selector: (row) => row.rotativo , sortable: true },
@@ -387,7 +500,7 @@ const Beneficios = () => {
       name: "Acciones",
       cell: (row) => (
         <button
-          onClick={() => deleteCredito(row)}
+          onClick={() => handleEdit3(row)}
           className="bg-blue-500 text-white px-2 py-1 rounded"
         >
           Editar
@@ -398,10 +511,11 @@ const Beneficios = () => {
       name: "eliminar",
       cell: (row) => (
         <button
-          onClick={() => openModal9(row)}
+        type="button"
+          onClick={() => deleteCredito(row)}
           className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
-          Nuevo
+          Eliminar
         </button>
       ),
     },
@@ -525,117 +639,7 @@ const Beneficios = () => {
       });
   };
 
-  const deleteAhorroObligatorio = (selectedUser) => {
-    Swal.fire({
-      title: "Confirmar eliminación?",
-      html: `<i>¿Está seguro de eliminar los ahorros obligatorios de <strong>${selectedUser.Nombre}</strong>?</i>`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.delete(`http://localhost:3001/EliminarAhorroObligatorio/${selectedUser.id}`)
-          .then(() => {
-            fetchData(); // Actualiza la lista de usuarios
-            LimpiarCampos(); // Limpia los campos de entrada
-            Alerta.fire({
-              icon: "success",
-              title: `Los ahorros obligatorios de ${selectedUser.Nombre} fueron eliminados.`,
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "No se pudo eliminar.",
-              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
-                ? "Intente más tarde"
-                : JSON.parse(JSON.stringify(error)).message,
-            });
-          });
-      }
-    });
-  };
   
-  
-  const deleteAhorroVoluntario = (selectedUser) => {
-    Swal.fire({
-      title: "Confirmar eliminación?",
-      html: `<i>¿Está seguro de eliminar los ahorros voluntarios de <strong>${selectedUser.Nombre}</strong>?</i>`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Axios.delete(`http://localhost:3001/EliminarAhorroVoluntario/${selectedUser.id}`)
-          .then(() => {
-            fetchData(); // Actualiza la lista de usuarios
-            LimpiarCampos(); // Limpia los campos de entrada
-            Alerta.fire({
-              icon: "success",
-              title: `Los ahorros voluntarios de ${selectedUser.Nombre} fueron eliminados.`,
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "No se pudo eliminar.",
-              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
-                ? "Intente más tarde"
-                : JSON.parse(JSON.stringify(error)).message,
-            });
-          });
-      }
-    });
-  };
-  
-  
-  const deleteCredito = (selectedUser) => {
-    Swal.fire({
-      title: "Confirmar eliminación?",
-      html: `<i>¿Está seguro de eliminar los créditos de <strong>${selectedUser.Nombre}</strong>?</i>`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar",
-    }).then((result) => {
-      if (result.isConfirmed) 
-        console.log(selectedUser.id)
-        {
-        Axios.delete(`http://localhost:3001/EliminarCredito/${selectedUser.id}`)
-          .then(() => {
-            fetchData(); // Actualiza la lista de usuarios
-            LimpiarCampos(); // Limpia los campos de entrada
-            Alerta.fire({
-              icon: "success",
-              title: `Los créditos de ${selectedUser.Nombre} fueron eliminados.`,
-              showConfirmButton: false,
-              timer: 2000,
-            });
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "No se pudo eliminar.",
-              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
-                ? "Intente más tarde"
-                : JSON.parse(JSON.stringify(error)).message,
-            });
-          });
-      }
-    });
-  };
 
   
 
@@ -844,11 +848,14 @@ const Beneficios = () => {
                   <p className="text-center">
                     Ingresa los valores requeridos para mostrar el estados de cuenta 
                   </p>
+                  <p className="text-center ">
+                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
+                  </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
                       <div className="flex-none">
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Vista"
                           required
@@ -862,7 +869,7 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Programado"
                           required
@@ -878,7 +885,7 @@ const Beneficios = () => {
 
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Vacacional"
                           required
@@ -893,7 +900,7 @@ const Beneficios = () => {
 
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Previo vivienda"
                           required
@@ -976,11 +983,14 @@ const Beneficios = () => {
                   <p className="text-center">
                   Ingresa los valores requeridos para mostrar el estados de cuenta 
                   </p>
+                  <p className="text-center ">
+                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
+                  </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-0"
                           type="number"
                           placeholder="Saldo Ahorro ordinario"
                           required
@@ -994,7 +1004,7 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-0"
                           type="number"
                           placeholder="Saldo Permanente"
                           required
@@ -1062,11 +1072,14 @@ const Beneficios = () => {
                   <p className="text-center">
                   Ingresa los valores requeridos para mostrar el estados de cuenta
                   </p>
+                  <p className="text-center ">
+                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
+                  </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Rotativo"
                           required
@@ -1080,7 +1093,7 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo SEC"
                           required
@@ -1094,7 +1107,7 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[215px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[215px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Novedades varias"
                           required
@@ -1108,7 +1121,7 @@ const Beneficios = () => {
                       </div>
                       <div>
                         <input
-                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-4"
+                          className="bg-slate-50 w-[200px] h-[50px] left-[30%] shadow-lg border-2 shadow-blue-500/40 rounded-lg relative top-2"
                           type="number"
                           placeholder="Saldo Compra cartera"
                           required

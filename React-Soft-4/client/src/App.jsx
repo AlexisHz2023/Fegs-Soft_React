@@ -10,7 +10,7 @@ import Admin from './pages/auth/Admin';
 import Home from './pages/auth/Home';
 import Ajustes from './pages/auth/Ajustes';
 import Asesora from './pages/auth/Asesora';
-import {RutaPrivadaAdmin, RutaPrivadaAsesora} from './pages/auth/RutaPrivadaAdmin';
+import {RutaPrivadaAdmin, RutaPrivadaAsesora, RutaPrivadaAsociado} from './pages/auth/RutaPrivadaAdmin';
 import VerSaldo from './pages/auth/VerSaldo';
 import Asociados from './pages/auth/Asociados';
 import MenuAsesora from './pages/auth/MenuAsesora';
@@ -23,15 +23,15 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route index  element={<Login/>}/>
-        <Route path="Home" element={<Home/>} />
-        <Route path="Ajustes" element={<Ajustes/>} />
+        <Route path="Home" element={<RutaPrivadaAdmin element={<Home />} />} />
+        <Route path="Ajustes" element={<RutaPrivadaAdmin element={<Ajustes />} />} />
         <Route path="problemas" element={<Problemas />} />
-        <Route path='verSaldo' element={<VerSaldo />} />
+        <Route path='verSaldo' element={<RutaPrivadaAsociado element={<VerSaldo />} />} />
         <Route path='registro' element={<Registro />} />
-        <Route path='menuasesora' element={<MenuAsesora />} />
-        <Route path='asociado' element={<Asociados />} />
-        <Route path='asesora' element={<Asesora />} />
-        <Route path='movimientos' element={<Movimientos />} />
+        <Route path='menuasesora' element={<RutaPrivadaAsesora element={<MenuAsesora />} />} />
+        <Route path='asociado' element={<RutaPrivadaAsesora element={<Asociados />} />} />
+        <Route path='asesora' element={<RutaPrivadaAsesora element={<Asesora />} />} />
+        <Route path='movimientos' element={<RutaPrivadaAsesora element={<Movimientos />} />} />
         <Route path='beneficios' element={<RutaPrivadaAsesora element={<Beneficios />} />} />
         <Route path="admin" element={<RutaPrivadaAdmin element={<Admin />} />} />
       </Route>

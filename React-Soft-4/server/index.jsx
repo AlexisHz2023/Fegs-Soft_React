@@ -197,6 +197,7 @@ app.get("/tblcreditos", (req, res) => {
             c.compra_cartera, 
             u.Nombre AS nombreCredi, 
             u.Documento AS documentoCredi,
+            u.id AS idUsuario,  -- Agregar el ID del usuario
             c.fecha
         FROM creditos c
         INNER JOIN usuarios u ON c.usuariocredi = u.id
@@ -218,6 +219,7 @@ app.get("/tblobligatorios", (req, res) => {
             ao.ahorro_permanente, 
             u.Nombre AS nombreUsuario, 
             u.Documento AS documentoUsuario, 
+            u.id AS idUsuario,  -- Agregar el ID del usuario
             ao.fecha
         FROM ahorros_obligatorios ao
         INNER JOIN usuarios u ON ao.usuariobli = u.id
@@ -233,7 +235,16 @@ app.get("/tblobligatorios", (req, res) => {
 
 app.get("/tblvoluntarios", (req, res) => {
     db.query(`
-        SELECT av.idahorros, av.vista, av.programado, av.vacacional, av.previo_vivienda, u.Nombre, u.Documento, av.fecha
+        SELECT 
+            av.idahorros, 
+            av.vista, 
+            av.programado, 
+            av.vacacional, 
+            av.previo_vivienda, 
+            u.Nombre, 
+            u.Documento, 
+            u.id AS idUsuario,  -- Agregar el ID del usuario
+            av.fecha
         FROM ahorros_voluntarios av
         INNER JOIN usuarios u ON av.usuariovolu = u.id
     `, (err, result) => {
@@ -745,7 +756,7 @@ app.post("/NuevoBeneficio", (req, res) => {
   
   app.delete("/EliminarAhorroVoluntario/:id", (req, res) => {
     const userId = req.params.id;
-  
+    console.log(userId)
     try {
         // Eliminar el registro correspondiente en la tabla de ahorros voluntarios
         db.query('DELETE FROM ahorros_voluntarios WHERE usuariovolu = ?', [userId], (err, result) => {
@@ -774,7 +785,7 @@ app.post("/NuevoBeneficio", (req, res) => {
   
   app.delete("/EliminarCredito/:id", (req, res) => {
     const userId = req.params.id;
-  
+
     try {
         // Eliminar el registro correspondiente en la tabla de créditos
         db.query('DELETE FROM creditos WHERE usuariocredi = ?', [userId], (err, result) => {
@@ -799,7 +810,7 @@ app.post("/NuevoBeneficio", (req, res) => {
         console.log(error);
         res.status(500).send("Error en el servidor");
     }
-  });
+});
 
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001");
