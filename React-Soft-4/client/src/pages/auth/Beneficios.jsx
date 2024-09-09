@@ -308,13 +308,13 @@ const Beneficios = () => {
       ),
     },
     {
-      name: "agregar",
+      name: "eliminar",
       cell: (row) => (
         <button
-          onClick={() => openModal5(row)}
-          className="bg-blue-500 text-white px-2 py-1 rounded"
+          onClick={() => deleteAhorroVoluntario(row)}
+          className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
-          Nuevo
+          Eliminar
         </button>
       ),
     },
@@ -349,13 +349,13 @@ const Beneficios = () => {
       ),
     },
     {
-      name: "agregar",
+      name: "eliminar",
       cell: (row) => (
         <button
-          onClick={() => openModal7(row)}
-          className="bg-blue-500 text-white px-2 py-1 rounded"
+          onClick={() => deleteAhorroObligatorio(row)}
+          className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
-          Nuevo
+          eliminar
         </button>
       ),
     },
@@ -387,7 +387,7 @@ const Beneficios = () => {
       name: "Acciones",
       cell: (row) => (
         <button
-          onClick={() => handleEdit3(row)}
+          onClick={() => deleteCredito(row)}
           className="bg-blue-500 text-white px-2 py-1 rounded"
         >
           Editar
@@ -395,11 +395,11 @@ const Beneficios = () => {
       ),
     },
     {
-      name: "agregar",
+      name: "eliminar",
       cell: (row) => (
         <button
           onClick={() => openModal9(row)}
-          className="bg-blue-500 text-white px-2 py-1 rounded"
+          className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
           Nuevo
         </button>
@@ -524,6 +524,120 @@ const Beneficios = () => {
         });
       });
   };
+
+  const deleteAhorroObligatorio = (selectedUser) => {
+    Swal.fire({
+      title: "Confirmar eliminación?",
+      html: `<i>¿Está seguro de eliminar los ahorros obligatorios de <strong>${selectedUser.Nombre}</strong>?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.delete(`http://localhost:3001/EliminarAhorroObligatorio/${selectedUser.id}`)
+          .then(() => {
+            fetchData(); // Actualiza la lista de usuarios
+            LimpiarCampos(); // Limpia los campos de entrada
+            Alerta.fire({
+              icon: "success",
+              title: `Los ahorros obligatorios de ${selectedUser.Nombre} fueron eliminados.`,
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No se pudo eliminar.",
+              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+                ? "Intente más tarde"
+                : JSON.parse(JSON.stringify(error)).message,
+            });
+          });
+      }
+    });
+  };
+  
+  
+  const deleteAhorroVoluntario = (selectedUser) => {
+    Swal.fire({
+      title: "Confirmar eliminación?",
+      html: `<i>¿Está seguro de eliminar los ahorros voluntarios de <strong>${selectedUser.Nombre}</strong>?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Axios.delete(`http://localhost:3001/EliminarAhorroVoluntario/${selectedUser.id}`)
+          .then(() => {
+            fetchData(); // Actualiza la lista de usuarios
+            LimpiarCampos(); // Limpia los campos de entrada
+            Alerta.fire({
+              icon: "success",
+              title: `Los ahorros voluntarios de ${selectedUser.Nombre} fueron eliminados.`,
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No se pudo eliminar.",
+              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+                ? "Intente más tarde"
+                : JSON.parse(JSON.stringify(error)).message,
+            });
+          });
+      }
+    });
+  };
+  
+  
+  const deleteCredito = (selectedUser) => {
+    Swal.fire({
+      title: "Confirmar eliminación?",
+      html: `<i>¿Está seguro de eliminar los créditos de <strong>${selectedUser.Nombre}</strong>?</i>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) 
+        console.log(selectedUser.id)
+        {
+        Axios.delete(`http://localhost:3001/EliminarCredito/${selectedUser.id}`)
+          .then(() => {
+            fetchData(); // Actualiza la lista de usuarios
+            LimpiarCampos(); // Limpia los campos de entrada
+            Alerta.fire({
+              icon: "success",
+              title: `Los créditos de ${selectedUser.Nombre} fueron eliminados.`,
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          })
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "No se pudo eliminar.",
+              footer: JSON.parse(JSON.stringify(error)).message === "Network Error"
+                ? "Intente más tarde"
+                : JSON.parse(JSON.stringify(error)).message,
+            });
+          });
+      }
+    });
+  };
+
+  
 
   const handleFilter = (e) => {
     const value = e.target.value;

@@ -714,6 +714,93 @@ app.post("/NuevoBeneficio", (req, res) => {
     });
   });
 
+  app.delete("/EliminarAhorroObligatorio/:id", (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+        // Eliminar el registro correspondiente en la tabla de ahorros obligatorios
+        db.query('DELETE FROM ahorros_obligatorios WHERE usuariobli = ?', [userId], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al eliminar el ahorro obligatorio");
+            } else if (result.affectedRows === 0) {
+                res.status(404).send("Ahorro obligatorio no encontrado");
+            } else {
+                // También se debe eliminar el registro en la tabla aso_bene
+                db.query('DELETE FROM aso_bene WHERE usuario = ? AND beneficios = 3', [userId], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error al eliminar el registro en aso_bene");
+                    } else {
+                        res.send("Ahorro obligatorio eliminado correctamente");
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error en el servidor");
+    }
+  });
+  
+  app.delete("/EliminarAhorroVoluntario/:id", (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+        // Eliminar el registro correspondiente en la tabla de ahorros voluntarios
+        db.query('DELETE FROM ahorros_voluntarios WHERE usuariovolu = ?', [userId], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al eliminar el ahorro voluntario");
+            } else if (result.affectedRows === 0) {
+                res.status(404).send("Ahorro voluntario no encontrado");
+            } else {
+                // También se debe eliminar el registro en la tabla aso_bene
+                db.query('DELETE FROM aso_bene WHERE usuario = ? AND beneficios = 2', [userId], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error al eliminar el registro en aso_bene");
+                    } else {
+                        res.send("Ahorro voluntario eliminado correctamente");
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error en el servidor");
+    }
+  });
+  
+  app.delete("/EliminarCredito/:id", (req, res) => {
+    const userId = req.params.id;
+  
+    try {
+        // Eliminar el registro correspondiente en la tabla de créditos
+        db.query('DELETE FROM creditos WHERE usuariocredi = ?', [userId], (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al eliminar el crédito");
+            } else if (result.affectedRows === 0) {
+                res.status(404).send("Crédito no encontrado");
+            } else {
+                // También se debe eliminar el registro en la tabla aso_bene
+                db.query('DELETE FROM aso_bene WHERE usuario = ? AND beneficios = 1', [userId], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send("Error al eliminar el registro en aso_bene");
+                    } else {
+                        res.send("Crédito eliminado correctamente");
+                    }
+                });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error en el servidor");
+    }
+  });
+
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001");
 });

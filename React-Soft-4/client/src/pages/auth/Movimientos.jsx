@@ -1,14 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  useMemo } from "react";
 import MenuAsesora from "./MenuAsesora";
 import { Select, SelectItem } from "@nextui-org/react";
 import { beneficios } from "./tiposbene";
+import styled from "styled-components";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import DataTable from "react-data-table-component";
 import Axios from "axios";
+import { CiSearch } from "react-icons/ci";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
+const TextField = styled.input`
+  height: 44px;
+  width: 260px;
+  border-radius: 10rem;
+  border: 1px solid #e5e5e5;
+  padding: 0 32px 0 40px;
+`;
+
 const Alerta = withReactContent(Swal);
+
+const FilterComponent = ({ filterText, onFilter }) => (
+  
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <div>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Ingresa el Dato"
+      aria-label="Search Input"
+      value={filterText}
+      onChange={onFilter}
+      className="top-5  relative"
+    />
+    <CiSearch className="w-10 h-10 text-gray-500 -top-[20px] ps-1 right-[0%] relative " />
+    </div>
+  </div>
+);
 
 const Movimientos = () => {
   const [isOpen1, setIsOpen1] = useState(false);
@@ -17,6 +45,7 @@ const Movimientos = () => {
   const [records, setRecords] = useState([]);
   const [originalRecords, setOriginalRecords] = useState([]);
   const [rol, setRol] = useState("");
+  const [filterText, setFilterText] = useState("");
 
   const addbeneficio = async (e) => {
     e.preventDefault();
@@ -87,6 +116,37 @@ const Movimientos = () => {
     { name: "Fecha", selector: (row) => row.fecha, sortable: true },
   ];
 
+  const handleFilter = (e) => {
+    const value = e.target.value;
+    setFilterText(value);
+    if (value === "") {
+      setRecords(originalRecords);
+    } else {
+      const filteredRecords = originalRecords.filter((record) =>
+        Object.values(record).some((field) =>
+          field.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+      setRecords(filteredRecords);
+    }
+  };
+
+  const subHeaderComponentMemo = useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setFilterText("");
+        setRecords(originalRecords);
+      }
+    };
+
+    return (
+      <FilterComponent
+        onFilter={handleFilter}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
+  }, [filterText, originalRecords]);
   
 
   function Loader() {
@@ -174,6 +234,7 @@ const Movimientos = () => {
 
                     <div className="p-10">
                       <div className="w-94 py-20 bg-gray-200 rounded-lg relative text-center content-center">
+
                         {loading ? (
                           <Loader />
                         ) : (
@@ -183,6 +244,8 @@ const Movimientos = () => {
                                 columns={columnsVoluntarios}
                                 data={records}
                                 pagination
+                                subHeader
+                                subHeaderComponent={subHeaderComponentMemo}
                               />
                             )}
                           </div>
