@@ -11,7 +11,7 @@ const Home = () => {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
 
-      <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-2 border-blue-500 z-20 h-[90%] rounded-lg  overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-blue-300">
+      <div className="absolute bg-white py-4 top-10 w-[95%] left-[2%] border-4 border-gray-300 z-20 h-[90%] rounded-lg  overflow-auto scrollbar  scrollbar-thumb-rounded-full scrollbar-thumb-gray-200">
         <Menu />
         <div className="bg-white py-24 sm:py-32  top-80 relative z-0">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">

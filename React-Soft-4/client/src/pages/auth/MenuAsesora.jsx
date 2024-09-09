@@ -51,7 +51,7 @@ const MenuAsesora = () => {
            </Link>
            
 
-           <div className='flex items-center text-primary gap-4 z-10 fixed  left-[35%] rounded-lg px-9 py-3 top-12'>
+           <div className='flex items-center text-primary gap-4 z-10 fixed  left-[24%] rounded-lg px-9 py-3 top-12'>
         <Dropdown placement="bottom-start">
           <DropdownTrigger className='bg-primary '>
             <User
@@ -79,16 +79,12 @@ const MenuAsesora = () => {
         </Dropdown>
       </div>
 
-
-
-
-
-           <div className="relative  -left-[20%] -top-1  text-primary  py-2 px-10  rounded-lg">
-      <Badge content="99+" shape="circle" color="danger">
+      <div className="relative  left-[15%] -top-1  text-primary  py-2 px-10  rounded-lg">
+      <Badge content="" shape="circle" color="danger">
       <Button
         radius="full"
         isIconOnly
-        aria-label="more than 99 notifications"
+        aria-label=""
         variant="light"
         className="realtive left-10 z-40 "
       >
@@ -121,6 +117,12 @@ const MenuAsesora = () => {
           </DropdownMenu>
         </Dropdown>
         </div>
+
+
+
+
+
+           
          </div>
        </div>
      </div>

@@ -37,7 +37,7 @@ const Menu = () => {
   };
 
   return (
-    <div className="bg-white py-5 fixed  rounded-lg left-16 right-0 w-[90%] h-20 border-primary top-12  shadow-md z-20 border-2 max-w-3/6 ">
+    <div className="bg-white py-5 fixed  rounded-lg left-16 right-0 w-[90%] h-20 border-gray-300 top-12  shadow-md z-20 border-3 max-w-3/6 ">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" />
       <link
@@ -72,7 +72,7 @@ const Menu = () => {
       </button>
       
 
-      <div className="relative left-[75%] px-8 -top-11 bg-gray-100 text-primary w-80 py-2  rounded-lg">
+      <div className="relative left-[80%] px-8 -top-11  text-primary w-80 py-2  rounded-lg">
       <Badge content="99+" shape="circle" color="danger">
       <Button
         radius="full"

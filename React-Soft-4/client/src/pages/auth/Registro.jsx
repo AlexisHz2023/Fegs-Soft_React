@@ -9,7 +9,7 @@ const Registro = () => {
 
   return (
     <div className='absolute'>
-      <div className='flex items-center gap-4 z-10 fixed top-[6%] left-[55%] bg-gray-100 rounded-lg px-4 py-3'>
+      <div className='flex items-center gap-4 z-10 fixed top-[6%] left-[65%]  rounded-lg px-4 py-3'>
         <Dropdown placement="bottom-start">
           <DropdownTrigger className='bg-primary'>
             <User
