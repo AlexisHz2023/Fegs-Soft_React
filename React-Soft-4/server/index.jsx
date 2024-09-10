@@ -812,6 +812,103 @@ app.post("/NuevoBeneficio", (req, res) => {
     }
 });
 
+
+app.get("/usuario-ahorros-voluntarios/:id", (req, res) => {
+    const userId = req.params.id;
+    console.log("PASO AQUI");
+
+    const query = `
+        SELECT 
+            seg.idsegV AS id,
+            seg.monto,
+            seg.beneficios,
+            seg.tipo_monto,
+            seg.fecha,
+            usr.documento
+        FROM 
+            seg_ahorros_voluntarios seg
+        JOIN 
+            usuarios usr ON seg.usuario = usr.id
+        WHERE 
+            seg.usuario = ?;
+    `;
+
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener los datos del usuario:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+        if (result.length === 0) {
+            return res.status(404).send('No se encontraron registros para este usuario');
+        }
+        res.send(result);
+    });
+});
+
+app.get("/usuario-ahorros-obligatorios/:id", (req, res) => {
+    const userId = req.params.id;
+    console.log("PASO AQUI");
+
+    const query = `
+        SELECT 
+            seg.idsegO AS id,
+            seg.monto,
+            seg.beneficios,
+            seg.tipo_monto,
+            seg.fecha,
+            usr.documento
+        FROM 
+            seg_ahorros_obligatorios seg
+        JOIN 
+            usuarios usr ON seg.usuario = usr.id
+        WHERE 
+            seg.usuario = ?;
+    `;
+
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener los datos del usuario:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+        if (result.length === 0) {
+            return res.status(404).send('No se encontraron registros para este usuario');
+        }
+        res.send(result);
+    });
+});
+
+app.get("/usuario-creditos/:id", (req, res) => {
+    console.log("PASO AQUI");
+    const userId = req.params.id;
+
+    const query = `
+        SELECT 
+            seg.idsegC AS id,
+            seg.monto,
+            seg.beneficios,
+            seg.tipo_monto,
+            seg.fecha,
+            usr.documento
+        FROM 
+            seg_creditos seg
+        JOIN 
+            usuarios usr ON seg.usuario = usr.id
+        WHERE 
+            seg.usuario = ?;
+    `;
+
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener los datos del usuario:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+        if (result.length === 0) {
+            return res.status(404).send('No se encontraron registros para este usuario');
+        }
+        res.send(result);
+    });
+});
+
 app.listen(3001, () => {
     console.log("Corriendo en el puerto 3001");
 });

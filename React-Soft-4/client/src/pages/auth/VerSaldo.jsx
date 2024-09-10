@@ -35,6 +35,37 @@ const VerSaldo = () => {
     }
   }, [user]);
 
+  const [obligatorios, setObligatorios] = useState([]);
+const [voluntarios, setVoluntarios] = useState([]);
+const [creditos, setCreditos] = useState([]);
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const obligatoriosResponse = await Axios.get(`http://localhost:3001/usuario-ahorros-obligatorios/${user.id}`);
+      console.log("Obligatorios Response", obligatoriosResponse); // Verifica la respuesta completa
+      setObligatorios(obligatoriosResponse.data || []);
+
+      const voluntariosResponse = await Axios.get(`http://localhost:3001/usuario-ahorros-voluntarios/${user.id}`);
+      console.log("Voluntarios Response", voluntariosResponse); // Verifica la respuesta completa
+      setVoluntarios(voluntariosResponse.data || []);
+
+      const creditosResponse = await Axios.get(`http://localhost:3001/usuario-creditos/${user.id}`);
+      console.log("Creditos Response", creditosResponse); // Verifica la respuesta completa
+      setCreditos(creditosResponse.data || []);
+
+    } catch (error) {
+      console.error("Error fetching data:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  if (user && user.id) {
+    fetchData();
+  }
+}, [user]);
+
+
   const getObligatorios = () => {
     Axios.get(`http://localhost:3001/obligatorios/${user.id}`)
       .then((response) => {
@@ -81,86 +112,50 @@ const VerSaldo = () => {
   const columns = [
     {
       name: "Monto",
-      selector: (row) => row.title,
+      selector: (row) => row.monto,
     },
     {
-      name: "Tipo_monto",
-      selector: (row) => row.year,
+      name: "Tipo_Monto",
+      selector: (row) => row.tipo_monto,
     },
     {
-      name: "fecha",
-      selector: (row) => row.year,
+      name: "Fecha",
+      selector: (row) => row.fecha,
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1988",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-  ];
 
   const columns2 = [
     {
       name: "Monto",
-      selector: (row) => row.title,
+      selector: (row) => row.monto,
     },
     {
       name: "Tipo_Monto",
-      selector: (row) => row.year,
+      selector: (row) => row.tipo_monto,
     },
     {
       name: "Fecha",
-      selector: (row) => row.year,
+      selector: (row) => row.fecha,
     },
   ];
 
-  const data2 = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1988",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-  ];
 
   const columns3 = [
     {
       name: "Monto",
-      selector: (row) => row.title,
+      selector: (row) => row.monto,
     },
     {
       name: "Tipo_Monto",
-      selector: (row) => row.year,
+      selector: (row) => row.tipo_monto,
     },
     {
       name: "Fecha",
-      selector: (row) => row.year,
+      selector: (row) => row.fecha,
     },
   ];
 
-  const data3 = [
-    {
-      id: 1,
-      title: "Beetlejuice",
-      year: "1988",
-    },
-    {
-      id: 2,
-      title: "Ghostbusters",
-      year: "1984",
-    },
-  ];
 
   return (
     <div className="absoluted">
@@ -420,19 +415,19 @@ const VerSaldo = () => {
                       <DataTable
                         title="Ahorros Voluntarios"
                         columns={columns}
-                        data={data}
+                        data={obligatorios}
                       />
 
                       <DataTable
                         title="Ahorros Obligatorios"
                         columns={columns2}
-                        data={data2}
+                        data={voluntarios}
                       />
 
                       <DataTable
                         title="Creditos"
                         columns={columns3}
-                        data={data3}
+                        data={creditos}
                       />
                     </ModalBody>
                     <ModalFooter>
