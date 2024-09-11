@@ -355,20 +355,44 @@ useEffect(() => {
             </tr>
           </thead>
           <tbody>
-            {valoresList.map((val) => (
-              <tr key={val.idahorros}>
-                <td className="border-none text-center border-slate-700">
-                  11/08/2023
-                </td>
-                <td className="border-none text-center border-slate-700">
-                  Fondo Social
-                </td>
-                <td className="border-none text-center border-slate-700">
-                  {val.fondo_social}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {valoresList.map((val) => (
+    <>
+      <tr key={val.idahorros}>
+        <td className="border-none text-center border-slate-700">
+          {val.fecha}
+        </td>
+        <td className="border-none text-center border-slate-700">
+          Ahorro Permanente
+        </td>
+        <td className="border-none text-center border-slate-700">
+          {val.ahorro_permanente}
+        </td>
+      </tr>
+      <tr>
+        <td className="border-none text-center border-slate-700">
+          {val.fecha}
+        </td>
+        <td className="border-none text-center border-slate-700">
+          Ahorro Ordinario
+        </td>
+        <td className="border-none text-center border-slate-700">
+          {val.ahorro_ordinario}
+        </td>
+      </tr>
+      <tr>
+                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
+                    {val.fecha}
+                  </td>
+                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
+                    Total
+                  </td>
+                  <td className="border-none text-center rounded border-slate-700 bg-blue-300 text-black">
+                    {val.ahorro_ordinario + val.ahorro_permanente}
+                  </td>
+                </tr>
+    </>
+  ))}
+</tbody>
         </table>
 
         {/* Botones para Imprimir y Volver, que solo se muestran cuando no se está imprimiendo */}

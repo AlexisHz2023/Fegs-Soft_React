@@ -158,7 +158,7 @@ const Admin = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Elimarlo",
+      confirmButtonText: "Si, Eliminarlo",
     }).then((result) => {
       if (result.isConfirmed) {
         Axios.delete(`http://localhost:3001/delete/${val.id}`)
