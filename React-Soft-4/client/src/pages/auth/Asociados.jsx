@@ -412,24 +412,46 @@ const Asociados = () => {
                     )}
                   </div>
                   <div>
-                    {variants.map((variant) => (
-                      <div>
-                        <Input
-                          type="password"
-                          name="password"
-                          variant={variant}
-                          label="Contraseña"
-                          value={values.password}
-                          autocomplete="name"
-                          required
-                          onChange={handleInput}
-                        />
-                      </div>
-                    ))}
-                    {errors.password && (
-                      <p className="text-red-500 text-sm">{errors.password}</p>
-                    )}
-                  </div>             
+                  {variants.map((variant) => (
+                    <div key={variant}>
+                      {/* Input para la contraseña */}
+                      <Input
+                        type="password"
+                        name="password"
+                        variant={variant}
+                        label="Contraseña"
+                        value={values.password}
+                        autocomplete="new-password"
+                        required
+                        onChange={handleInput}
+                      />
+                    </div>
+                  ))}
+                  {errors.password && (
+                    <p className="text-red-500 text-sm">{errors.password}</p>
+                  )}
+                </div>
+
+                <div className="mt-2">
+                  {variants.map((variant) => (
+                    <div key={variant}>
+                      {/* Input para confirmar la contraseña */}
+                      <Input
+                        type="password"
+                        name="confirmPassword"
+                        variant={variant}
+                        label="Confirmar Contraseña"
+                        value={values.confirmPassword}
+                        autocomplete="new-password"
+                        required
+                        onChange={handleInput}
+                      />
+                    </div>
+                  ))}
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+                  )}
+                </div>             
                   <Button
                     type="submit"
                     className="w-full bg-primary hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"

@@ -582,29 +582,49 @@ const Admin = () => {
                                 </div>
 
                                 <div>
-                                  <div className="flex items-center justify-between"></div>
-                                  <div className="mt-2">
-                                    {variants.map((variant) => (
-                                      <div>
-                                        <Input
-                                          type="password"
-                                          name="password"
-                                          variant={variant}
-                                          label="Contraseña"
-                                          value={values.password}
-                                          autocomplete="name"
-                                          required
-                                          onChange={handleInput}
-                                        />
-                                      </div>
-                                    ))}
-                                    {errors.password && (
-                                      <p className="text-red-500 text-sm">
-                                        {errors.password}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
+  <div className="flex items-center justify-between"></div>
+  <div className="mt-2">
+    {variants.map((variant) => (
+      <div>
+        {/* Input para la contraseña */}
+        <Input
+          type="password"
+          name="password"
+          variant={variant}
+          label="Contraseña"
+          value={values.password}
+          autocomplete="name"
+          required
+          onChange={handleInput}
+        />
+      </div>
+    ))}
+    {errors.password && (
+      <p className="text-red-500 text-sm">{errors.password}</p>
+    )}
+  </div>
+
+  <div className="mt-2">
+    {variants.map((variant) => (
+      <div>
+        {/* Input para confirmar contraseña */}
+        <Input
+          type="password"
+          name="confirmPassword"
+          variant={variant}
+          label="Confirmar Contraseña"
+          value={values.confirmPassword}
+          autocomplete="name"
+          required
+          onChange={handleInput}
+        />
+      </div>
+    ))}
+    {errors.confirmPassword && (
+      <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+    )}
+  </div>
+</div>
 
                                 <div className="px-8 pt-3 ">
                                   <Select

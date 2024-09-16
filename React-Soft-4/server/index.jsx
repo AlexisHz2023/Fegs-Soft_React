@@ -324,39 +324,16 @@ app.put("/updateVolu", (req, res) => {
             return res.status(400).send("Todos los campos son necesarios");
         }
 
-        // Primero, obtenemos los valores actuales de la base de datos
+        // Actualizamos la base de datos con los valores directamente
         db.query(
-            'SELECT vista, programado, vacacional, previo_vivienda FROM ahorros_voluntarios WHERE idahorros = ?',
-            [idahorros],
+            'UPDATE ahorros_voluntarios SET vista = ?, programado = ?, vacacional = ?, previo_vivienda = ? WHERE idahorros = ?',
+            [vista, programado, vacacional, previo_vivienda, idahorros],
             (err, result) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send("Error en el servidor al obtener los valores actuales");
+                    console.error("Error en la actualización:", err);
+                    return res.status(500).send("Error al actualizar el ahorros_voluntarios");
                 }
-
-                if (result.length === 0) {
-                    return res.status(404).send("No se encontró el registro de ahorros_voluntarios");
-                }
-
-                // Convertimos los valores actuales y los nuevos a números y los sumamos
-                const currentValues = result[0];
-                const newVista = Number(currentValues.vista) + Number(vista);
-                const newProgramado = Number(currentValues.programado) + Number(programado);
-                const newVacacional = Number(currentValues.vacacional) + Number(vacacional);
-                const newPrevioVivienda = Number(currentValues.previo_vivienda) + Number(previo_vivienda);
-
-                // Actualizamos la base de datos con los valores sumados
-                db.query(
-                    'UPDATE ahorros_voluntarios SET vista = ?, programado = ?, vacacional = ?, previo_vivienda = ? WHERE idahorros = ?',
-                    [newVista, newProgramado, newVacacional, newPrevioVivienda, idahorros],
-                    (err, result) => {
-                        if (err) {
-                            console.error("Error en la actualización:", err);
-                            return res.status(500).send("Error al actualizar el ahorros_voluntarios");
-                        }
-                        res.send(result);
-                    }
-                );
+                res.send(result);
             }
         );
     } catch (error) {
@@ -373,37 +350,16 @@ app.put("/updateOblig", (req, res) => {
             return res.status(400).send("Todos los campos son necesarios");
         }
 
-        // Primero, obtenemos los valores actuales de la base de datos
+        // Actualizamos la base de datos con los valores directamente
         db.query(
-            'SELECT ahorro_ordinario, ahorro_permanente FROM ahorros_obligatorios WHERE idobligatorio = ?',
-            [idobligatorio],
+            'UPDATE ahorros_obligatorios SET ahorro_ordinario = ?, ahorro_permanente = ? WHERE idobligatorio = ?',
+            [ahorro_ordinario, ahorro_permanente, idobligatorio],
             (err, result) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send("Error en el servidor al obtener los valores actuales");
+                    console.error("Error en la actualización:", err);
+                    return res.status(500).send("Error al actualizar el ahorros_obligatorios");
                 }
-
-                if (result.length === 0) {
-                    return res.status(404).send("No se encontró el registro de ahorros_obligatorios");
-                }
-
-                // Convertimos los valores actuales y los nuevos a números y los sumamos
-                const currentValues = result[0];
-                const newAhorroOrdinario = Number(currentValues.ahorro_ordinario) + Number(ahorro_ordinario);
-                const newAhorroPermanente = Number(currentValues.ahorro_permanente) + Number(ahorro_permanente);
-
-                // Actualizamos la base de datos con los valores sumados
-                db.query(
-                    'UPDATE ahorros_obligatorios SET ahorro_ordinario = ?, ahorro_permanente = ? WHERE idobligatorio = ?',
-                    [newAhorroOrdinario, newAhorroPermanente, idobligatorio],
-                    (err, result) => {
-                        if (err) {
-                            console.error("Error en la actualización:", err);
-                            return res.status(500).send("Error al actualizar el ahorros_obligatorios");
-                        }
-                        res.send(result);
-                    }
-                );
+                res.send(result);
             }
         );
     } catch (error) {
@@ -421,39 +377,16 @@ app.put("/updateCredi", (req, res) => {
             return res.status(400).send("Todos los campos son necesarios");
         }
 
-        // Primero, obtenemos los valores actuales de la base de datos
+        // Actualizamos la base de datos con los valores directamente
         db.query(
-            'SELECT rotativo, SEC, novedades_varias, compra_cartera FROM creditos WHERE idcreditos = ?',
-            [idcreditos],
+            'UPDATE creditos SET rotativo = ?, SEC = ?, novedades_varias = ?, compra_cartera = ? WHERE idcreditos = ?',
+            [rotativo, SEC, novedades_varias, compra_cartera, idcreditos],
             (err, result) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send("Error en el servidor al obtener los valores actuales");
+                    console.error("Error en la actualización:", err);
+                    return res.status(500).send("Error al actualizar el creditos");
                 }
-
-                if (result.length === 0) {
-                    return res.status(404).send("No se encontró el registro de creditos");
-                }
-
-                // Convertimos los valores actuales y los nuevos a números y los sumamos
-                const currentValues = result[0];
-                const newRotativo = Number(currentValues.rotativo) + Number(rotativo);
-                const newSEC = Number(currentValues.SEC) + Number(SEC);
-                const newNovedadesVarias = Number(currentValues.novedades_varias) + Number(novedades_varias);
-                const newCompraCartera = Number(currentValues.compra_cartera) + Number(compra_cartera);
-
-                // Actualizamos la base de datos con los valores sumados
-                db.query(
-                    'UPDATE creditos SET rotativo = ?, SEC = ?, novedades_varias = ?, compra_cartera = ? WHERE idcreditos = ?',
-                    [newRotativo, newSEC, newNovedadesVarias, newCompraCartera, idcreditos],
-                    (err, result) => {
-                        if (err) {
-                            console.error("Error en la actualización:", err);
-                            return res.status(500).send("Error al actualizar el creditos");
-                        }
-                        res.send(result);
-                    }
-                );
+                res.send(result);
             }
         );
     } catch (error) {
