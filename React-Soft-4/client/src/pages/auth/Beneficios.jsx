@@ -125,7 +125,7 @@ const Beneficios = () => {
           icon: "error",
           title: "Oops...",
           footer:
-            JSON.parse(JSON.stringify(error)).message === "Network Error"
+            JSON.parse(JSON.stringify(error)).message === ""
               ? "intente mas tarde"
               : JSON.parse(JSON.stringify(error)).message,
         });
@@ -395,17 +395,13 @@ const deleteCredito = (selectedUser) => {
     { name: "Documento", selector: (row) => row.Documento, sortable: true },
     { name: "Vista", selector: (row) => row.vista, sortable: true },
     { name: "Programado", selector: (row) => row.programado, sortable: true },
-    { name: "vacacional", selector: (row) => row.vacacional, sortable: true },
+    { name: "Vacacional", selector: (row) => row.vacacional, sortable: true },
     {
-      name: "Previo vivienda",
+      name: "Previo Vivienda",
       selector: (row) => row.previo_vivienda,
       sortable: true,
     },
-    // {
-    //   name: "Seguimiento",
-    //   selector: (row) => row.seg_ahorro_voluntario,
-    //   sortable: true,
-    // },
+   
     { name: "Fecha", selector: (row) => row.fecha, sortable: true },
     {
       name: "Acciones",
@@ -419,7 +415,7 @@ const deleteCredito = (selectedUser) => {
       ),
     },
     {
-      name: "eliminar",
+      name: "Eliminar",
       cell: (row) => (
         <button
         type="button"
@@ -433,10 +429,10 @@ const deleteCredito = (selectedUser) => {
   ];
 
   const columnsObligatorios = [
-    { name: "usuario", selector: (row) => row.idUsuario, sortable: true },
+    { name: "Usuario", selector: (row) => row.idUsuario, sortable: true },
     { name: "Nombre", selector: (row) => row.nombreUsuario, sortable: true },
     { name: "Documento", selector: (row) => row.documentoUsuario, sortable: true },
-    { name: "ahorro_ordinario", selector: (row) => row.ahorro_ordinario, sortable: true },
+    { name: "Ahorro Ordinario", selector: (row) => row.ahorro_ordinario, sortable: true },
     {
       name: "Ahorro Permanente",
       selector: (row) => row.ahorro_permanente,
@@ -461,14 +457,14 @@ const deleteCredito = (selectedUser) => {
       ),
     },
     {
-      name: "eliminar",
+      name: "Eliminar",
       cell: (row) => (
         <button
           type="button"
           onClick={() => deleteAhorroObligatorio(row)}
           className="focus:outline-none focus:shadow-outline bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 -left-4 relative rounded"
         >
-          eliminar
+          Eliminar
         </button>
       ),
     },
@@ -478,7 +474,7 @@ const deleteCredito = (selectedUser) => {
     { name: "Usuario", selector: (row) => row.idUsuario, sortable: true },
     { name: "Nombre", selector: (row) => row.nombreCredi, sortable: true },
     { name: "Documento", selector: (row) => row.documentoCredi, sortable: true },
-    { name: "rotativo", selector: (row) => row.rotativo , sortable: true },
+    { name: "Rotativo", selector: (row) => row.rotativo , sortable: true },
     { name: "SEC", selector: (row) => row.SEC, sortable: true },
     {
       name: "Novedades Varias",
@@ -508,7 +504,7 @@ const deleteCredito = (selectedUser) => {
       ),
     },
     {
-      name: "eliminar",
+      name: "Eliminar",
       cell: (row) => (
         <button
         type="button"
@@ -702,7 +698,7 @@ const deleteCredito = (selectedUser) => {
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="flex items-center justify-center h-24 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-2xl text-gray-400 dark:text-gray-500">
-                  <span className="text-primary">Hola!,</span> Bienvenido a la
+                  <span className="text-primary">¡Hola!,</span> Bienvenido a la
                   interfaz de <span className="text-Third">Asesora</span>
                   <span className="text-primary">.</span>
                 </p>
@@ -722,7 +718,7 @@ const deleteCredito = (selectedUser) => {
                   }}
                   className="flex-none relative left-[45%] w-28 mt-8 px-5 p-10 py-4 text-center text-sm font-medium text-white bg-Third hover:bg-primary rounded-lg"
                 >
-                  Click Aqui
+                  Click Aquí
                 </button>
               </div>
 
@@ -847,9 +843,6 @@ const deleteCredito = (selectedUser) => {
                   </h2>
                   <p className="text-center">
                     Ingresa los valores requeridos para mostrar el estados de cuenta 
-                  </p>
-                  <p className="text-center ">
-                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
@@ -983,9 +976,6 @@ const deleteCredito = (selectedUser) => {
                   <p className="text-center">
                   Ingresa los valores requeridos para mostrar el estados de cuenta 
                   </p>
-                  <p className="text-center ">
-                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
-                  </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">
                       <div>
@@ -1071,9 +1061,6 @@ const deleteCredito = (selectedUser) => {
                   </h2>
                   <p className="text-center">
                   Ingresa los valores requeridos para mostrar el estados de cuenta
-                  </p>
-                  <p className="text-center ">
-                  Aviso: Para mermar valores al saldo añada un signo "-" antes de la cantidad deseada.
                   </p>
                   <div className="mx-auto">
                     <div className="flex flex-wrap justify-center gap-4 p-6 right-10 relative">

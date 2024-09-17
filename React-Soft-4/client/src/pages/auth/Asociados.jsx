@@ -184,7 +184,7 @@ const Asociados = () => {
           title: "Oops...",
           text:
             error.message === "Network Error"
-              ? "Intente más tarde"
+              ? "Error en la solicitud"
               : error.message,
         });
       });
@@ -218,7 +218,7 @@ const Asociados = () => {
               title: "Oops...",
               text: "No se pudo eliminar.",
               footer:
-                JSON.parse(JSON.stringify(error)).message === "Network Error"
+                JSON.parse(JSON.stringify(error)).message === "No se pudo eliminar"
                   ? "Intente más tarde"
                   : JSON.parse(JSON.stringify(error)).message,
             });

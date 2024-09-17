@@ -84,8 +84,8 @@ const Login = () => {
         });
       }
     } catch (error) {
-      console.log("Error al iniciar sesión:", error);
-      toast.error("Error al iniciar sesión", {
+      console.log("Credenciales incorrectas", error);
+      toast.error("Credenciales incorrectas", {
         theme: "light",
         position: "top-center",
       });
@@ -171,7 +171,7 @@ const Login = () => {
             to="problemas"
             className="text-primary hover:text-Third font-medium"
           >
-            Click Aqui
+            Click Aquí
           </Link>
         </div>
         <p className="text-primary top-[90%] left-[40%] absolute text-sm text-center">

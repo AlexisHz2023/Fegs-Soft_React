@@ -47,7 +47,7 @@ useEffect(() => {
   >
     <div>
       
-    <p className="text-gray-400 text-4xl">Informacion del administrador</p>
+    <p className="text-gray-400 text-4xl">Información del administrador</p>
       
     </div>
   </div>

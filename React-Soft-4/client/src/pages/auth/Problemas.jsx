@@ -22,14 +22,14 @@ const Problemas = () => {
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-    <div className='absolute w-[60rem] h-[85%] -left-[160%] rounded-lg -top-[340%] bg-white z-10 shadow-2xl'>
+    <div className='absolute w-[60rem] h-[85%] -left-[145%] rounded-lg -top-[340%] bg-white z-10 shadow-2xl'>
       <img src="./imagenes/Logo.PNG" className='w-[20%] left-5 relative top-5' />
       <img src="./imagenes/FondoSaldo.png" className='z-0' alt="" />
       <h1 className='text-3xl text-primary -top-[750%] text-center relative'>
       
        ¿Tienes Problemas Para Ingresar?</h1> 
 
-       <div className='relative -top-[705%] bg-white left-20 rounded-lg w-[85%] h-[150%]'><p className='relative top-5 text-center text-xl'>Si presentas problemas para ingresar al sistema debes comunicarte con el administrador, <br></br> Ten en cuenta tu correo y una descripcion de tu problema, es necesaria para poder ayudarte.</p></div>
+       <div className='relative -top-[705%] bg-white left-20 rounded-lg w-[85%] h-[175%]'><p className='relative top-5 text-center text-xl'>Si presentas problemas para ingresar al sistema debes comunicarte con el administrador. Ten en cuenta tu correo y una descripción de tu problema, es necesaria para poder ayudarte.</p></div>
 
     </div>
   
@@ -51,7 +51,7 @@ const Problemas = () => {
         className="capitalize  bg-Third shadow-2xl relative z-10"
       >
         <div className='relative z-10 top-14'>{b}</div>
-        <p className='relative text-2xl text-white  right-5'>Ingresa Aqui</p><BiSupport className='relative text-white w-10 h-10 right-2' />
+        <p className='relative text-2xl text-white  right-5'>Ingresa Aquí</p><BiSupport className='relative text-white w-10 h-10 right-2' />
 
       </Button>
 

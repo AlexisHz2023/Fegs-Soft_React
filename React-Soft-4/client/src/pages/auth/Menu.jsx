@@ -64,7 +64,7 @@ const Menu = () => {
           />
         </svg>
         <h1 className="fixed bg-gray-100 rounded-lg top-14 text- left-[7%] px-10 py-4 ps-10 text-2xl md:text-base lg:text-lg xl:text-xl">
-          Menu de navegacion
+          Menú de navegacion
         </h1>
 
         
@@ -99,7 +99,7 @@ const Menu = () => {
           </DropdownTrigger>
           <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-bold">Actualizate de informacion</p>
+              <p className="font-bold">Actualizate de información</p>
               <p className="font-bold">{user.Nombre}!</p>
             </DropdownItem>
           

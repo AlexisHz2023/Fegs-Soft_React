@@ -320,6 +320,11 @@ app.put("/updateVolu", (req, res) => {
     const { idahorros, vista, programado, vacacional, previo_vivienda } = req.body;
 
     try {
+        // Verificar que no sean números negativos
+        if (vista < 0 || programado < 0 || vacacional < 0 || previo_vivienda < 0) {
+            return res.status(400).send("No se permiten valores negativos");
+        }
+
         if (!idahorros || vista === undefined || programado === undefined || vacacional === undefined || previo_vivienda === undefined) {
             return res.status(400).send("Todos los campos son necesarios");
         }
@@ -346,6 +351,11 @@ app.put("/updateOblig", (req, res) => {
     const { idobligatorio, ahorro_ordinario, ahorro_permanente } = req.body;
 
     try {
+        // Verificar que no sean números negativos
+        if (ahorro_ordinario < 0 || ahorro_permanente < 0) {
+            return res.status(400).send("No se permiten valores negativos");
+        }
+
         if (!idobligatorio || ahorro_ordinario === undefined || ahorro_permanente === undefined) {
             return res.status(400).send("Todos los campos son necesarios");
         }
@@ -373,6 +383,11 @@ app.put("/updateCredi", (req, res) => {
     const { idcreditos, rotativo, SEC, novedades_varias, compra_cartera } = req.body;
 
     try {
+        // Verificar que no sean números negativos
+        if (rotativo < 0 || SEC < 0 || novedades_varias < 0 || compra_cartera < 0) {
+            return res.status(400).send("No se permiten valores negativos");
+        }
+
         if (!idcreditos || rotativo === undefined || SEC === undefined || novedades_varias === undefined || compra_cartera === undefined) {
             return res.status(400).send("Todos los campos son necesarios");
         }
@@ -393,18 +408,6 @@ app.put("/updateCredi", (req, res) => {
         console.log(error);
         res.status(500).send('Error en el servidor');
     }
-});
-
-app.get("/asociados", (req, res) => {
-    db.query('SELECT id, Nombre, Correo, Documento FROM usuarios WHERE rol = 3',
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send('Error al obtener asociados');
-            } else {
-                res.send(result);
-            }
-        });
 });
 
 app.post("/NuevoBeneficio", (req, res) => {
